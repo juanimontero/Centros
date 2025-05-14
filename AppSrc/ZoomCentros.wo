@@ -1,0 +1,323 @@
+﻿// C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo
+// Centros
+//
+
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+Use cWebForm.pkg
+Use cWebTabContainer.pkg
+Use cWebTabPage.pkg
+
+Use cCentrosDataDictionary.dd
+
+Object oZoomCentros is a cWebView
+    Set piColumnCount to 12
+    Set psCaption to "Centros"
+    Set peWebViewStyle to wvsDrilldown
+    Set peViewType to vtZoom
+    Set pbShowCaption to False
+    Set Verify_Save_Msg to 0
+    Set piMaxWidth to 1024
+
+    Object oCentros_DD is a cCentrosDataDictionary
+    End_Object 
+
+    Set Main_DD To oCentros_DD
+    Set Server  To oCentros_DD
+
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        WebSetResponsive piColumnCount rmMobile to 4
+
+        Object oCentrosNombre is a cWebForm
+            Entry_Item Centros.Nombre
+            Set piColumnSpan to 6
+            Set piColumnIndex to 0
+            Set peLabelPosition to lpTop
+            Set psLabel to "Nombre"
+        End_Object 
+
+        Object oCentrosPsNombre is a cWebForm
+            Entry_Item Centros.PsNombre
+            Set piColumnSpan to 6
+            Set piColumnIndex to 6
+            Set peLabelPosition to lpTop
+            Set psLabel to "PsNombre"
+        End_Object 
+
+        Object oCentrosEmpresa is a cWebForm
+            Entry_Item Centros.Empresa
+            Set piColumnSpan to 8
+            Set piColumnIndex to 0
+            Set peLabelPosition to lpTop
+            Set psLabel to "Empresa"
+        End_Object 
+
+        Object oWebTabContainer is a cWebTabContainer
+            Set pbFillHeight to True
+            Set piColumnSpan to 12
+            Set pbShowLabel to False
+
+            Object oPage1 is a cWebTabPage
+                Set piColumnCount to 12
+                Set psCaption to "Ubicación"
+                WebSetResponsive piColumnCount rmMobile to 4
+
+                Object oCentrosPais is a cWebCombo
+                    Entry_Item Centros.Pais
+                    Set piColumnSpan to 4
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Pais"
+                    Set pbServerOnChange to True
+//                    
+//                    String[][] aResultsPaises
+
+                    Procedure OnFill
+                    Integer inumPaises i
+                        Forward Send OnFill
+                        
+                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre
+                            from Centros.dbo.Country;" to aResultsPaises
+                            
+                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+                        If (not(Err)) Begin
+                             For i from 0 to (inumPaises - 1)
+                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+                             Loop
+                        End
+                     
+                        
+                        
+                    End_Procedure
+
+                    Procedure OnChange String sNewValue String sOldValue
+                        Forward Send OnChange sNewValue sOldValue
+                        WebSet psValue of oCentrosComunidadAutonoma to ""
+                        WebSet psValue of oCentrosLocalidad to ""
+                       Send Refill of oCentrosComunidadAutonoma 
+                    End_Procedure
+
+                    
+                    
+                End_Object 
+
+                Object oCentrosComunidadAutonoma is a cWebCombo
+                    Entry_Item Centros.ComunidadAutonoma                   
+                    Set piColumnSpan to 4
+                    Set piColumnIndex to 4
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Comunidad Autonoma"
+                    Set pbServerOnChange to True
+                    
+                    
+                    Procedure OnFill
+                        Forward Send OnFill
+                        String  sPaisElegido sSQL
+                        Integer  inumComunidadAutonoma  i
+                        String[][]  aResults
+                 
+                        WebGet psValue of oCentrosPais to sPaisElegido                   
+                        If (sPaisElegido = "") Procedure_Return
+                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
+                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+                                                
+                        If (not(Err)) Begin
+                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
+                            For i from 0 to (inumComunidadAutonoma - 1)
+                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+                            Loop
+                        End                        
+                    End_Procedure
+                    
+                    Procedure OnChange String sNewValue String sOldValue
+                        Forward Send OnChange sNewValue sOldValue
+                        Send Refill of oCentrosLocalidad 
+                        WebSet psValue of oCentrosLocalidad to ""
+                    End_Procedure    
+                    
+                    
+                End_Object 
+
+                Object oCentrosLocalidad is a cWebCombo
+                    Entry_Item Centros.Localidad
+                    Set piColumnSpan to 4
+                    Set piColumnIndex to 8
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Provincia"
+                    Set pbServerOnChange to True
+                    
+                    
+                    Procedure OnFill
+                        Forward Send OnFill
+                        String  sComunidadAutonomaElegida sSQL
+                        Integer  inumProvincia  i
+                        String[][]  aResults
+                 
+                        WebGet psValue of oCentrosComunidadAutonoma to sComunidadAutonomaElegida                   
+                        If (sComunidadAutonomaElegida = "") Procedure_Return
+                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
+                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+                                                
+                        If (not(Err)) Begin
+                            Move (SizeOfArray(aResults)) to inumProvincia    
+                            For i from 0 to (inumProvincia - 1)
+                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+                            Loop
+                        End                        
+                    End_Procedure
+            
+                End_Object 
+
+                Object oCentrosDireccion is a cWebForm
+                    Entry_Item Centros.Direccion
+                    Set piColumnSpan to 9
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Direccion"
+                End_Object 
+
+                Object oCentrosCodigoPostal is a cWebForm
+                    Entry_Item Centros.CodigoPostal
+                    Set piColumnSpan to 2
+                    Set piColumnIndex to 9
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Codigo Postal"
+                End_Object 
+            End_Object 
+
+            Object oPage2 is a cWebTabPage
+                Set piColumnCount to 12
+                Set psCaption to "Datos de Registro"
+                WebSetResponsive piColumnCount rmMobile to 4
+
+                Object oCentrosFechaCreacionRegistro is a cWebForm
+                    Entry_Item Centros.FechaCreacionRegistro
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Fecha de creacion del registro"
+                End_Object 
+
+                Object oCentrosFechaUltimaModificacion is a cWebForm
+                    Entry_Item Centros.FechaUltimaModificacion
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 3
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Fecha ultima de la modificacion"
+                End_Object 
+            End_Object 
+        End_Object 
+    End_Object 
+
+    Object oActionGroup is a cWebMenuGroup
+
+        Object oSaveBtn is a cWebMenuItem
+            Set psCSSClass to "WebSaveMenuItem"
+            Set psCaption to "Save"
+
+            Procedure OnClick
+                Send Request_Save
+            End_Procedure
+
+        End_Object 
+
+        Object oEditBtn is a cWebMenuItem
+            Set psCSSClass to "WebEditMenuItem"
+            Set psCaption to "Edit"
+            Procedure OnClick
+                Send ChangeEditMode True
+                Send SetActionButtons
+            End_Procedure
+
+        End_Object 
+
+        Object oDeleteBtn is a cWebMenuItem
+            Set psCSSClass to "WebDeleteMenuItem"
+            Set psCaption to "Delete"
+            Set peActionDisplay to adMenu
+
+            Procedure OnClick
+                Send Request_Delete
+            End_Procedure
+
+        End_Object 
+
+        Object oCancelChangesBtn is a cWebMenuItem
+            Set psCSSClass to "WebIcon_Refresh"
+            Set psCaption to "Clear Changes"
+            Set peActionDisplay to adMenu
+            Procedure OnClick
+                Send RefreshRecord
+            End_Procedure
+
+        End_Object 
+    End_Object 
+
+    Procedure SetActionButtons
+        tWebNavigateData NavigateData
+        Boolean bHasRecord
+        Handle hoDD
+
+        Get Server to hoDD
+        Get GetNavigateData to NavigateData
+        Get HasRecord of hoDD to bHasRecord
+
+        // let's hide all buttons and then Show the ones we want
+        WebSet pbRender of oEditBtn to False
+        WebSet pbRender of oSaveBtn to False
+        WebSet pbRender of oCancelChangesBtn to False
+        WebSet pbRender of oDeleteBtn to False
+
+        If (NavigateData.bReadOnly) Begin
+            WebSet pbRender of oEditBtn to True
+        End
+        Else Begin
+            WebSet pbRender of oSaveBtn to True
+            WebSet pbRender of oCancelChangesBtn to True
+            WebSet pbRender of oDeleteBtn to bHasRecord
+        End
+    End_Procedure
+
+    Procedure OnViewSaved Handle hoServer Boolean bChanged
+        // Close after save
+        Send NavigateClose Self
+    End_Procedure
+
+    // this will close the view after a delete
+    Procedure OnViewDeleted Handle hoDDO
+        Send NavigateClose Self
+    End_Procedure
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+        Case Begin
+            Case (NavigateData.eNavigateType = nfFromMain)
+                // If from main, this is a propbably a main file Select to Zoom.
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromParent)
+                // If from parent, this is a constrained drill down.
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromChild)
+                // If from child, this is a probably a parent Zoom from a Zoom.
+                Case Break
+
+            Case Else // must be nfUndefined
+
+        Case End
+
+        Send SetActionButtons
+
+    End_Procedure
+
+    Procedure OnBeforeShow
+        Forward Send OnBeforeShow
+        Send Refill of oCentrosComunidadAutonoma
+        Send Refill of oCentrosLocalidad
+    End_Procedure
+
+End_Object 

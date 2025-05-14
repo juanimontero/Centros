@@ -1,0 +1,17 @@
+#REPLACE FILE1 Alumnos
+#REPLACE Alumnos.File_Number |CI1
+#REPLACE Alumnos.AlumnosId |FN1,1
+#REPLACE Alumnos.Dni |FS1,2
+#REPLACE Alumnos.Nombre |FS1,3
+#REPLACE Alumnos.Apellidos |FS1,4
+#REPLACE Alumnos.Sexo |FS1,5
+#REPLACE Alumnos.Dirreccion |FS1,6
+#REPLACE Alumnos.CodigoPostal |FS1,7
+#REPLACE Alumnos.Pais |FS1,8
+#REPLACE Alumnos.NumeroTelefono |FS1,9
+#REPLACE Alumnos.Email |FS1,10
+#REPLACE Alumnos.CentrosId |FN1,11
+#REPLACE Alumnos.FechaCreacionRegistro |FM1,12
+#REPLACE Alumnos.FechaUltimaModificacion |FM1,13
+#REPLACE Alumnos.Localidad |FS1,14
+#REPLACE Alumnos.ComunidadAutonoma |FS1,15

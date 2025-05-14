@@ -1,0 +1,3760 @@
+Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
+Memory Available: 9220931584
+1>Use AllWebAppClasses.pkg
+Using pre-compiled package ALLWEBAPPCLASSES.PKG
+Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
+36303>Use cConnection.pkg
+36303>Use cWebMenuItem.pkg
+36303>Use cSQLExecutor.pkg
+Including file: cSQLExecutor.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cSQLExecutor.pkg)
+36303>>>Use GlobalFunctionsProcedures.pkg
+36303>>>Use cConnection.pkg
+36303>>>
+36303>>>// The cBaseSQLExecute class is defined in the runtime, we define it here for codesense and
+36303>>>// reference but skip compiling it.
+36303>>>
+36303>>>
+36303>>>Struct tSQLColumnInfo
+36303>>>    String  sName
+36303>>>    Integer iType 
+36303>>>    Integer iSize
+36303>>>    Integer iDigits
+36303>>>    Boolean bNullable
+36303>>>    String  sBaseColumnName
+36303>>>    String  sBaseTableName
+36303>>>    String  sLocalTypeName
+36303>>>End_Struct
+36303>>>
+36303>>>Struct tSQLParamInfo
+36303>>>    String sName
+36303>>>    String sValue
+36303>>>End_Struct
+36303>>>
+36303>>>Class cSQLExecutor is a cBaseSQLExecutor
+36304>>>
+36304>>>    Procedure Construct_Object
+36306>>>        Forward Send Construct_Object
+36308>>>
+36308>>>        Property String Private_psConnectionId
+36309>>>        Property String Private_psDriverId
+36310>>>    End_Procedure
+36311>>>
+36311>>>    Procedure OnSQLError String SQLState String SQLMessage
+36313>>>        Error DFERR_PROGRAM (SFormat("SQLExecutor error: %1 SQLState: %2", SQLMessage, SQLState ))
+36314>>>>
+36314>>>    End_Procedure
+36315>>>    
+36315>>>    Procedure OnSQLPreExecute String sSQLQuery
+36317>>>    End_Procedure
+36318>>>    
+36318>>>    Procedure OnSQLPostExecute String sSQLQuery
+36320>>>    End_Procedure  
+36321>>>
+36321>>>    Procedure Set psConnectionId String sConnectionId
+36323>>>        Set Private_psConnectionId to sConnectionId
+36324>>>        Set piDriverIndex to 0
+36325>>>        Set piConnectionIndex to 0  
+36326>>>        
+36326>>>        Send UpdateConnectionDetails        
+36327>>>    End_Procedure
+36328>>>
+36328>>>    Function psConnectionId Returns String
+36330>>>        Function_Return (Private_psConnectionId(Self))
+36331>>>    End_Function
+36332>>>
+36332>>>    Function psDriverId Returns String
+36334>>>        Function_Return (Private_psDriverId(Self))
+36335>>>    End_Function
+36336>>>    
+36336>>>    Procedure UpdateConnectionDetails
+36338>>>        String  sConnectionId
+36338>>>        Get Private_psConnectionId to sConnectionId            
+36339>>>        If (sConnectionId <> '') Begin
+36341>>>            Send ManagedConnectionDetails sConnectionId
+36342>>>        End
+36342>>>>
+36342>>>        Else Begin
+36343>>>            Error DFERR_PROGRAM (SFormat(C_$SQLExecutorNoConnectionId))
+36344>>>>
+36344>>>        End           
+36344>>>>
+36344>>>    End_Procedure
+36345>>>
+36345>>>    Procedure ManagedConnectionDetails String sConnectionId
+36347>>>        tConnection ManagedConnection
+36347>>>        tConnection ManagedConnection
+36347>>>        String  sDriver
+36347>>>        Integer iDriverIndex
+36347>>>        Boolean bConnectionIsLoggedIn 
+36347>>>        Boolean bSuccess
+36347>>>        Integer iIndex
+36347>>>        Integer iConnectionIndex
+36347>>>        
+36347>>>        If (ghoConnection) Begin            
+36349>>>            Get ConnectionIdIndex of ghoConnection sConnectionId to iIndex
+36350>>>            If (iIndex = -1) Begin
+36352>>>                Error DFERR_PROGRAM (SFormat(C_$ConnectionIdNotFound,sConnectionId))
+36353>>>>
+36353>>>            End
+36353>>>>
+36353>>>            Else Begin
+36354>>>                Get ConnectionIdInfo of ghoConnection sConnectionId to ManagedConnection
+36355>>>                Move ManagedConnection.sDriver      to sDriver
+36356>>>                Move ManagedConnection.iDriverIndex to iDriverIndex
+36357>>>                Get IsConnectionIdLoggedIn of ghoConnection sConnectionId to bConnectionIsLoggedIn
+36358>>>                If (not(bConnectionIsLoggedIn)) Begin
+36360>>>                    Get LoginConnectionId of ghoConnection sConnectionId to bSuccess
+36361>>>                    Get IsConnectionIdLoggedIn of ghoConnection sConnectionId to bConnectionIsLoggedIn
+36362>>>                End
+36362>>>>
+36362>>>                If (bConnectionIsLoggedIn) Begin
+36364>>>                    Get ConnectionDatabaseIdHandle of ghoConnection ManagedConnection to iConnectionIndex
+36365>>>                    
+36365>>>                    If (iConnectionIndex) Begin
+36367>>>                        Set piConnectionIndex  to iConnectionIndex
+36368>>>                        Set piDriverIndex      to iDriverIndex
+36369>>>                        Set Private_psDriverId to sDriver
+36370>>>                    End
+36370>>>>
+36370>>>                End
+36370>>>>
+36370>>>            End
+36370>>>>
+36370>>>        End
+36370>>>>
+36370>>>    End_Procedure
+36371>>>End_Class
+36372>
+36372>Object oApplication is a cApplication
+36374>    Object oConnection is a cConnection
+36376>        Use LoginEncryption.pkg
+Including file: LoginEncryption.pkg    (C:\Program Files\DataFlex 25.0\Pkg\LoginEncryption.pkg)
+36376>>>Use cLoginEncryption.pkg
+Including file: cLoginEncryption.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cLoginEncryption.pkg)
+36376>>>>>Use cCryptographerEx.pkg
+36376>>>>>
+36376>>>>>Class cLoginEncryption is a cObject
+36377>>>>>    
+36377>>>>>    Procedure Construct_Object
+36379>>>>>        Forward Send Construct_Object
+36381>>>>>        // this must be set to a multi (40ish) character random key
+36381>>>>>        Property String psEncryptPassword ""
+36382>>>>>        
+36382>>>>>        Object oDataCrypter is a cCryptographerEx
+36384>>>>>            Set piHash to CALG_SHA_256
+36385>>>>>            Set piCipher to CALG_AES_256
+36386>>>>>            Set psProvider to "" //  Not providing a specific provider gives the default provider for the provider type
+36387>>>>>            Set piProvider to PROV_RSA_AES
+36388>>>>>        End_Object
+36389>>>>>    End_Procedure
+36390>>>>>    
+36390>>>>>    // This can be augmented to return a password encryption key using any
+36390>>>>>    // hidden mechanism desired.
+36390>>>>>    Function GetEncryptionPassword Returns String
+36392>>>>>        String sPassword
+36392>>>>>        Get psEncryptPassword to sPassword
+36393>>>>>        Function_Return sPassword
+36394>>>>>    End_Function
+36395>>>>>    
+36395>>>>>    // Encrypts a string into an unreadable hash that can later be decrypted using DecryptKey.
+36395>>>>>    //
+36395>>>>>    // Params:
+36395>>>>>    //   sPlainText     String to encrypt.
+36395>>>>>    // Returns:
+36395>>>>>    //   Base64 encoded hash.
+36395>>>>>    Function EncryptPassword String sPlainText Returns String
+36397>>>>>        String sEncryptPassword sBase64
+36397>>>>>        UChar[] ucBinary
+36398>>>>>        Pointer pBase64
+36398>>>>>        Integer iVoid
+36398>>>>>        
+36398>>>>>        //  Encrypt Key
+36398>>>>>        Get GetEncryptionPassword to sEncryptPassword
+36399>>>>>        If (sEncryptPassword = "") Begin
+36401>>>>>            Error DFERR_PROGRAM "No encryption password set"
+36402>>>>>>
+36402>>>>>        End
+36402>>>>>>
+36402>>>>>        
+36402>>>>>        Get Encrypt of oDataCrypter (StringToUCharArray(sEncryptPassword)) (StringToUCharArray(sPlainText)) to ucBinary
+36403>>>>>        
+36403>>>>>        If (SizeOfArray(ucBinary) = 0) Begin
+36405>>>>>            Error DFERR_PROGRAM "Unable to encrypt database login password"
+36406>>>>>>
+36406>>>>>            Function_Return ""
+36407>>>>>        End
+36407>>>>>>
+36407>>>>>        
+36407>>>>>        //  Encode binary hash to Base64
+36407>>>>>        Move (Base64Encode(AddressOf(ucBinary), SizeOfArray(ucBinary))) to pBase64
+36408>>>>>        Move (PointerToString(pBase64)) to sBase64
+36409>>>>>        Move (Free(pBase64)) to iVoid
+36410>>>>>        
+36410>>>>>        Function_Return sBase64
+36411>>>>>    End_Function
+36412>>>>>    
+36412>>>>>    
+36412>>>>>    // Decrypts the unreadable hash generated by EncryptKey into a readable string.
+36412>>>>>    //
+36412>>>>>    // Params:
+36412>>>>>    //   sBase64EncryptedPassword       Base64 Encrypted password
+36412>>>>>    // Returns:
+36412>>>>>    //   Readable plain text password
+36412>>>>>    Function DecryptPassword String sBase64EncryptedPassword Returns String
+36414>>>>>        String sEncryptPassword
+36414>>>>>        UChar[] ucBinary ucPlain
+36416>>>>>        Boolean bIsHex
+36416>>>>>        Integer iLen iVoid
+36416>>>>>        Pointer pBinary
+36416>>>>>        
+36416>>>>>        If (sBase64EncryptedPassword <> "") Begin
+36418>>>>>            //  Decode from Base64
+36418>>>>>            Move (Base64Decode(AddressOf(sBase64EncryptedPassword), &iLen)) to pBinary
+36419>>>>>            
+36419>>>>>            Move (ResizeArray(ucBinary, iLen, 0)) to ucBinary
+36420>>>>>            Move (MemCopy(AddressOf(ucBinary), pBinary, iLen)) to iVoid
+36421>>>>>                        
+36421>>>>>            Move (Free(pBinary)) to iVoid
+36422>>>>>            
+36422>>>>>            //  Encrypted binary hash to string
+36422>>>>>            Get GetEncryptionPassword to sEncryptPassword
+36423>>>>>            Get Decrypt of oDataCrypter (StringToUCharArray(sEncryptPassword)) ucBinary to ucPlain
+36424>>>>>        End
+36424>>>>>>
+36424>>>>>        
+36424>>>>>        Function_Return (UCharArrayToString(ucPlain))
+36425>>>>>    End_Function
+36426>>>>>End_Class
+36427>>>
+36427>>>Object oLoginEncryption is a cLoginEncryption
+36429>>>
+36429>>>    // this must be created in your appsrc directory and must contain an encryption
+36429>>>    // key that is set to psEncryptPassword. It will look something like this
+36429>>>    //
+36429>>>    // Set psEncryptPassword to "JchUAo7W@r.b{<Yk~OONi0nq=sMi[*Rn[A-`Vo)q"
+36429>>>    //  
+Including file: LoginEncryptionKey.inc    (C:\DataFlex Projects\Centros\AppSrc\LoginEncryptionKey.inc)
+36429>>>>// Studio generated login encryption key
+36429>>>>Set psEncryptPassword to "nX,`aCLjN<#ah&V#INur~oy)$^b,#I6q2>P:)4@*"
+36430>>>>
+36430>>>    
+36430>>>    // use this to register this object to your cConnection Object. This object
+36430>>>    // must be created after the cConnection object
+36430>>>    Move Self to ghoLoginEncryption
+36431>>>End_Object
+36432>    End_Object
+36433>End_Object
+36434>
+36434>
+36434>
+36434>
+36434>Object oWebApp is a cWebApp
+36436>    Set psTheme to "Df_Material"
+36437>    Set peAlignView to alignCenter
+36438>    Set peLoginMode to lmLoginNone
+36439>    
+36439>    // It is important to set this so that all views will default
+36439>    // to drill down style views.
+36439>    Set peApplicationStyle to wvsDrillDown   
+36440>    Set peApplicationStateMode to asmHistoryAndUrls 
+36441>    Set psEncryptPassword to "CA{z(/<Zy2q^w6Gp7Z7z.)Wr#>YCvgJA%}m0z:a,"
+36442>
+36442>    Object oSQLExecutor is a cSQLExecutor
+36444>        Move Self to ghoSQLExecutor
+36445>        Set psConnectionId to "Centros"
+36446>    End_Object
+36447>    
+36447>    Object oViewStack is a cWebViewStack
+36449>    End_Object
+36450>    
+36450>    Procedure HideHeader
+36453>        WebSet pbRender of oHeaderPanel to False
+36454>    End_Procedure
+36455>
+36455>    Procedure ShowHeader
+36458>        WebSet pbRender of oHeaderPanel to True 
+36459>    End_Procedure
+36460>
+36460>    Object oHeaderPanel is a cWebPanel
+36462>        Set peRegion to prTop
+36463>        Set psCSSClass to "HeaderPanel"
+36464>        
+36464>        Object oMenuPanel is a cWebPanel
+36466>            Set peRegion to prLeft
+36467>            Set piWidth to 50
+36468>            
+36468>            Object oMenuButton is a cWebMenuButton
+36470>                Set piMenuHeight to 500
+36471>
+36471>                Object oDashboard_itm is a cWebMenuItem
+36473>                    Set psCaption to C_$Dashboard
+36474>                    
+36474>                    WebRegisterPath ntNavigateBegin oDashboard
+36480>
+36480>                    Procedure OnClick
+36483>                        Send NavigatePath
+36484>                    End_Procedure
+36485>                End_Object
+36486>
+36486>                Object oViewMenu is a cWebMenuItem
+36488>                    Set psCaption to C_$View
+36489>
+36489>                    Object oDummieEmailItem1 is a cWebMenuItem
+36491>                        Set psCaption to "DummieEmail"
+36492>
+36492>                        WebRegisterPath ntNavigateBegin oDummieEmail
+36498>
+36498>                        Procedure OnClick
+36501>                            Forward Send OnClick
+36503>                                Send NavigatePath
+36504>                        End_Procedure
+36505>                    End_Object
+36506>
+36506>                    Object oDummieDniItem1 is a cWebMenuItem
+36508>                        Set psCaption to "DummieDni"
+36509>
+36509>                        WebRegisterPath ntNavigateBegin oDummieDni
+36515>
+36515>                        Procedure OnClick
+36518>                            Forward Send OnClick
+36520>                                Send NavigatePath
+36521>                        End_Procedure
+36522>                    End_Object
+36523>
+36523>                    Object oStudentsItem1 is a cWebMenuItem
+36525>                        Set psCaption to "Students"
+36526>
+36526>                        WebRegisterPath ntNavigateBegin oSelectStudents
+36532>
+36532>                        Procedure OnClick
+36535>                            Forward Send OnClick
+36537>                                Send NavigatePath
+36538>                        End_Procedure
+36539>                    End_Object
+36540>
+36540>                    Object oCentroItem1 is a cWebMenuItem
+36542>                        Set psCaption to "Centro"
+36543>
+36543>                        WebRegisterPath ntNavigateBegin oSelectCentro
+36549>
+36549>                        Procedure OnClick
+36552>                            Forward Send OnClick
+36554>                                Send NavigatePath
+36555>                        End_Procedure
+36556>                    End_Object
+36557>                End_Object
+36558>
+36558>                Object oSignOut_itm is a cWebMenuItem
+36560>                    Set psCaption to C_$LogOut
+36561>
+36561>                    Procedure OnClick
+36564>                        Send RequestLogOut of ghoWebSessionManager
+36565>                    End_Procedure
+36566>                End_Object
+36567>            End_Object  
+36568>
+36568>            Object oBackButton is a cWebButton
+36570>                Set psCSSClass to "WebBack_Icon"
+36571>                Set pbRender to False
+36572>                
+36572>                Procedure OnClick
+36575>                    Handle hoTop
+36575>                    
+36575>                    Get TopViewHandle of oViewStack to hoTop
+36576>                    If (hoTop > 0) Begin
+36578>                        Send NavigateCancel of hoTop 
+36579>                    End
+36579>                End_Procedure
+36580>            End_Object
+36581>            
+36581>            Send AddClient of oViewStack Self
+36582>                
+36582>            Procedure OnUpdateViewStack
+36585>                Handle hoTop hoDflt
+36585>                Integer eMode
+36585>                Boolean bTop
+36585>                
+36585>                WebGet peMode of (Owner(Self)) to eMode
+36586>                
+36586>                Get TopViewHandle of oViewStack to hoTop
+36587>                Get GetDefaultView to hoDflt
+36588>                Move (hoTop=0 or hoTop=hoDflt) to bTop
+36589>                
+36589>                WebSet pbRender of oBackButton to (not(bTop) and eMode >= rmMobile)
+36590>                WebSet pbRender of oMenuButton to (bTop or eMode < rmMobile)
+36591>            End_Procedure
+36592>
+36592>        End_Object
+36593>
+36593>        Object oCaptionPanel is a cWebPanel
+36595>            Set piColumnCount to 12
+36596>
+36596>            Object oCaptionBreadcrumb is a cWebBreadcrumb
+36598>                Set peBreadcrumbStyle to crumbCaption
+36599>                WebSetResponsive peBreadcrumbStyle rmMobile to crumbDropDown
+36600>            End_Object         
+36601>        End_Object
+36602>        
+36602>        Object oActionPanel is a cWebPanel
+36604>            Set peRegion to prRight
+36605>            Set piColumnCount to 1
+36606>            Set piWidth to 120
+36607>
+36607>            Object oMainActions is a cWebActionBar
+36609>                Set psGroupName to "MainActions"
+36610>
+36610>                Set piColumnSpan to 0
+36611>                Set peAlign to alignRight
+36612>            End_Object
+36613>        End_Object
+36614>
+36614>        Object oBreadcrumbPanel is a cWebPanel
+36616>            Set peRegion to prBottom
+36617>            
+36617>            Object oHorizontalBreadcrumb is a cWebBreadcrumb
+36619>                WebSetResponsive pbRender rmMobile to False
+36620>            End_Object         
+36621>        End_Object
+36622>
+36622>    End_Object    
+36623>
+36623>    Use SessionManager.wo
+Including file: SessionManager.wo    (C:\DataFlex Projects\Centros\AppSrc\SessionManager.wo)
+36623>>>Use cWebSessionManagerStandard.pkg
+Including file: cWebSessionManagerStandard.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cWebSessionManagerStandard.pkg)
+36623>>>>>Use cWebSessionManager.pkg
+36623>>>>>Use cWebAppSessionDataDictionary.dd
+Including file: cWebAppSessionDataDictionary.dd    (C:\Program Files\DataFlex 25.0\Pkg\cWebAppSessionDataDictionary.dd)
+36623>>>>>>>Use DataDict.pkg
+36623>>>>>>>
+36623>>>>>>>Open WebAppSession
+Including file: WebAppSession.fd    (C:\DataFlex Projects\Centros\DDSrc\WebAppSession.fd)
+36625>>>>>>>Open WebAppUser
+Including file: WebAppUser.fd    (C:\DataFlex Projects\Centros\DDSrc\WebAppUser.fd)
+36627>>>>>>>
+36627>>>>>>>Class cWebAppSessionDataDictionary is a DataDictionary
+36628>>>>>>>    Procedure Construct_Object
+36630>>>>>>>        Forward Send Construct_Object
+36632>>>>>>>
+36632>>>>>>>        Set Main_File to WebAppSession.File_Number
+36633>>>>>>>
+36633>>>>>>>        Set Add_Server_File to WebAppUser.File_Number
+36634>>>>>>>
+36634>>>>>>>        Set ParentNullAllowed WebAppUser.File_Number to True
+36635>>>>>>>
+36635>>>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+36636>>>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+36637>>>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+36638>>>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+36639>>>>>>>
+36639>>>>>>>        Set Field_Checkbox_Values Field WebAppSession.Active to "Y" "N"
+36640>>>>>>>        Set Field_Error Field WebAppSession.Active to 500 "Invalid WebAppSession Active State"
+36641>>>>>>>    End_Procedure
+36642>>>>>>>
+36642>>>>>>>    Procedure Creating
+36644>>>>>>>        DateTime dtCurrentDateTime
+36644>>>>>>>        
+36644>>>>>>>        Forward Send Creating
+36646>>>>>>>        
+36646>>>>>>>        //  Init usecounter
+36646>>>>>>>        Move 0 to WebAppSession.UseCount
+36647>>>>>>>        
+36647>>>>>>>        //  Set the creation and access time to the current time
+36647>>>>>>>        Move (CurrentDateTime()) to dtCurrentDateTime
+36648>>>>>>>    
+36648>>>>>>>        Get TimeToString dtCurrentDateTime to WebAppSession.CreateTime
+36649>>>>>>>        Get TimeToString dtCurrentDateTime to WebAppSession.LastAccessTime
+36650>>>>>>>        
+36650>>>>>>>        Move dtCurrentDateTime to WebAppSession.CreateDate
+36651>>>>>>>        Move dtCurrentDateTime to WebAppSession.LastAccessDate
+36652>>>>>>>    End_Procedure
+36653>>>>>>>    
+36653>>>>>>>    //
+36653>>>>>>>    //  Converts the given time to an string that can be saved in the database.
+36653>>>>>>>    //
+36653>>>>>>>    //  Params:
+36653>>>>>>>    //      dtTime  Time to convert
+36653>>>>>>>    //  Returns:
+36653>>>>>>>    //      String with "HH:MM:SS" format
+36653>>>>>>>    //
+36653>>>>>>>    Function TimeToString DateTime dtTime Returns String
+36655>>>>>>>        String sHours sMinutes sSeconds
+36655>>>>>>>        
+36655>>>>>>>        //  Extract parts
+36655>>>>>>>        Move (String(DateGetHour(dtTime))) to sHours
+36656>>>>>>>        Move (String(DateGetMinute(dtTime))) to sMinutes
+36657>>>>>>>        Move (String(DateGetSecond(dtTime))) to sSeconds
+36658>>>>>>>        
+36658>>>>>>>        //  Fill out with 0
+36658>>>>>>>        If (Length(sHours) = 1) ;            Move ("0" + sHours) to sHours
+36661>>>>>>>        If (Length(sMinutes) = 1) ;            Move ("0" + sMinutes) to sMinutes
+36664>>>>>>>        If (Length(sSeconds) = 1) ;            Move ("0" + sSeconds) to sSeconds
+36667>>>>>>>        
+36667>>>>>>>        Function_Return (sHours + ":" + sMinutes + ":" + sSeconds)
+36668>>>>>>>    End_Function
+36669>>>>>>>    
+36669>>>>>>>    //
+36669>>>>>>>    //  Sets the time of the datetime variable to the time in the string.
+36669>>>>>>>    //
+36669>>>>>>>    //  Params:
+36669>>>>>>>    //      dtTime  Datetime variable to add time to
+36669>>>>>>>    //      sTimeString String with time in the format "HH:MM:SS"
+36669>>>>>>>    //  Returns:
+36669>>>>>>>    //      dtDateTime with the loaded time
+36669>>>>>>>    //
+36669>>>>>>>    Function StringToTime DateTime dtTime String sTimeString Returns DateTime
+36671>>>>>>>        String sHours sMinutes sSeconds
+36671>>>>>>>        
+36671>>>>>>>        //  Extract parts
+36671>>>>>>>        Move (Mid(sTimeString, 2, 1)) to sHours
+36672>>>>>>>        Move (Mid(sTimeString, 2, 4)) to sMinutes
+36673>>>>>>>        Move (Mid(sTimeString, 2, 7)) to sSeconds
+36674>>>>>>>        
+36674>>>>>>>        //  Set to DateTime
+36674>>>>>>>        Move (DateSetHour(dtTime, (Integer(sHours)))) to dtTime
+36675>>>>>>>        Move (DateSetMinute(dtTime, (Integer(sMinutes)))) to dtTime
+36676>>>>>>>        Move (DateSetSecond(dtTime, (Integer(sSeconds)))) to dtTime
+36677>>>>>>>        
+36677>>>>>>>        Function_Return dtTime
+36678>>>>>>>    End_Function
+36679>>>>>>>End_Class
+36680>>>>>Use cWebAppUserDataDictionary.dd
+Including file: cWebAppUserDataDictionary.dd    (C:\Program Files\DataFlex 25.0\Pkg\cWebAppUserDataDictionary.dd)
+36680>>>>>>>Use DataDict.pkg
+36680>>>>>>>Open WebAppUser
+36682>>>>>>>Open WebAppSession
+36684>>>>>>>
+36684>>>>>>>Class cWebAppUserDataDictionary is a DataDictionary
+36685>>>>>>>    
+36685>>>>>>>    Procedure Construct_Object
+36687>>>>>>>        Forward Send Construct_Object
+36689>>>>>>>        Set Main_File to WebAppUser.File_Number
+36690>>>>>>>
+36690>>>>>>>        Set Add_Client_File to WebAppSession.File_Number
+36691>>>>>>>
+36691>>>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+36692>>>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+36693>>>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+36694>>>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+36695>>>>>>>    End_Procedure
+36696>>>>>>>
+36696>>>>>>>End_Class
+36697>>>>>
+36697>>>>>Use cPasswordHasher.pkg
+Including file: cPasswordHasher.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cPasswordHasher.pkg)
+36697>>>>>>>Use GlobalFunctionsProcedures.pkg
+36697>>>>>>>
+36697>>>>>>>Define CNG_BCRYPT_HASH_LENGTH           for "HashDigestLength"
+36697>>>>>>>
+36697>>>>>>>External_Function CNG_BCryptGenRandom "BCryptGenRandom" Bcrypt.dll ;    Handle   hAlgorithm ;    Pointer  pbBuffer ;    UInteger cbBuffer ;    UInteger dwFlags ;    Returns Integer
+36698>>>>>>>
+36698>>>>>>>External_Function CNG_BCryptOpenAlgorithmProvider "BCryptOpenAlgorithmProvider" Bcrypt.dll ;    Pointer  phAlgorithm ;    Pointer  pszAlgId ;    Pointer  pszImplementation ;    UInteger dwFlags ;    Returns Integer
+36699>>>>>>>
+36699>>>>>>>External_Function CNG_BCryptCloseAlgorithmProvider "BCryptCloseAlgorithmProvider" Bcrypt.dll ;    Handle   hAlgorithm ;    UInteger dwFlags ;    Returns Integer
+36700>>>>>>>
+36700>>>>>>>External_Function CNG_BCryptDeriveKeyPBKDF2 "BCryptDeriveKeyPBKDF2" Bcrypt.dll ;    Handle   hPrf ;    Pointer  pbPassword ;    UInteger cbPassword ;    Pointer  pbSalt ;    UInteger cbSalt ;    BigInt   cIterations ;    Pointer  pbDerivedKey ;    UInteger cbDerivedKey ;    UInteger dwFlags ;    Returns Integer
+36701>>>>>>>
+36701>>>>>>>External_Function CNG_BCryptGetProperty "BCryptGetProperty" Bcrypt.dll ;    Handle   hObject ;    Pointer  pszProperty ;    Pointer  pbOutput ;    UInteger cbOutput ;    Pointer  pcbResult ;    UInteger dwFlags ;    Returns Integer
+36702>>>>>>>
+36702>>>>>>>Class cPasswordHasher_CNG_PBKDF2_HMAC_Mixin is a Mixin
+36703>>>>>>>
+36703>>>>>>>    Function CNG_PBKDF2_HMAC_BufferSizeEx Handle hoProv Returns UInteger
+36705>>>>>>>        Integer iErr
+36705>>>>>>>        UInteger uiHashLen
+36705>>>>>>>        
+36705>>>>>>>        UInteger uiCbOut
+36705>>>>>>>        WString wsHashLengthProperty
+36705>>>>>>>        Move CNG_BCRYPT_HASH_LENGTH to wsHashLengthProperty
+36706>>>>>>>        Move (CNG_BCryptGetProperty(hoProv, AddressOf(wsHashLengthProperty), AddressOf(uiHashLen), 4, AddressOf(uiCbOut), 0)) to iErr
+36707>>>>>>>        If (iErr) Begin
+36709>>>>>>>            Function_Return 0
+36710>>>>>>>        End
+36710>>>>>>>>
+36710>>>>>>>        
+36710>>>>>>>        Function_Return uiHashLen
+36711>>>>>>>    End_Function
+36712>>>>>>>    
+36712>>>>>>>    Function CNG_PBKDF2_HMAC_BufferSize WString wsAlgo Returns UInteger
+36714>>>>>>>        Integer iErr
+36714>>>>>>>        UInteger uiHashLen
+36714>>>>>>>        
+36714>>>>>>>        // Open the algorithm.
+36714>>>>>>>        Handle hoProv
+36714>>>>>>>        Move (CNG_BCryptOpenAlgorithmProvider(AddressOf(hoProv), AddressOf(wsAlgo), 0, |CI$00000008 /*BCRYPT_ALG_HANDLE_HMAC_FLAG*/)) to iErr
+36715>>>>>>>        If (iErr) Begin
+36717>>>>>>>            Function_Return 0
+36718>>>>>>>        End
+36718>>>>>>>>
+36718>>>>>>>        
+36718>>>>>>>        Get CNG_PBKDF2_HMAC_BufferSizeEx hoProv to uiHashLen
+36719>>>>>>>        
+36719>>>>>>>        Move (CNG_BCryptCloseAlgorithmProvider(hoProv, 0)) to iErr
+36720>>>>>>>        
+36720>>>>>>>        Function_Return uiHashLen
+36721>>>>>>>    End_Function
+36722>>>>>>>    
+36722>>>>>>>    Function CNG_PBKDF2_HMAC    WString wsAlgo ;                                UChar[] ucaData ;                                UChar[] ucaSalt ;                                UInteger uiTimeCost ;                                UChar[] ByRef ucaHashOut ;                                Boolean bOptThrow ;                                Returns Boolean
+36724>>>>>>>        Integer iErr iHashLen
+36724>>>>>>>        
+36724>>>>>>>        // Handle Optionals
+36724>>>>>>>        // First the optional throwing of errors.
+36724>>>>>>>        Boolean bThrow
+36724>>>>>>>        Move True to bThrow
+36725>>>>>>>        If (num_arguments > 4) Move bOptThrow to bThrow
+36728>>>>>>>        
+36728>>>>>>>        // Open the algorithm.
+36728>>>>>>>        Handle hoProv
+36728>>>>>>>        Move (CNG_BCryptOpenAlgorithmProvider(AddressOf(hoProv), AddressOf(wsAlgo), 0, |CI$00000008 /*BCRYPT_ALG_HANDLE_HMAC_FLAG*/)) to iErr
+36729>>>>>>>        If (iErr) Begin
+36731>>>>>>>            If (bThrow) Error 8710 "Failed to open up the algo provider."
+36734>>>>>>>            Function_Return False
+36735>>>>>>>        End
+36735>>>>>>>>
+36735>>>>>>>        
+36735>>>>>>>        Get CNG_PBKDF2_HMAC_BufferSizeEx hoProv to iHashLen
+36736>>>>>>>        If (not(iHashLen)) Begin
+36738>>>>>>>            If (bThrow) Error 8710 "Failed to get expected length of hash."
+36741>>>>>>>            Function_Return False
+36742>>>>>>>        End
+36742>>>>>>>>
+36742>>>>>>>        
+36742>>>>>>>        // Resize buffers to the expected output.
+36742>>>>>>>        Move (ResizeArray(ucaHashOut, iHashLen)) to ucaHashOut
+36743>>>>>>>        
+36743>>>>>>>        Move (CNG_BCryptDeriveKeyPBKDF2(hoProv, AddressOf(ucaData), SizeOfArray(ucaData), AddressOf(ucaSalt), SizeOfArray(ucaSalt), uiTimeCost, AddressOf(ucaHashOut), SizeOfArray(ucaHashOut), 0)) to iErr
+36744>>>>>>>        If (iErr) Begin
+36746>>>>>>>            Move (CNG_BCryptCloseAlgorithmProvider(hoProv, 0)) to iErr
+36747>>>>>>>            If (bThrow) Error 8710 "Failed to create hash."
+36750>>>>>>>            Function_Return False
+36751>>>>>>>        End
+36751>>>>>>>>
+36751>>>>>>>        
+36751>>>>>>>        Move (CNG_BCryptCloseAlgorithmProvider(hoProv, 0)) to iErr
+36752>>>>>>>        If (iErr) Begin
+36754>>>>>>>            If (bThrow) Error 8710 "Failed to close algo provider."
+36757>>>>>>>            Function_Return False
+36758>>>>>>>        End
+36758>>>>>>>>
+36758>>>>>>>        
+36758>>>>>>>        Function_Return True
+36759>>>>>>>    End_Function
+36760>>>>>>>End_Class
+36761>>>>>>>
+36761>>>>>>>Class cPasswordHasher_Mixin is a Mixin
+36762>>>>>>>    
+36762>>>>>>>    Import_Class_Protocol cPasswordHasher_CNG_PBKDF2_HMAC_Mixin
+36763>>>>>>>    
+36763>>>>>>>    Enum_List // Algorithmes available for password hashing
+36763>>>>>>>        Define C_PWH_PBKDF2_HMAC_SHA_256        for 0 // Requires TimeCost
+36763>>>>>>>        Define C_PWH_PBKDF2_HMAC_SHA_512              // Requires TimeCost
+36763>>>>>>>    End_Enum_List
+36763>>>>>>>    
+36763>>>>>>>    Function RandomBuffer UInteger uiSize Returns UChar[]
+36765>>>>>>>        UChar[] ucaBuffer
+36766>>>>>>>        Move (ResizeArray(ucaBuffer, uiSize)) to ucaBuffer
+36767>>>>>>>        If (CNG_BCryptGenRandom(0, AddressOf(ucaBuffer), uiSize, |CI$00000002 /*BCRYPT_USE_SYSTEM_PREFERRED_RNG*/)) Begin
+36769>>>>>>>            Error 8710 "Failed to create random buffer."
+36770>>>>>>>>
+36770>>>>>>>        End
+36770>>>>>>>>
+36770>>>>>>>        Function_Return ucaBuffer
+36771>>>>>>>    End_Function
+36772>>>>>>>    
+36772>>>>>>>    Function Base64EncodeArr UChar[] ucaBuffer Returns String
+36774>>>>>>>        Integer iErr
+36774>>>>>>>        Pointer pBase64
+36774>>>>>>>        String sBase64
+36774>>>>>>>        Move (Base64Encode(AddressOf(ucaBuffer), SizeOfArray(ucaBuffer))) to pBase64
+36775>>>>>>>        If (not(pBase64)) Begin
+36777>>>>>>>            Function_Return sBase64
+36778>>>>>>>        End
+36778>>>>>>>>
+36778>>>>>>>        Move (PointerToString(pBase64)) to sBase64
+36779>>>>>>>        Move (Free(pBase64)) to iErr
+36780>>>>>>>        Function_Return sBase64
+36781>>>>>>>    End_Function
+36782>>>>>>>    
+36782>>>>>>>    Function Base64DecodeArr String sBase64 Returns UChar[]
+36784>>>>>>>        Integer iLen
+36784>>>>>>>        Pointer pBase64
+36784>>>>>>>        UChar[] ucaBuffer
+36785>>>>>>>        Move (Base64Decode(AddressOf(sBase64), &iLen)) to pBase64
+36786>>>>>>>        If (not(pBase64)) Begin
+36788>>>>>>>            Function_Return ucaBuffer
+36789>>>>>>>        End
+36789>>>>>>>>
+36789>>>>>>>        
+36789>>>>>>>        Move (ResizeArray(ucaBuffer, iLen)) to ucaBuffer
+36790>>>>>>>        Move (MemCopy(AddressOf(ucaBuffer), pBase64, iLen)) to iLen
+36791>>>>>>>        Move (Free(pBase64)) to iLen
+36792>>>>>>>        Function_Return ucaBuffer
+36793>>>>>>>    End_Function
+36794>>>>>>>    
+36794>>>>>>>    Function CreatePasswordHashExWithSalt UInteger uiAlgo UChar[] ucaSalt String sPassword String ByRef sHash UInteger uiOptTimeCost Returns Boolean
+36796>>>>>>>        Boolean bOk bRequireTimeCost
+36796>>>>>>>        UChar[] ucaHash
+36797>>>>>>>        
+36797>>>>>>>        Case Begin
+36797>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_256)
+36799>>>>>>>                Get CNG_PBKDF2_HMAC "SHA256" (StringToUCharArray(sPassword)) ucaSalt uiOptTimeCost (&ucaHash) False to bOk
+36800>>>>>>>                If (not(bOk)) Function_Return False
+36803>>>>>>>                
+36803>>>>>>>                Move True to bRequireTimeCost
+36804>>>>>>>                Case Break
+36805>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_512)
+36808>>>>>>>                Get CNG_PBKDF2_HMAC "SHA512" (StringToUCharArray(sPassword)) ucaSalt uiOptTimeCost (&ucaHash) False to bOk
+36809>>>>>>>                If (not(bOk)) Function_Return False
+36812>>>>>>>                
+36812>>>>>>>                Move True to bRequireTimeCost
+36813>>>>>>>                Case Break
+36814>>>>>>>            Case Else
+36814>>>>>>>                Error 8710 "Invalid algorithm selected."
+36815>>>>>>>>
+36815>>>>>>>                Function_Return False
+36816>>>>>>>        Case End
+36816>>>>>>>        
+36816>>>>>>>        String sSalt
+36816>>>>>>>        Get Base64EncodeArr ucaSalt to sSalt
+36817>>>>>>>        If (not(SizeOfString(sSalt))) Function_Return False
+36820>>>>>>>        Get Base64EncodeArr ucaHash to sHash
+36821>>>>>>>        If (not(SizeOfString(sHash))) Function_Return False
+36824>>>>>>>        
+36824>>>>>>>        If (bRequireTimeCost) Begin
+36826>>>>>>>            Move (SFormat("%1$%2$%3$%4",            ;                            String(uiAlgo),         ;                            sSalt,                  ;                            String(uiOptTimeCost),  ;                            sHash)) to sHash
+36827>>>>>>>        End
+36827>>>>>>>>
+36827>>>>>>>        Else Begin
+36828>>>>>>>            Move (SFormat("%1$%2$%3",               ;                            String(uiAlgo),         ;                            sSalt,                  ;                            sHash)) to sHash
+36829>>>>>>>        End
+36829>>>>>>>>
+36829>>>>>>>        
+36829>>>>>>>        Function_Return bOk
+36830>>>>>>>    End_Function
+36831>>>>>>>    
+36831>>>>>>>    Function CreatePasswordHashEx UInteger uiAlgo UInteger uiSaltSize String sPassword String ByRef sHash UInteger uiOptTimeCost Returns Boolean
+36833>>>>>>>        UChar[] ucaSalt
+36834>>>>>>>        Get RandomBuffer uiSaltSize to ucaSalt
+36835>>>>>>>        If (not(SizeOfArray(ucaSalt))) Function_Return False
+36838>>>>>>>        
+36838>>>>>>>        If (num_arguments > 4) Begin
+36840>>>>>>>            Function_Return (CreatePasswordHashExWithSalt(Self, uiAlgo, ucaSalt, sPassword, &sHash, uiOptTimeCost))
+36841>>>>>>>        End
+36841>>>>>>>>
+36841>>>>>>>        Function_Return (CreatePasswordHashExWithSalt(Self, uiAlgo, ucaSalt, sPassword, &sHash))
+36842>>>>>>>    End_Function
+36843>>>>>>>    
+36843>>>>>>>    Function VerifyPasswordHash String sPassword String sHash Returns Boolean
+36845>>>>>>>        Boolean bRequiresTimeCost
+36845>>>>>>>        UInteger uiAlgo uiTimeCost
+36845>>>>>>>        Integer iBegin iEnd
+36845>>>>>>>        String sSalt
+36845>>>>>>>        
+36845>>>>>>>        Move 1 to iBegin
+36846>>>>>>>        
+36846>>>>>>>        // Parse Algo
+36846>>>>>>>        Move (Pos("$", sHash, iBegin)) to iEnd
+36847>>>>>>>        If (not(iEnd)) Function_Return False
+36850>>>>>>>        Move (Mid(sHash, iEnd - iBegin, iBegin)) to uiAlgo
+36851>>>>>>>        
+36851>>>>>>>        // Parse Salt
+36851>>>>>>>        Move (iEnd + 1) to iBegin
+36852>>>>>>>        Move (Pos("$", sHash, iBegin)) to iEnd
+36853>>>>>>>        If (not(iEnd)) Function_Return False
+36856>>>>>>>        Move (Mid(sHash, iEnd - iBegin, iBegin)) to sSalt
+36857>>>>>>>        
+36857>>>>>>>        Case Begin
+36857>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_256)
+36859>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_512)
+36862>>>>>>>                Move True to bRequiresTimeCost
+36863>>>>>>>                Case Break
+36864>>>>>>>            Case Else
+36864>>>>>>>                Error 8710 "Invalid algorithm selected."
+36865>>>>>>>>
+36865>>>>>>>                Function_Return False
+36866>>>>>>>        Case End
+36866>>>>>>>        
+36866>>>>>>>        // Parse optional timecost
+36866>>>>>>>        If (bRequiresTimeCost) Begin
+36868>>>>>>>            Move (iEnd + 1) to iBegin
+36869>>>>>>>            Move (Pos("$", sHash, iBegin)) to iEnd
+36870>>>>>>>            If (not(iEnd)) Function_Return False
+36873>>>>>>>            Move (Mid(sHash, iEnd - iBegin, iBegin)) to uiTimeCost
+36874>>>>>>>        End
+36874>>>>>>>>
+36874>>>>>>>        
+36874>>>>>>>        // Parse rest hash
+36874>>>>>>>        Move (iEnd + 1) to iBegin
+36875>>>>>>>        Move (Pos("$", sHash, iBegin)) to iEnd
+36876>>>>>>>        If (iEnd) Function_Return False // inverse check if there are any other errors.
+36879>>>>>>>        
+36879>>>>>>>        // Base64Decode
+36879>>>>>>>        UChar[] ucaSalt
+36880>>>>>>>        Get Base64DecodeArr sSalt to ucaSalt
+36881>>>>>>>        If (not(SizeOfArray(ucaSalt))) Function_Return False
+36884>>>>>>>        
+36884>>>>>>>        // Create new hash
+36884>>>>>>>        String sNewHash
+36884>>>>>>>        If (bRequiresTimeCost) Begin
+36886>>>>>>>            If (not(CreatePasswordHashExWithSalt(Self, uiAlgo, ucaSalt, sPassword, &sNewHash, uiTimeCost))) Begin
+36888>>>>>>>                Function_Return False 
+36889>>>>>>>            End
+36889>>>>>>>>
+36889>>>>>>>        End
+36889>>>>>>>>
+36889>>>>>>>        Else Begin
+36890>>>>>>>            If (not(CreatePasswordHashExWithSalt(Self, uiAlgo, ucaSalt, sPassword, &sNewHash))) Begin
+36892>>>>>>>                Function_Return False 
+36893>>>>>>>            End
+36893>>>>>>>>
+36893>>>>>>>        End
+36893>>>>>>>>
+36893>>>>>>>        Function_Return (sNewHash = sHash)
+36894>>>>>>>    End_Function
+36895>>>>>>>    
+36895>>>>>>>    Function RequiredBufferSizeEx UInteger uiAlgo UInteger uiSaltSize UInteger uiOptTimeCost Returns UBigInt
+36897>>>>>>>        Boolean bRequireTimeCost
+36897>>>>>>>        UBigInt ullSize
+36897>>>>>>>        UChar[] ucaSalt
+36898>>>>>>>        String sSalt
+36898>>>>>>>        
+36898>>>>>>>        Get RandomBuffer uiSaltSize to ucaSalt
+36899>>>>>>>        Get Base64EncodeArr ucaSalt to sSalt
+36900>>>>>>>        If (not(SizeOfString(sSalt))) Function_Return 0
+36903>>>>>>>        
+36903>>>>>>>        Case Begin
+36903>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_256)
+36905>>>>>>>                Get CNG_PBKDF2_HMAC_BufferSize "SHA256" to ullSize
+36906>>>>>>>                Move True to bRequireTimeCost
+36907>>>>>>>                Case Break
+36908>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_512)
+36911>>>>>>>                Get CNG_PBKDF2_HMAC_BufferSize "SHA512" to ullSize
+36912>>>>>>>                Move True to bRequireTimeCost
+36913>>>>>>>                Case Break
+36914>>>>>>>            Case Else
+36914>>>>>>>                Error 8710 "Invalid algorithm selected."
+36915>>>>>>>>
+36915>>>>>>>                Function_Return 0
+36916>>>>>>>        Case End
+36916>>>>>>>        
+36916>>>>>>>        // calculate base64 in a non-floating-manner
+36916>>>>>>>        Move (((ullSize + 3 -1) / 3) * 4) to ullSize
+36917>>>>>>>        
+36917>>>>>>>        Move (ullSize + SizeOfString(String(uiAlgo))) to ullSize
+36918>>>>>>>        Move (ullSize + SizeOfString(sSalt)) to ullSize
+36919>>>>>>>        If (bRequireTimeCost) Begin
+36921>>>>>>>            Move (ullSize + SizeOfString(String(uiOptTimeCost))) to ullSize
+36922>>>>>>>            Move (ullSize + 3 /*$*/) to ullSize
+36923>>>>>>>        End
+36923>>>>>>>>
+36923>>>>>>>        Else Begin
+36924>>>>>>>            Move (ullSize + 2 /*$*/) to ullSize
+36925>>>>>>>        End
+36925>>>>>>>>
+36925>>>>>>>        
+36925>>>>>>>        Function_Return ullSize
+36926>>>>>>>    End_Function
+36927>>>>>>>End_Class
+36928>>>>>>>
+36928>>>>>>>Class cPasswordHasher is a cObject
+36929>>>>>>>    
+36929>>>>>>>    Import_Class_Protocol cPasswordHasher_Mixin
+36930>>>>>>>    
+36930>>>>>>>    Procedure Construct_Object
+36932>>>>>>>        Forward Send Construct_Object
+36934>>>>>>>        
+36934>>>>>>>        Property UInteger   peAlgorithm         C_PWH_PBKDF2_HMAC_SHA_512 
+36935>>>>>>>        Property UInteger   puiSaltSize         16
+36936>>>>>>>        
+36936>>>>>>>        Property UInteger   puiOptTimeCost      420000
+36937>>>>>>>    End_Procedure
+36938>>>>>>>    
+36938>>>>>>>    Function CreatePasswordHash String sPassword String ByRef sHash Returns Boolean
+36940>>>>>>>        Boolean bOk
+36940>>>>>>>        UInteger uiAlgo
+36940>>>>>>>        Get peAlgorithm to uiAlgo
+36941>>>>>>>        
+36941>>>>>>>        Case Begin
+36941>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_256)
+36943>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_512)
+36946>>>>>>>                Get CreatePasswordHashEx uiAlgo (puiSaltSize(Self)) sPassword (&sHash) (puiOptTimeCost(Self)) to bOk
+36947>>>>>>>                Case Break
+36948>>>>>>>            Case Else
+36948>>>>>>>                Error 8710 "Invalid algorithm selected."
+36949>>>>>>>>
+36949>>>>>>>                Function_Return False
+36950>>>>>>>        Case End
+36950>>>>>>>        
+36950>>>>>>>        Function_Return bOk
+36951>>>>>>>    End_Function
+36952>>>>>>>    
+36952>>>>>>>    Function RequiredBufferSize Returns UBigInt
+36954>>>>>>>        UBigInt ullSize
+36954>>>>>>>        UInteger uiAlgo
+36954>>>>>>>        Get peAlgorithm to uiAlgo
+36955>>>>>>>        
+36955>>>>>>>        Case Begin
+36955>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_256)
+36957>>>>>>>            Case (uiAlgo = C_PWH_PBKDF2_HMAC_SHA_512)
+36960>>>>>>>                Get RequiredBufferSizeEx uiAlgo (puiSaltSize(Self)) (puiOptTimeCost(Self)) to ullSize
+36961>>>>>>>                Case Break
+36962>>>>>>>            Case Else
+36962>>>>>>>                Error 8710 "Invalid algorithm selected."
+36963>>>>>>>>
+36963>>>>>>>                Function_Return 0
+36964>>>>>>>        Case End
+36964>>>>>>>        
+36964>>>>>>>        Function_Return ullSize
+36965>>>>>>>    End_Function
+36966>>>>>>>
+36966>>>>>>>End_Class
+36967>>>>>
+36967>>>>>Class cWebSessionManagerStandard is a cWebSessionManager
+36968>>>>>    
+36968>>>>>    Procedure Construct_Object
+36970>>>>>        Handle hoObj
+36970>>>>>        
+36970>>>>>        Forward Send Construct_Object
+36972>>>>>        
+36972>>>>>        Set pbSessionCookieHttpOnly to True
+36973>>>>>        
+36973>>>>>        Property Handle phoUserDD 0      // Handle to the WebAppUser DDO
+36974>>>>>        Property Handle phoSessionDD 0   // Handle to the WebAppSession DDO  
+36975>>>>>        Property Handle phoCrypto 0      // Handle to the PasswordHasher
+36976>>>>>        
+36976>>>>>        Get CreateNamed (RefClass(cWebAppUserDataDictionary)) 'oUserDD' to hoObj
+36977>>>>>        Set phoUserDD to hoObj
+36978>>>>>        
+36978>>>>>        Get CreateNamed (RefClass(cWebAppSessionDataDictionary)) 'oSessionDD' to hoObj
+36979>>>>>        Set DDO_Server of hoObj to (phoUserDD(Self))
+36980>>>>>        Set phoSessionDD to hoObj
+36981>>>>>        
+36981>>>>>        Property Handle phoCrypto 0   // Handle to the Cryptographer
+36982>>>>>        Get CreateNamed (RefClass(cPasswordHasher)) 'oCrypto' to hoObj
+36983>>>>>        Set phoCrypto to hoObj
+36984>>>>>        
+36984>>>>>        Property Boolean pbPasswordHashing True
+36985>>>>>        
+36985>>>>>        Property Boolean pbCreatingNewSession False
+36986>>>>>        Property String psLoginName
+36987>>>>>        Property String psUserName ""
+36988>>>>>        Property Integer piUserRights 0
+36989>>>>>    End_Procedure
+36990>>>>>    
+36990>>>>>    Procedure End_Construct_Object
+36992>>>>>        Forward Send End_Construct_Object
+36994>>>>>        
+36994>>>>>        Handle hoCrypto
+36994>>>>>        Integer iFieldLen
+36994>>>>>        If (pbPasswordHashing(Self)) Begin
+36996>>>>>            Get phoCrypto to hoCrypto
+36997>>>>>            Get_Attribute DF_FIELD_LENGTH of (RefTable(WebAppUser)) (RefTable(WebAppUser.Password)) to iFieldLen
+37000>>>>>            If (iFieldLen < (RequiredBufferSize(hoCrypto) + 3)) Begin
+37002>>>>>                Error DFERR_PROGRAM "The password field of WebAppUser is not large enough (128)"
+37003>>>>>>
+37003>>>>>            End
+37003>>>>>>
+37003>>>>>        End
+37003>>>>>>
+37003>>>>>    End_Procedure
+37004>>>>>    
+37004>>>>>    Function CreateSession String sRemoteAddress Returns String
+37006>>>>>        String sSessionKey
+37006>>>>>        Integer iErr
+37006>>>>>        Boolean bLogWebSession
+37006>>>>>        Handle hoSessionDD       
+37006>>>>>        Get phoSessionDD to hoSessionDD
+37007>>>>>        
+37007>>>>>        //  Get session key
+37007>>>>>        Forward Get CreateSession sRemoteAddress to sSessionKey
+37009>>>>>        
+37009>>>>>        Get pbLogWebSession to bLogWebSession
+37010>>>>>        If not bLogWebSession Begin
+37012>>>>>            Function_Return sSessionKey        
+37013>>>>>        End
+37013>>>>>>
+37013>>>>>
+37013>>>>>        //  Store session
+37013>>>>>        Send Clear of hoSessionDD
+37014>>>>>        Set Field_Changed_Value of hoSessionDD Field WebAppSession.SessionKey to sSessionKey
+37015>>>>>        Set Field_Changed_Value of hoSessionDD Field WebAppSession.RemoteAddress to sRemoteAddress
+37016>>>>>        Set Field_Changed_Value of hoSessionDD Field WebAppSession.Active to "Y"
+37017>>>>>        Get Request_Validate of hoSessionDD to iErr
+37018>>>>>        If (iErr) Begin
+37020>>>>>            // this should not happen. If it does its a programming error
+37020>>>>>            Error DFERR_PROGRAM C_$WebAppSessionValidateFailed
+37021>>>>>>
+37021>>>>>            Function_Return ""
+37022>>>>>        End
+37022>>>>>>
+37022>>>>>        Send Request_Save of hoSessionDD
+37023>>>>>        If (Err) Begin
+37025>>>>>            // this shouldn't happen, if it does likely a duplicate session key issue, even through request_save already gave an error we give another one to make tracking down easier
+37025>>>>>            Error DFERR_PROGRAM C_$WebAppSessionSaveFailed
+37026>>>>>>
+37026>>>>>            Function_Return ""
+37027>>>>>        End
+37027>>>>>>
+37027>>>>>       
+37027>>>>>        Function_Return sSessionKey        
+37028>>>>>    End_Function
+37029>>>>>    
+37029>>>>>    Function ValidateSession String sSessionKey Boolean bOptLoadWebApp Returns Boolean
+37031>>>>>        DateTime dtLastAccess dtCurrent
+37031>>>>>        TimeSpan tsDiff
+37031>>>>>        Integer iErr iSessionTimeout iSpanMinutes
+37031>>>>>        Boolean bResult bCreatingNewSession
+37031>>>>>        Boolean bLogWebSession bLoadWebApp
+37031>>>>>        Integer eLoginMode
+37031>>>>>        String sTime
+37031>>>>>        Handle hoSessionDD hoUserDD       
+37031>>>>>        
+37031>>>>>        Move False to bLoadWebApp
+37032>>>>>        If (num_arguments >= 2) Begin
+37034>>>>>            Move bOptLoadWebApp to bLoadWebApp
+37035>>>>>        End
+37035>>>>>>
+37035>>>>>        
+37035>>>>>        Get phoSessionDD to hoSessionDD
+37036>>>>>        Get phoUserDD to hoUserDD
+37037>>>>>        
+37037>>>>>        Get pbLogWebSession to bLogWebSession
+37038>>>>>        Get peLoginMode to eLoginMode
+37039>>>>>        
+37039>>>>>        // for this object, you can only disable logging if login completely is disabled
+37039>>>>>        If (not(bLogWebSession) and (eLoginMode<>lmLoginNone)) Begin
+37041>>>>>            Error DFERR_PROGRAM C_$WebSessionLoggingMustBeEnabled
+37042>>>>>>
+37042>>>>>            Function_Return False
+37043>>>>>        End
+37043>>>>>>
+37043>>>>>
+37043>>>>>        //  Clear session properties
+37043>>>>>        Set psSessionKey to ""
+37044>>>>>        Send UpdateSessionProperties True
+37045>>>>>        
+37045>>>>>        If not bLogWebSession Begin
+37047>>>>>            Forward Get ValidateSession sSessionKey to bResult
+37049>>>>>            Function_Return bResult
+37050>>>>>        End        
+37050>>>>>>
+37050>>>>>        
+37050>>>>>        Move False to bResult
+37051>>>>>        Get piSessionTimeout to iSessionTimeout 
+37052>>>>>        
+37052>>>>>        //  Check if session exists
+37052>>>>>        Send Clear of hoSessionDD
+37053>>>>>        Move sSessionKey to WebAppSession.SessionKey
+37054>>>>>        Send Find of hoSessionDD EQ Index.1
+37055>>>>>            
+37055>>>>>        If (Found) Begin
+37057>>>>>            //  Calculate timespan between now and last access time
+37057>>>>>            Move (CurrentDateTime()) to dtCurrent
+37058>>>>>            Move WebAppSession.LastAccessDate to dtLastAccess
+37059>>>>>            Get StringToTime of hoSessionDD dtLastAccess WebAppSession.LastAccessTime to dtLastAccess
+37060>>>>>            Move (dtCurrent - dtLastAccess) to tsDiff
+37061>>>>>            Move (SpanTotalMinutes(tsDiff)) to iSpanMinutes
+37062>>>>>            
+37062>>>>>            //  Check if session didn't time out
+37062>>>>>            If (IsDateValid(dtLastAccess) and (iSessionTimeout <= 0 or (iSpanMinutes < iSessionTimeout)) and WebAppSession.Active = "Y") Begin
+37064>>>>>                Forward Get ValidateSession sSessionKey to bResult
+37066>>>>>                   
+37066>>>>>                If (bResult) Begin
+37068>>>>>                    //  Update session record
+37068>>>>>                    Get TimeToString of hoSessionDD dtCurrent to sTime 
+37069>>>>>                    Set Field_Changed_Value of hoSessionDD Field WebAppSession.LastAccessDate to dtCurrent
+37070>>>>>                    Set Field_Changed_Value of hoSessionDD Field WebAppSession.LastAccessTime to sTime
+37071>>>>>                    Set Field_Changed_Value of hoSessionDD Field WebAppSession.UseCount to (WebAppSession.UseCount + 1)
+37072>>>>>                    Get Request_Validate of hoSessionDD to iErr
+37073>>>>>                    If (iErr) Begin
+37075>>>>>                        // this should not happen. If it does its a programming error
+37075>>>>>                        Error DFERR_PROGRAM C_$WebAppSessionValidateFailed
+37076>>>>>>
+37076>>>>>                        Function_Return False
+37077>>>>>                    End
+37077>>>>>>
+37077>>>>>                    Send Request_Save of hoSessionDD
+37078>>>>>                    
+37078>>>>>                    //  Update user properties
+37078>>>>>                    Send UpdateSessionProperties False
+37079>>>>>                End
+37079>>>>>>
+37079>>>>>            End
+37079>>>>>>
+37079>>>>>            Else Begin
+37080>>>>>                // Test the Creating New Session Flag to protect against infinite recursion....
+37080>>>>>                Get pbCreatingNewSession to bCreatingNewSession
+37081>>>>>                
+37081>>>>>                If (not(bCreatingNewSession)) Begin
+37083>>>>>                    If (not(bLoadWebApp)) Begin
+37085>>>>>                        Move False to bResult   //  We can only continue immediately if we were loading the webapp, other operations are not allowed!
+37086>>>>>                        Error DFERR_WEBAPP_SESSION_TIMEOUT "Your application session has timed out or is inactive, please login again."
+37087>>>>>>
+37087>>>>>                        Send NavigateRefresh of ghoWebApp          // refresh the WebApp at the client (triggers a login)
+37088>>>>>                    End
+37088>>>>>>
+37088>>>>>                    Else Begin
+37089>>>>>                        Set pbCreatingNewSession to True                    
+37090>>>>>                        Get RecreateSession of ghoWebApp to bResult 
+37091>>>>>                        Set pbCreatingNewSession to False                        
+37092>>>>>                    End
+37092>>>>>>
+37092>>>>>                End
+37092>>>>>>
+37092>>>>>            End
+37092>>>>>>
+37092>>>>>        End
+37092>>>>>>
+37092>>>>>        Else Begin
+37093>>>>>            Error DFERR_WEBAPP_BAD_SESSION_KEY "Session key not known (reload page to recreate session)"
+37094>>>>>>
+37094>>>>>        End
+37094>>>>>>
+37094>>>>>        
+37094>>>>>        Function_Return bResult
+37095>>>>>    End_Function
+37096>>>>>    
+37096>>>>>    Function CreatePasswordHash String sPassword String ByRef sHash Returns Boolean
+37098>>>>>        If (not(pbPasswordHashing(Self))) Begin
+37100>>>>>            Move sPassword to sHash
+37101>>>>>            Function_Return True
+37102>>>>>        End
+37102>>>>>>
+37102>>>>>        
+37102>>>>>        If (not(CreatePasswordHash(phoCrypto(Self), sPassword, &sHash))) Begin
+37104>>>>>            Function_Return False
+37105>>>>>        End
+37105>>>>>>
+37105>>>>>        Move ("V1$" + sHash) to sHash
+37106>>>>>        Function_Return True
+37107>>>>>    End_Function
+37108>>>>>    
+37108>>>>>    Function VerifyPasswordHash String sUserPassword String sEnteredPassword Boolean ByRef bShouldUpgrade Returns Boolean
+37110>>>>>        If (not(pbPasswordHashing(Self))) Begin
+37112>>>>>            Move False to bShouldUpgrade
+37113>>>>>            Function_Return (sUserPassword = sEnteredPassword)
+37114>>>>>        End
+37114>>>>>>
+37114>>>>>        
+37114>>>>>        String sVersion
+37114>>>>>        Move (Left(sUserPassword, 3)) to sVersion
+37115>>>>>        If (sVersion = "V1$") Begin
+37117>>>>>            If (num_arguments > 2) Move False to bShouldUpgrade
+37120>>>>>            Function_Return (VerifyPasswordHash(phoCrypto(Self), sEnteredPassword, Right(sUserPassword, Length(sUserPassword) - 3)))
+37121>>>>>        End
+37121>>>>>>
+37121>>>>>        Else Begin
+37122>>>>>            If (num_arguments > 2) Move True to bShouldUpgrade
+37125>>>>>            Function_Return False
+37126>>>>>        End
+37126>>>>>>
+37126>>>>>    End_Function
+37127>>>>>    
+37127>>>>>    Function UserRegister String sLoginName String sPassword Returns Boolean
+37129>>>>>        Handle hoUserDD
+37129>>>>>        Integer iErr
+37129>>>>>        Get phoUserDD to hoUserDD
+37130>>>>>        
+37130>>>>>        //  Find the user
+37130>>>>>        Send Clear of hoUserDD
+37131>>>>>        Move sLoginName to WebAppUser.LoginName
+37132>>>>>        Send Find of hoUserDD EQ Index.1
+37133>>>>>        If (Found) Begin
+37135>>>>>            Send Clear of hoUserDD
+37136>>>>>            Function_Return False
+37137>>>>>        End
+37137>>>>>>
+37137>>>>>        
+37137>>>>>        Send Clear of hoUserDD
+37138>>>>>        Set Field_Changed_Value of hoUserDD Field WebAppUser.FullName to sLoginName
+37139>>>>>        Set Field_Changed_Value of hoUserDD Field WebAppUser.LoginName to sLoginName
+37140>>>>>        If (not(CreatePasswordHash(Self, Trim(sPassword), &sPassword))) Begin
+37142>>>>>            Send Clear of hoUserDD
+37143>>>>>            Function_Return False
+37144>>>>>        End
+37144>>>>>>
+37144>>>>>        Set Field_Changed_Value of hoUserDD Field WebAppUser.Password to sPassword
+37145>>>>>        Get Request_Validate of hoUserDD to iErr
+37146>>>>>        If (iErr) Begin
+37148>>>>>            Send Clear of hoUserDD
+37149>>>>>            Function_Return False
+37150>>>>>        End
+37150>>>>>>
+37150>>>>>        
+37150>>>>>        Send Request_Save of hoUserDD
+37151>>>>>        Function_Return (not(Err))
+37152>>>>>    End_Function
+37153>>>>>    
+37153>>>>>    Function UserLogin String sLoginName String sPassword Returns Boolean
+37155>>>>>        String sSessionKey sUserPassword
+37155>>>>>        Handle hoSessionDD hoUserDD
+37155>>>>>        Boolean bMatch bUpgrade
+37155>>>>>        
+37155>>>>>        Get phoSessionDD to hoSessionDD
+37156>>>>>        Get phoUserDD to hoUserDD
+37157>>>>>        Integer iErr eLoginMode
+37157>>>>>        
+37157>>>>>        // Refind session record
+37157>>>>>        Get psSessionKey to sSessionKey
+37158>>>>>        Send Clear of hoSessionDD
+37159>>>>>        Move sSessionKey to WebAppSession.SessionKey
+37160>>>>>        Send Find of hoSessionDD EQ Index.1
+37161>>>>>        
+37161>>>>>        If (Found and WebAppSession.SessionKey = sSessionKey) Begin
+37163>>>>>            Get peLoginMode to eLoginMode
+37164>>>>>            
+37164>>>>>            //  Find the user
+37164>>>>>            Move sLoginName to WebAppUser.LoginName
+37165>>>>>            Send Find of hoUserDD EQ Index.1
+37166>>>>>            
+37166>>>>>            // Check username and password
+37166>>>>>            If (Found and (Lowercase(sLoginName) = Lowercase(Trim(WebAppUser.LoginName)))) Begin
+37168>>>>>                Get Field_Current_Value of hoUserDD Field WebAppUser.Password to sUserPassword
+37169>>>>>                Get VerifyPasswordHash (Trim(sUserPassword)) (Trim(sPassword)) (&bUpgrade) to bMatch
+37170>>>>>                
+37170>>>>>                If (bMatch) Begin
+37172>>>>>                    // Store the login
+37172>>>>>                    If (bUpgrade) Begin
+37174>>>>>                        Get CreatePasswordHash (Trim(sPassword)) (&sPassword) to bUpgrade
+37175>>>>>                        If (bUpgrade) Set Field_Changed_Value of hoUserDD Field WebAppUser.Password to sPassword
+37178>>>>>                    End
+37178>>>>>>
+37178>>>>>                    Set Field_Changed_Value of hoUserDD Field WebAppUser.LastLogin to (CurrentDateTime())
+37179>>>>>                    Get Request_Validate of hoSessionDD to iErr
+37180>>>>>                    If (iErr) Begin
+37182>>>>>                        // this should not happen. If it does its a programming error
+37182>>>>>                        Error DFERR_PROGRAM C_$WebAppSessionValidateFailed
+37183>>>>>>
+37183>>>>>                        Function_Return False
+37184>>>>>                    End
+37184>>>>>>
+37184>>>>>                    
+37184>>>>>                    Send Request_Save of hoSessionDD
+37185>>>>>                    
+37185>>>>>                    // Update session properties
+37185>>>>>                    Send UpdateSessionProperties False
+37186>>>>>                    Send NotifyChangeRights
+37187>>>>>                    Function_Return True
+37188>>>>>                End
+37188>>>>>>
+37188>>>>>                Else Begin
+37189>>>>>                    //  We should rely directly on this buffer elsewhere but just be sure
+37189>>>>>                    Send Clear of hoUserDD
+37190>>>>>                End
+37190>>>>>>
+37190>>>>>            End
+37190>>>>>>
+37190>>>>>            Else Begin
+37191>>>>>                // This is added to delay latency to avoid hackers finding out whether the user exists or not.
+37191>>>>>                Get CreatePasswordHash "This is to delay the response latency." (&sPassword) to iErr
+37192>>>>>            End
+37192>>>>>>
+37192>>>>>        End
+37192>>>>>>
+37192>>>>>        Else Begin
+37193>>>>>            // This is added to delay latency to avoid hackers finding out whether the user exists or not.
+37193>>>>>            Get CreatePasswordHash "This is to delay the response latency." (&sPassword) to iErr
+37194>>>>>        End
+37194>>>>>>
+37194>>>>>          
+37194>>>>>        Function_Return False
+37195>>>>>    End_Function
+37196>>>>>    
+37196>>>>>    Function SetUserPassword String sLoginName String sPassword Returns Boolean
+37198>>>>>        Handle hoUserDD
+37198>>>>>        Integer iErr
+37198>>>>>        Get phoUserDD to hoUserDD
+37199>>>>>        
+37199>>>>>        //  Find the user
+37199>>>>>        Send Clear of hoUserDD
+37200>>>>>        Move sLoginName to WebAppUser.LoginName
+37201>>>>>        Send Find of hoUserDD EQ Index.1
+37202>>>>>        If (not(Found)) Begin
+37204>>>>>            Send Clear of hoUserDD
+37205>>>>>            Function_Return False
+37206>>>>>        End
+37206>>>>>>
+37206>>>>>        
+37206>>>>>        If (not(CreatePasswordHash(Self, Trim(sPassword), &sPassword))) Begin
+37208>>>>>            Send Clear of hoUserDD
+37209>>>>>            Function_Return False
+37210>>>>>        End
+37210>>>>>>
+37210>>>>>        Set Field_Changed_Value of hoUserDD Field WebAppUser.Password to sPassword
+37211>>>>>        Get Request_Validate of hoUserDD to iErr
+37212>>>>>        If (iErr) Begin
+37214>>>>>            Send Clear of hoUserDD
+37215>>>>>            Function_Return False
+37216>>>>>        End
+37216>>>>>>
+37216>>>>>        
+37216>>>>>        Send Request_Save of hoUserDD
+37217>>>>>        Function_Return (not(Err))
+37218>>>>>    End_Function
+37219>>>>>    
+37219>>>>>    Function IsLoggedIn Returns Boolean
+37221>>>>>        String sLoginName
+37221>>>>>        Boolean bLogWebSession bLoggedIn
+37221>>>>>        
+37221>>>>>        Get pbLogWebSession to bLogWebSession
+37222>>>>>        If not bLogWebSession Begin
+37224>>>>>            Forward Get IsLoggedIn to bLoggedIn
+37226>>>>>            Function_Return bLoggedIn
+37227>>>>>        End
+37227>>>>>>
+37227>>>>>        
+37227>>>>>        Get psLoginName to sLoginName
+37228>>>>>        
+37228>>>>>        Function_Return (sLoginName <> "")
+37229>>>>>    End_Function
+37230>>>>>    
+37230>>>>>    
+37230>>>>>    //
+37230>>>>>    // This procedure is called when validating a session and after logging in. Its purpose is to 
+37230>>>>>    // update properties based on the session and user data. Augment this function to update 
+37230>>>>>    // properties based on the session / user table. Note that WebAppUser and WebAppSession contain
+37230>>>>>    // the right records when this procedure is called.
+37230>>>>>    //
+37230>>>>>    // Params:
+37230>>>>>    //      bClear   True if the procedure is called before session validation to clear properties.
+37230>>>>>    //
+37230>>>>>    Procedure UpdateSessionProperties Boolean bClear
+37232>>>>>        Handle hoUserDD
+37232>>>>>        
+37232>>>>>        Get phoUserDD to hoUserDD
+37233>>>>>        
+37233>>>>>        //  Update user properties
+37233>>>>>        If (not(bClear) and HasRecord(hoUserDD)) Begin
+37235>>>>>            Set psUsername to (Trim(WebAppUser.FullName))
+37236>>>>>            Set psLoginName to (Trim(WebAppUser.LoginName))
+37237>>>>>            Set piUserRights to WebAppUser.Rights
+37238>>>>>            
+37238>>>>>            Send OnSessionPropertiesSet 
+37239>>>>>        End
+37239>>>>>>
+37239>>>>>        Else Begin
+37240>>>>>            Set psUsername to ""
+37241>>>>>            Set psLoginName to ""
+37242>>>>>            Set piUserRights to 0
+37243>>>>>            
+37243>>>>>            Send OnSessionPropertiesClear
+37244>>>>>        End
+37244>>>>>>
+37244>>>>>    End_Procedure
+37245>>>>>    
+37245>>>>>    Procedure OnSessionPropertiesSet
+37247>>>>>        //  Empty event stub
+37247>>>>>    End_Procedure
+37248>>>>>    
+37248>>>>>    Procedure OnSessionPropertiesClear
+37250>>>>>        //  Empty event stub
+37250>>>>>    End_Procedure
+37251>>>>>    
+37251>>>>>    Procedure EndSession
+37253>>>>>        Integer iErr
+37253>>>>>        Boolean bLogWebSession
+37253>>>>>        Handle hoSessionDD       
+37253>>>>>        
+37253>>>>>        Get phoSessionDD to hoSessionDD
+37254>>>>>        Get pbLogWebSession to bLogWebSession
+37255>>>>>        If not bLogWebSession Begin
+37257>>>>>            Forward Send EndSession
+37259>>>>>            Procedure_Return
+37260>>>>>        End
+37260>>>>>>
+37260>>>>>            
+37260>>>>>        //  Check if session exists
+37260>>>>>        Send Clear of hoSessionDD
+37261>>>>>        Get psSessionKey to WebAppSession.SessionKey
+37262>>>>>        
+37262>>>>>        Send Find of hoSessionDD EQ Index.1
+37263>>>>>        If (Found) Begin
+37265>>>>>            Set Field_Changed_Value of hoSessionDD Field WebAppSession.Active to "N"
+37266>>>>>            Get Request_Validate of hoSessionDD to iErr
+37267>>>>>            If (iErr) Begin
+37269>>>>>                // this should not happen. If it does its a programming error
+37269>>>>>                Error DFERR_PROGRAM C_$WebAppSessionValidateFailed
+37270>>>>>>
+37270>>>>>                Procedure_Return
+37271>>>>>            End
+37271>>>>>>
+37271>>>>>            Send Request_Save of hoSessionDD
+37272>>>>>        End
+37272>>>>>>
+37272>>>>>    End_Procedure
+37273>>>>>
+37273>>>>>End_Class
+37274>>>>>
+37274>>>
+37274>>>Object oSessionManager is a cWebSessionManagerStandard
+37276>>>End_Object
+37277>>>
+37277>>>
+37277>    Use Login.wo
+Including file: Login.wo    (C:\DataFlex Projects\Centros\AppSrc\Login.wo)
+37277>>>Use cWebView.pkg
+37277>>>Use cWebForm.pkg
+37277>>>Use cWebButton.pkg
+37277>>>Use cWebPanel.pkg
+37277>>>Use cWebLabel.pkg
+37277>>>Use cWebSpacer.pkg
+37277>>>Use cWebImage.pkg
+37277>>>
+37277>>>Object oLogin is a cWebView
+37279>>>    Set piMinWidth to 250
+37280>>>    Set piMaxWidth to 420
+37281>>>    Set pbLoginModeEnforced to False
+37282>>>    Set piColumnCount to 12
+37283>>>    Set psCSSClass to "LoginView"
+37284>>>    Set pbServerOnSubmit to True
+37285>>>    
+37285>>>    Set psStateViewName to "Login"
+37286>>>    Set pbStateReplace to True  // Always replace the state so the login never becomes its own history item
+37287>>>    
+37287>>>    Property String psPrevStateHash ""  // Remember the state hash that the user navigated too so we can redirect after login
+37290>>>    
+37290>>>    Delegate Set phoLoginView to Self
+37292>>>    
+37292>>>    Object oTopSpacer is a cWebSpacer
+37294>>>        Set pbFillHeight to True
+37295>>>        Set piColumnSpan to 12
+37296>>>    End_Object
+37297>>>    
+37297>>>    Object oWarning is a cWebLabel
+37299>>>        Set pbVisible to False
+37300>>>        Set psCaption to "Invalid User ID or password. \n\rHint: 'admin' & 'admin'."
+37301>>>        Set peAlign to alignCenter
+37302>>>        Set piColumnSpan to 12
+37303>>>        Set psCSSClass to "LoginWarning"
+37304>>>    End_Object
+37305>>>    
+37305>>>    Object oLogo is a cWebImage
+37307>>>        Set piColumnSpan to 10
+37308>>>        Set psUrl to "images/DF_Logo_Retina.png"
+37309>>>        Set pePosition to wiFit
+37310>>>        Set piColumnIndex to 1
+37311>>>        Set piHeight to 160
+37312>>>        
+37312>>>        WebSetResponsive piHeight rmMobile to 100  // Best for small smart phones
+37313>>>    End_Object
+37314>>>    
+37314>>>    Object oLoginName is a cWebForm
+37316>>>        Set psLabel to "User ID:"
+37317>>>        Set peLabelPosition to lpTop
+37318>>>        Set piMaxLength to 20
+37319>>>        Set piColumnIndex to 1
+37320>>>        Set pbShowLabel to False
+37321>>>        Set psPlaceHolder to "loginname"
+37322>>>        Set piColumnSpan to 10
+37323>>>        Set psAutoComplete to "username"
+37324>>>    End_Object
+37325>>>    
+37325>>>    Object oPassword is a cWebForm
+37327>>>        Set psLabel to "Password:"
+37328>>>        Set pbPassword to True
+37329>>>        Set peLabelAlign to alignLeft
+37330>>>        Set piMaxLength to 20
+37331>>>        Set peLabelPosition to lpTop
+37332>>>        Set pbShowLabel to False
+37333>>>        Set psPlaceHolder to "password"
+37334>>>        Set piColumnSpan to 10
+37335>>>        Set piColumnIndex to 1
+37336>>>        Set psAutoComplete to "current-password"
+37337>>>    End_Object
+37338>>>    
+37338>>>    Object oWebSpacer1 is a cWebSpacer
+37340>>>        Set piColumnSpan to 12
+37341>>>        Set piHeight to 10
+37342>>>    End_Object
+37343>>>    
+37343>>>    Object oLoginButton is a cWebButton
+37345>>>        Set pbShowLabel to False
+37346>>>        Set psCaption to "sign in"
+37347>>>        Set pbServerOnClick to True
+37348>>>        Set piColumnSpan to 10
+37349>>>        Set piColumnIndex to 1
+37350>>>        
+37350>>>        Procedure OnClick
+37353>>>            Send DoLogin
+37354>>>        End_Procedure
+37355>>>    End_Object
+37356>>>    
+37356>>>    Object oBottomSpacer is a cWebSpacer
+37358>>>        Set pbFillHeight to True
+37359>>>        Set piColumnSpan to 12
+37360>>>    End_Object
+37361>>>    
+37361>>>    Procedure DoLogin
+37364>>>        String sLoginName sPassword sPrevStateHash
+37364>>>        Boolean bResult
+37364>>>        
+37364>>>        WebGet psValue of oLoginName to sLoginName
+37365>>>        WebGet psValue of oPassword to sPassword
+37366>>>        
+37366>>>        Get UserLogin of ghoWebSessionManager sLoginName sPassword to bResult
+37367>>>        
+37367>>>        If (bResult) Begin
+37369>>>            Send Hide of oLogin
+37370>>>            Send ShowHeader of ghoWebApp
+37371>>>            WebSet psCSSClass of ghoWebApp to ""
+37372>>>            
+37372>>>            WebGet psPrevStateHash to sPrevStateHash
+37373>>>            Send NavigateToStateHash of ghoWebApp sPrevStateHash True
+37374>>>            
+37374>>>            // clear the login values. we don't want to return the login id & password as synchronized properties....
+37374>>>            WebSet psValue of oLoginName to ""
+37375>>>            WebSet psValue of oPassword  to ""
+37376>>>            WebSet pbVisible of oWarning to False
+37377>>>        End
+37377>>>>
+37377>>>        Else Begin
+37378>>>            WebSet pbVisible of oWarning to True
+37379>>>        End
+37379>>>>
+37379>>>    End_Procedure
+37380>>>    
+37380>>>    Procedure OnSubmit
+37383>>>        Send DoLogin
+37384>>>    End_Procedure
+37385>>>    
+37385>>>    Procedure OnLoad
+37388>>>        String sPrevStateHash sView
+37388>>>        
+37388>>>        Forward Send OnLoad
+37390>>>        
+37390>>>        //  Store the current state so we can go back to that later (only if it points to a different view)
+37390>>>        Get StateHash of ghoWebApp to sPrevStateHash
+37391>>>        Send ParseViewStateHash sPrevStateHash (&sView)
+37392>>>        If (Lowercase(sView) <> Lowercase(psStateViewName(Self))) Begin
+37394>>>            WebSet psPrevStateHash to sPrevStateHash
+37395>>>        End
+37395>>>>
+37395>>>        
+37395>>>    End_Procedure
+37396>>>    
+37396>>>    Procedure OnBeforeShow
+37399>>>        //  Hide header & apply nice background style
+37399>>>        Send HideHeader to ghoWebApp
+37400>>>        WebSet psCSSClass of ghoWebApp to "LoginBackground"
+37401>>>    End_Procedure
+37402>>>    
+37402>>>End_Object
+37403>>>
+37403>>>
+37403>>>
+37403>>>
+37403>    Use WebResourceManager.wo
+Including file: WebResourceManager.wo    (C:\DataFlex Projects\Centros\AppSrc\WebResourceManager.wo)
+37403>>>Use cWebResourceManager.pkg
+37403>>>
+37403>>>Object oWebResourceManager is a cWebResourceManager
+37405>>>End_Object
+37406>    
+37406>    Use Dashboard.wo
+Including file: Dashboard.wo    (C:\DataFlex Projects\Centros\AppSrc\Dashboard.wo)
+37406>>>Use cWebView.pkg
+37406>>>Use cWebPanel.pkg
+37406>>>Use cWebForm.pkg
+37406>>>Use cWebButton.pkg
+37406>>>Use cWebGroup.pkg
+37406>>>Use cWebSpacer.pkg
+37406>>>Use cWebHtmlBox.pkg
+37406>>>Use cWebMenuGroup.pkg
+37406>>>Use cWebMenuItem.pkg
+37406>>>Use cWebLabel.pkg
+37406>>>Use cWebList.pkg
+37406>>>Use cWebColumn.pkg
+37406>>>
+37406>>>Object oDashboard is a cWebView
+37408>>>
+37408>>>    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+37408>>>    // Add a DDO Structure 
+37408>>>    //
+37408>>>    // There is no need to synchronize a DD structure on the client so we do
+37408>>>    // not set the Server property or send ADDOStructure. We will simply use
+37408>>>    // DDO's to mine data and generate HTML for our cWebHTMLBox objects.
+37408>>>    // It is the HTML in these objects that is sent to the client each time 
+37408>>>    // this page is shown.
+37408>>>    //
+37408>>>    // Also, it is important for the drill-down Navigation interface that we
+37408>>>    // do not set the Server property to some DDO because this will affect 
+37408>>>    // constraints in the next view that we navigate to.
+37408>>>    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+37408>>>
+37408>>>    Set piMaxWidth to 1024
+37409>>>    
+37409>>>    Set psCaption to "Dashboard"
+37410>>>    Set peViewType to vtUndefined
+37411>>>    Set pbShowCaption to False
+37412>>>    Set psCSSClass to "Dashboard"
+37413>>>    
+37413>>>    Object oWebMainPanel is a cWebPanel
+37415>>>        Set piColumnCount to 24
+37416>>>        
+37416>>>        // - - - - - - - - - - - - - - -
+37416>>>        // Main Panel's Responsive Rules
+37416>>>        // - - - - - - - - - - - - - - -
+37416>>>        WebSetResponsive piColumnCount rmMobile to 1
+37417>>>        WebSetResponsive piColumnCount rmTabletPortrait to 16
+37418>>>    
+37418>>>        Object oTiles_grp is a cWebGroup
+37420>>>            Set piColumnSpan to 8
+37421>>>            Set pbShowBorder to False
+37422>>>            Set pbShowCaption to False
+37423>>>            Set piColumnCount to 12
+37424>>>            
+37424>>>            Set psCSSClass to "TilesGroup"
+37425>>>    
+37425>>>            Object oWelcomeTile is a cWebHtmlBox
+37427>>>                Set piColumnSpan to 6
+37428>>>                Set psCSSClass to "Tile Light"
+37429>>>                Set psHtml to '<div Class="WebCon_Sizer"><div class="Tile_Title">Welcome</div><div Class="Tile_Subtitle">--</div></div>'
+37430>>>    
+37430>>>                Procedure OnLoad
+37433>>>                    Send UpdateHTML ('<div class="WebCon_Sizer">' + ;                                     '<div class="Tile_Title">Welcome</div>' +;                                     '<div class="Tile_Subtitle">' - htmlEncode(psUserName(ghoWebSessionManager)) - '</div>' +;                                     '</div>')
+37434>>>                End_Procedure
+37435>>>                
+37435>>>            End_Object
+37436>>>    
+37436>>>            Object oTile2 is a cWebHtmlBox
+37438>>>                Set pbServerOnClick to True
+37439>>>                Set piColumnSpan to 6
+37440>>>                Set piColumnIndex to 6
+37441>>>                Set psCSSClass to "Tile LightAlternate"
+37442>>>                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Email</div><div class="Tile_Subtitle"></div></div>'
+37443>>>                                
+37443>>>                WebRegisterPath ntNavigateForwardCustom oDummieEmail
+37449>>>                
+37449>>>                Procedure OnClick String sId String sParam
+37452>>>                    Send NavigatePath
+37453>>>                End_Procedure
+37454>>>                
+37454>>>            End_Object
+37455>>>    
+37455>>>            Object oTile3 is a cWebHtmlBox
+37457>>>                Set pbServerOnClick to True
+37458>>>                Set piColumnSpan to 6
+37459>>>                Set psCSSClass to "Tile Dark"
+37460>>>                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Dni</div><div class="Tile_Subtitle"></div></div>'
+37461>>>    
+37461>>>                 WebRegisterPath ntNavigateForwardCustom oDummieDni
+37467>>>                
+37467>>>                Procedure OnClick String sId String sParam
+37470>>>                    Send NavigatePath
+37471>>>                End_Procedure
+37472>>>                
+37472>>>            End_Object
+37473>>>            
+37473>>>                
+37473>>>    
+37473>>>            Object oTile4 is a cWebHtmlBox
+37475>>>                Set pbServerOnClick to True
+37476>>>                Set piColumnSpan to 6
+37477>>>                Set piColumnIndex to 6
+37478>>>                Set psCSSClass to "Tile DarkAlternate"
+37479>>>                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Centros</div><div class="Tile_Subtitle"></div></div>'
+37480>>>            
+37480>>>                WebRegisterPath ntNavigateForwardCustom oSelectCentro
+37486>>>                
+37486>>>                Procedure OnClick String sId String sParam
+37489>>>                    Send NavigatePath
+37490>>>                End_Procedure
+37491>>>            End_Object
+37492>>>                
+37492>>>            Object oTile5 is a cWebHtmlBox
+37494>>>                Set pbServerOnClick to True
+37495>>>                Set piColumnSpan to 6
+37496>>>                Set psCSSClass to "Tile Dark"
+37497>>>                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Alummnos</div><div class="Tile_Subtitle"></div></div>'
+37498>>>    
+37498>>>                 WebRegisterPath ntNavigateForwardCustom oSelectStudents
+37504>>>                
+37504>>>                Procedure OnClick String sId String sParam
+37507>>>                    Send NavigatePath
+37508>>>                End_Procedure
+37509>>>            End_Object
+37510>>>        End_Object
+37511>>>    
+37511>>>    End_Object
+37512>>>    
+37512>>>    Procedure OnBeforeShow
+37515>>>        // Each time this view is shown we will update the appropriate information.
+37515>>>    End_Procedure
+37516>>>
+37516>>>End_Object
+37517>    Use DummieEmail.wo
+Including file: DummieEmail.wo    (C:\DataFlex Projects\Centros\AppSrc\DummieEmail.wo)
+37517>>>Use cWebView.pkg
+37517>>>Use cWebPanel.pkg
+37517>>>Use cWebForm.pkg 
+37517>>>
+37517>>>Use zEmailValidation.pkg
+Including file: zEmailValidation.pkg    (C:\DataFlex Projects\Centros\AppSrc\zEmailValidation.pkg)
+37517>>>>>Function zValidarEmail String sEmail  String ByRef sMsg Returns Boolean
+37520>>>>> 
+37520>>>>>  Boolean bRet
+37520>>>>>  String[] aEmail 
+37521>>>>>  
+37521>>>>>    Get zSplitEmail sEmail  to aEmail 
+37522>>>>>    
+37522>>>>>    Get zArrobaCheck aEmail (&sMsg)  to bRet
+37523>>>>>    If (not (bRet)) Function_Return False 
+37526>>>>>    
+37526>>>>>    Get zLocalAndressCheck aEmail (&sMsg)  to bRet
+37527>>>>>    If (not (bRet)) Function_Return False
+37530>>>>>    
+37530>>>>>    Get zDominioAndExtensionCheck aEmail (&sMsg) to bRet
+37531>>>>>    If (not (bRet)) Function_Return False
+37534>>>>>    
+37534>>>>>    Get zLocalAndressSizeCheck aEmail (&sMsg) to bRet 
+37535>>>>>    If (not (bRet)) Function_Return False 
+37538>>>>>    
+37538>>>>>    Get zDomSizeCheck aEmail (&sMsg) to bRet 
+37539>>>>>    If (not (bRet)) Function_Return False
+37542>>>>>    
+37542>>>>>    
+37542>>>>>    Function_Return True
+37543>>>>>End_Function
+37544>>>>>
+37544>>>>>
+37544>>>>>
+37544>>>>>Function zSplitEmail String sEmail Returns String[]
+37547>>>>>    String[] aEmail
+37548>>>>>    
+37548>>>>>    Move (StrSplitToArray (sEmail , "@")) to aEmail
+37549>>>>>    Function_Return aEmail
+37550>>>>>End_Function
+37551>>>>>
+37551>>>>>
+37551>>>>>
+37551>>>>>Function zArrobaCheck String[] aEmail String ByRef sMsg Returns Boolean
+37554>>>>>    If (SizeOfArray(aEmail) > 2) Begin 
+37556>>>>>        Move "No se permite más de un @ en el correo" to sMsg
+37557>>>>>        Function_Return False 
+37558>>>>>        
+37558>>>>>    End
+37558>>>>>>
+37558>>>>>    If (SizeOfArray(aEmail) < 2) Begin
+37560>>>>>        Move "Porfavor el correo tiene que contener un @" to sMsg
+37561>>>>>        Function_Return False
+37562>>>>>    End
+37562>>>>>>
+37562>>>>>    Function_Return True
+37563>>>>>
+37563>>>>>End_Function
+37564>>>>>
+37564>>>>>
+37564>>>>>Function zLocalAndressCheck String[] aEmail String ByRef sMsg Returns Boolean
+37567>>>>>    
+37567>>>>>    String[] aRet
+37568>>>>>    Object oEmailPattern is a cRegEx
+37570>>>>>        Set psExpression to "^[a-zA-Z0-9._%+]+$"
+37571>>>>>    End_Object
+37572>>>>>    
+37572>>>>>    Get MatchAll of oEmailPattern (aEmail[0]) to aRet
+37573>>>>>    
+37573>>>>>    If (SizeOfArray(aRet) = 1 ) Begin
+37575>>>>>            Function_Return True
+37576>>>>>            
+37576>>>>>    End
+37576>>>>>>
+37576>>>>>    
+37576>>>>>    Move "Antes del @ solo puede haber un codigo alfanumerico y/o (. , _ , % , +)" to sMsg
+37577>>>>>    Function_Return False
+37578>>>>>End_Function
+37579>>>>>
+37579>>>>>Function zDominioAndExtensionCheck String[] aEmail String ByRef sMsg Returns Boolean
+37582>>>>>    
+37582>>>>>    String[] aRet aDomRet
+37584>>>>>    Integer iPospoint
+37584>>>>>    String sExtensionDom
+37584>>>>>    Object oEmailPattern is a cRegEx
+37586>>>>>        Set psExpression to "^[a-zA-Z0-9-]+\.[a-zA-Z]{2,7}$"
+37587>>>>>    End_Object
+37588>>>>>    
+37588>>>>>    Get MatchAll of oEmailPattern (aEmail[1]) to aRet
+37589>>>>>    
+37589>>>>>    
+37589>>>>>    Move (RightPos ( "." , aRet[0] )) to iPospoint
+37590>>>>>    Move (Mid(aRet[0] , (Length(aRet[0]) - iPospoint) , (iPospoint + 1))) to sExtensionDom
+37591>>>>>    
+37591>>>>>    If (SizeOfArray(aRet) = 1 ) Begin
+37593>>>>>        If (Length(sExtensionDom) > 1 and Length(sExtensionDom) < 8) Begin
+37595>>>>>            
+37595>>>>>            Function_Return True 
+37596>>>>>        End
+37596>>>>>>
+37596>>>>>            
+37596>>>>>    End
+37596>>>>>>
+37596>>>>>    
+37596>>>>>    Move "Despues del @ solo puede contener un codigo alfanumerico seguido de un punto y la extesion que tiene una longitud enttre 2 y 7, solo permitiendo letras" to sMsg
+37597>>>>>    Function_Return False
+37598>>>>>    
+37598>>>>>    
+37598>>>>>End_Function
+37599>>>>>
+37599>>>>>Function zLocalAndressSizeCheck String[] aEmail String ByRef sMsg Returns Boolean
+37602>>>>>    
+37602>>>>>     If (Length(aEmail[0]) < 65) Begin
+37604>>>>>        Function_Return True
+37605>>>>>     End
+37605>>>>>>
+37605>>>>>     Move "La parte de la dirección local Solo puede tener un maximo de 65 caracteres " to sMsg
+37606>>>>>        Function_Return False
+37607>>>>>End_Function
+37608>>>>>
+37608>>>>>
+37608>>>>>Function zDomSizeCheck String[] aEmail String ByRef sMsg Returns Boolean
+37611>>>>>    
+37611>>>>>   
+37611>>>>>    If (Length(aEmail[1]) < 256 ) Begin
+37613>>>>>        Function_Return True
+37614>>>>>    End
+37614>>>>>>
+37614>>>>>    
+37614>>>>>    Move "El el dominio no puede superar los 255 caracteres" to sMsg
+37615>>>>>    
+37615>>>>>    
+37615>>>>>    Function_Return False 
+37616>>>>>End_Function
+37617>>>>>
+37617>>>>>
+37617>>>Use cWebButton.pkg
+37617>>>Use cWebSpacer.pkg
+37617>>>Use cWebLabel.pkg
+37617>>>
+37617>>>Object oDummieEmail is a cWebView
+37619>>>    Set piWidth to 700
+37620>>>    Set psCaption to "DummieEmail"
+37621>>>
+37621>>>    // Your DDO structure will go here
+37621>>>
+37621>>>    Object oWebMainPanel is a cWebPanel
+37623>>>        Set piColumnCount to 12
+37624>>>        
+37624>>>        // place controls here
+37624>>>        // Your view will grow as controls are added
+37624>>>        
+37624>>>        Object oEmail_Form is a cWebForm
+37626>>>            Set piColumnSpan to 0
+37627>>>            Set psLabel to "Email"
+37628>>>        End_Object
+37629>>>
+37629>>>        Object oError_Label is a cWebLabel
+37631>>>            Set psCaption to ""
+37632>>>            Set piColumnSpan to 13
+37633>>>            Set piColumnIndex to 0
+37634>>>        End_Object
+37635>>>
+37635>>>        Object oWebSpacer1 is a cWebSpacer
+37637>>>            Set piColumnSpan to 12
+37638>>>        End_Object
+37639>>>
+37639>>>        Object oValidar_Button is a cWebButton
+37641>>>            Set piColumnSpan to 4
+37642>>>            Set piColumnIndex to 4
+37643>>>            Set psCaption to "Validar"
+37644>>>        
+37644>>>            Procedure OnClick
+37647>>>                Boolean bRet
+37647>>>                String sEmail sMsg
+37647>>>                WebGet psValue of oEmail_Form to sEmail
+37648>>>                Get zValidarEmail sEmail (&sMsg) to bRet
+37649>>>                
+37649>>>                WebSet psBackgroundColor of oEmail_Form to "#ffffff"
+37650>>>                WebSet psCaption of oError_Label to ""
+37651>>>                
+37651>>>                If (bRet) Begin
+37653>>>                    WebSet psBackgroundColor of oEmail_Form to "green"
+37654>>>                    
+37654>>>                End
+37654>>>>
+37654>>>                If (not (bRet)) Begin
+37656>>>                    WebSet psBackgroundColor of oEmail_Form to "red"
+37657>>>                    WebSet psCaption of oError_Label to sMsg
+37658>>>                End
+37658>>>>
+37658>>>                
+37658>>>            End_Procedure
+37659>>>        End_Object
+37660>>>        
+37660>>>        
+37660>>>        
+37660>>>    End_Object 
+37661>>>
+37661>>>End_Object
+37662>    Use DummineDniValidation.wo
+Including file: DummineDniValidation.wo    (C:\DataFlex Projects\Centros\AppSrc\DummineDniValidation.wo)
+37662>>>Use cWebWidget.pkg
+Including file: cWebWidget.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cWebWidget.pkg)
+37662>>>>>Use cWebGroup.pkg
+37662>>>>>Use cWebDDOSync_Mixin.pkg
+37662>>>>>Use WebWidgetStructs.pkg
+Including file: WebWidgetStructs.pkg    (C:\Program Files\DataFlex 25.0\Pkg\WebWidgetStructs.pkg)
+37662>>>>>>>// WCT: Wizard Control Type
+37662>>>>>>>Enum_List
+37662>>>>>>>    Define WCT_Form       for 0
+37662>>>>>>>    Define WCT_Combo      for 1
+37662>>>>>>>    Define WCT_Slider     for 2
+37662>>>>>>>    Define WCT_Checkbox   for 3
+37662>>>>>>>End_Enum_List
+37662>>>>>>>
+37662>>>>>>>Struct tWidgetConfigPropSettings
+37662>>>>>>>    String sOptLabel
+37662>>>>>>>    String sOptDescription
+37662>>>>>>>    Integer eControlType        // 0 = form, 1 = combo, 2 = slider, 3 = checkbox. Use above enum
+37662>>>>>>>    Boolean bOptValidateValue   // Whether to validate the given value versus any of the underlying options
+37662>>>>>>>    Integer iOptMinValue
+37662>>>>>>>    Integer iOptMaxValue
+37662>>>>>>>    Integer iOptStepSize
+37662>>>>>>>    String[] asOptValues
+37662>>>>>>>End_Struct
+37662>>>>>>>
+37662>>>>>>>Struct tWidgetConfigProp
+37662>>>>>>>    String sObjName
+37662>>>>>>>    String sPropName
+37662>>>>>>>    tWidgetConfigPropSettings Settings
+37662>>>>>>>    tWidgetConfigPropSettings Settings
+37662>>>>>>>End_Struct
+37662>>>>>>>
+37662>>>>>>>Struct tWidgetConfigPropValue
+37662>>>>>>>    String sObjName
+37662>>>>>>>    String sPropName
+37662>>>>>>>    String sValue
+37662>>>>>>>End_Struct
+37662>>>>>>>
+37662>>>>>>>Struct tWidgetDef
+37662>>>>>>>    String sName
+37662>>>>>>>    String sDynId
+37662>>>>>>>    Integer iRowIndex
+37662>>>>>>>    Integer iColIndex
+37662>>>>>>>    Integer iRowSpan
+37662>>>>>>>    Integer iColSpan
+37662>>>>>>>    Boolean bFillHeight
+37662>>>>>>>    tWidgetConfigPropValue[] aConfig // ToDo: This could be smarter, aggregate by child-object and list all props there.
+37662>>>>>>>    tWidgetConfigPropValue[] aConfig // ToDo: This could be smarter, aggregate by child-object and list all props there.
+37662>>>>>>>    tWebPropRule[] aResponsivePropRules
+37662>>>>>>>    tWebPropRule[] aResponsivePropRules
+37662>>>>>>>End_Struct
+37662>>>>>
+37662>>>>>//  Function from cWebDynamicObjectContainer
+37662>>>>>Register_Function TruncateName String sObjectName Returns String
+37662>>>>>
+37662>>>>>//Struct tWidget
+37662>>>>>//    String sId
+37662>>>>>//    tWidgetDef WidgetDef
+37662>>>>>//End_Struct
+37662>>>>>
+37662>>>>>Class cWebWidget is a cWebGroup
+37663>>>>>    
+37663>>>>>    Procedure Construct_Object
+37665>>>>>        Forward Send Construct_Object
+37667>>>>>        
+37667>>>>>        Property Integer piDefaultColSpan 1
+37668>>>>>        Property Integer piDefaultRowSpan 1
+37669>>>>>        
+37669>>>>>        Property String psDynamicWidgetId                   // Set by the container to easily find this widget for dynamic configuration
+37671>>>>>        
+37671>>>>>        Property String psWidgetName
+37673>>>>>        
+37673>>>>>        Property String psWidgetCaption ""
+37674>>>>>        Property String psWidgetDescription ""
+37675>>>>>        
+37675>>>>>        Property Boolean pbAllowConfiguration True
+37677>>>>>        
+37677>>>>>        Property Boolean pbConfigurable False
+37679>>>>>        
+37679>>>>>        Property Handle phoConfigWizard C_WebUnresolvedObject
+37680>>>>>        
+37680>>>>>        // Default to flow to make the designer work with the widgetcontainer and because we do not want widgets to inherit whatever is set at the dashboard view
+37680>>>>>        Set peLayoutType to ltFlow
+37681>>>>>        Set pbFillHeight to True
+37682>>>>>        Set pbScroll to True
+37683>>>>>        
+37683>>>>>        Set psJSClass to 'df.WebWidget'
+37684>>>>>        
+37684>>>>>        Send Define_cWebDDOSync_mixin
+37685>>>>>    End_Procedure
+37686>>>>>    
+37686>>>>>    Import_Class_Protocol cWebDDOSync_mixin
+37687>>>>>    
+37687>>>>>    Function IsWebWidget Returns Boolean
+37689>>>>>        Function_Return True
+37690>>>>>    End_Function
+37691>>>>>    
+37691>>>>>    Procedure InitWidget
+37693>>>>>        Boolean bConfigurable
+37693>>>>>        
+37693>>>>>        Get IsConfigurable to bConfigurable
+37694>>>>>        WebSet pbConfigurable to bConfigurable
+37695>>>>>        
+37695>>>>>        Send OnInitializeWidget
+37696>>>>>    End_Procedure
+37697>>>>>    
+37697>>>>>    Function ConfigurablePropExists tWidgetConfigProp WidgetConfigProp Returns Boolean
+37699>>>>>        Boolean bExists
+37699>>>>>        tWidgetConfigProp[] aConfigurableProps 
+37699>>>>>        tWidgetConfigProp[] aConfigurableProps 
+37700>>>>>        
+37700>>>>>        Get GetConfigurableProps to aConfigurableProps
+37701>>>>>        
+37701>>>>>        Get ConfigurablePropExistsEx aConfigurableProps WidgetConfigProp to bExists
+37702>>>>>        
+37702>>>>>        Function_Return bExists
+37703>>>>>    End_Function
+37704>>>>>    
+37704>>>>>    Function ConfigurablePropExistsEx tWidgetConfigProp[] aConfigurableProps tWidgetConfigProp WidgetConfigProp Returns Boolean
+37706>>>>>        Integer i iProps
+37706>>>>>        String sTrimmedObjName
+37706>>>>>        
+37706>>>>>        Get TrimDynamicObjectName WidgetConfigProp.sObjName to sTrimmedObjName
+37707>>>>>        
+37707>>>>>        Move ((SizeOfArray(aConfigurableProps)) - 1) to iProps
+37708>>>>>        
+37708>>>>>        For i from 0 to iProps
+37714>>>>>>
+37714>>>>>            If (aConfigurableProps[i].sObjName = sTrimmedObjName and aConfigurableProps[i].sPropName = WidgetConfigProp.sPropName) Begin
+37716>>>>>                Function_Return True
+37717>>>>>            End
+37717>>>>>>
+37717>>>>>        Loop
+37718>>>>>>
+37718>>>>>        
+37718>>>>>        Function_Return False
+37719>>>>>    End_Function
+37720>>>>>    
+37720>>>>>    // Gets the configurable props for this widget
+37720>>>>>    // This is used by the configuration wizard to build a configuration dialog, based on the prop settings
+37720>>>>>    Function GetConfigurableProps Returns tWidgetConfigProp[]
+37722>>>>>        tWidgetConfigProp[] aConfigurableProps
+37722>>>>>        tWidgetConfigProp[] aConfigurableProps
+37723>>>>>
+37723>>>>>        Send OnGetConfigurableProps (&aConfigurableProps)
+37724>>>>>        
+37724>>>>>        Function_Return aConfigurableProps
+37725>>>>>    End_Function
+37726>>>>>    
+37726>>>>>    Function IsConfigurable Returns Boolean
+37728>>>>>        Boolean bAllowConfig
+37728>>>>>        tWidgetConfigProp[] aConfigurableProps
+37728>>>>>        tWidgetConfigProp[] aConfigurableProps
+37729>>>>>        
+37729>>>>>        Move ( ((phoConfigWizard(Self)) <> C_WebUnresolvedObject) and (pbAllowConfiguration(Self)) ) to bAllowConfig
+37730>>>>>        
+37730>>>>>        Send OnDetermineConfigurableState (&bAllowConfig)
+37731>>>>>        
+37731>>>>>        Function_Return bAllowConfig
+37732>>>>>    End_Function
+37733>>>>>    
+37733>>>>>    Function GetConfigurablePropValues Returns tWidgetConfigPropValue[]
+37735>>>>>        tWidgetConfigProp[] aProps
+37735>>>>>        tWidgetConfigProp[] aProps
+37736>>>>>        tWidgetConfigPropValue[] aValues
+37736>>>>>        tWidgetConfigPropValue[] aValues
+37737>>>>>        tWebPropMetaData PropMeta
+37737>>>>>        tWebPropMetaData PropMeta
+37737>>>>>        Variant vValue
+37737>>>>>        Integer i iProps iType
+37737>>>>>        Boolean bValid
+37737>>>>>        String sDynamicObjectId
+37737>>>>>        Handle hoObj
+37737>>>>>        tWidgetConfigPropValue CurValue EmptyValue
+37737>>>>>        tWidgetConfigPropValue CurValue EmptyValue
+37737>>>>>        
+37737>>>>>        // Get all config props
+37737>>>>>        
+37737>>>>>        Get GetConfigurableProps to aProps
+37738>>>>>        
+37738>>>>>        Move ((SizeOfArray(aProps)) - 1) to iProps
+37739>>>>>        
+37739>>>>>        For i from 0 to iProps
+37745>>>>>>
+37745>>>>>            Delegate Get TruncateName aProps[i].sObjName to sDynamicObjectId
+37747>>>>>            If (sDynamicObjectId <> "") Begin
+37749>>>>>                WebGet psDynamicWidgetId to sDynamicObjectId
+37750>>>>>                Move (sDynamicObjectId + '.' + aProps[i].sObjName) to sDynamicObjectId
+37751>>>>>                
+37751>>>>>                Get DynamicObject sDynamicObjectId to hoObj
+37752>>>>>            End
+37752>>>>>>
+37752>>>>>            Else Begin
+37753>>>>>                Move (Self) to hoObj
+37754>>>>>            End
+37754>>>>>>
+37754>>>>>            
+37754>>>>>            If (hoObj <> 0) Begin
+37756>>>>>                Move EmptyValue to CurValue
+37757>>>>>                
+37757>>>>>                Get FindWebPropertyMetaByName of hoObj aProps[i].sPropName to PropMeta
+37758>>>>>                If (PropMeta.hmGetter <> 0) Begin
+37760>>>>>                    Get GetSyncProp of hoObj hoObj PropMeta.hmGetter PropMeta.sName to vValue
+37761>>>>>                    
+37761>>>>>                    Get VariantType vValue to iType
+37762>>>>>                    If (iType = OLE_VT_Empty) Begin
+37764>>>>>                        Move False to bValid
+37765>>>>>                    End
+37765>>>>>>
+37765>>>>>                    Else Begin
+37766>>>>>                        Get VerifyConfigurablePropValue aProps[i] vValue to bValid
+37767>>>>>                    End
+37767>>>>>>
+37767>>>>>                    
+37767>>>>>                    If (bValid) Begin
+37769>>>>>                        Move sDynamicObjectId to CurValue.sObjName
+37770>>>>>                        Move aProps[i].sPropName to CurValue.sPropName
+37771>>>>>                        Move vValue to CurValue.sValue
+37772>>>>>                        Move CurValue to aValues[-1]
+37773>>>>>                    End
+37773>>>>>>
+37773>>>>>                    Else Begin
+37774>>>>>                        Function_Return EmptyValue
+37775>>>>>                    End
+37775>>>>>>
+37775>>>>>                End
+37775>>>>>>
+37775>>>>>                Else Begin
+37776>>>>>                    Function_Return EmptyValue
+37777>>>>>                End
+37777>>>>>>
+37777>>>>>            End
+37777>>>>>>
+37777>>>>>        Loop
+37778>>>>>>
+37778>>>>>        
+37778>>>>>        Function_Return aValues
+37779>>>>>    End_Function
+37780>>>>>    
+37780>>>>>    Function VerifyConfigurablePropValue tWidgetConfigProp ConfigProp Variant vValue Returns Boolean
+37782>>>>>        // Check variant type
+37782>>>>>        // check if variant within acceptable range of values
+37782>>>>>        Integer iType iVals i
+37782>>>>>        Number nCur
+37782>>>>>        
+37782>>>>>        If (not(ConfigProp.Settings.bOptValidateValue)) Begin
+37784>>>>>            Function_Return True
+37785>>>>>        End
+37785>>>>>>
+37785>>>>>        
+37785>>>>>        Get VariantType vValue to iType
+37786>>>>>        Move ((SizeOfArray(ConfigProp.Settings.asOptValues)) -1) to iVals
+37787>>>>>        
+37787>>>>>        If (iType = OLE_VT_I4 or iType = OLE_VT_I8 or ;            iType = OLE_VT_R4 or iType = OLE_VT_I8) Begin
+37789>>>>>            // compare min, max and allowed vals
+37789>>>>>            If (vValue >= ConfigProp.Settings.iOptMinValue and vValue =< ConfigProp.Settings.iOptMaxValue) Begin
+37791>>>>>                // check step size
+37791>>>>>                If (ConfigProp.Settings.iOptStepSize > 0) Begin
+37793>>>>>                    Move ConfigProp.Settings.iOptMinValue to nCur
+37794>>>>>                    While (nCur <= ConfigProp.Settings.iOptMaxValue)
+37798>>>>>                        If (vValue = nCur) Begin
+37800>>>>>                            Function_Return True
+37801>>>>>                        End
+37801>>>>>>
+37801>>>>>                        Move (nCur + ConfigProp.Settings.iOptStepSize) to nCur
+37802>>>>>                    Loop
+37803>>>>>>
+37803>>>>>                End
+37803>>>>>>
+37803>>>>>                Else Begin
+37804>>>>>                    Function_Return True
+37805>>>>>                End
+37805>>>>>>
+37805>>>>>            End
+37805>>>>>>
+37805>>>>>            
+37805>>>>>            For i from 0 to iVals
+37811>>>>>>
+37811>>>>>                If (vValue = ConfigProp.Settings.asOptValues[i]) Begin
+37813>>>>>                    Function_Return True
+37814>>>>>                End
+37814>>>>>>
+37814>>>>>            Loop
+37815>>>>>>
+37815>>>>>        End
+37815>>>>>>
+37815>>>>>        If (iType = OLE_VT_Bstr) Begin
+37817>>>>>            // compare allowed values
+37817>>>>>            If (iVals <= 0) Begin
+37819>>>>>                Function_Return True
+37820>>>>>            End
+37820>>>>>>
+37820>>>>>            
+37820>>>>>            For i from 0 to iVals
+37826>>>>>>
+37826>>>>>                If (vValue = ConfigProp.Settings.asOptValues[i]) Begin
+37828>>>>>                    Function_Return True
+37829>>>>>                End
+37829>>>>>>
+37829>>>>>            Loop
+37830>>>>>>
+37830>>>>>        End
+37830>>>>>>
+37830>>>>>        
+37830>>>>>        
+37830>>>>>        
+37830>>>>>        Function_Return False
+37831>>>>>    End_Function
+37832>>>>>    
+37832>>>>>    // Performs the equivalent of a webget for objects within this widget
+37832>>>>>    Function GetWidgetConfigurablePropValue String sObj String sProp Returns Variant
+37834>>>>>        String sDynamicObjectId
+37834>>>>>        Handle hoObj
+37834>>>>>        tWebPropMetaData PropMeta
+37834>>>>>        tWebPropMetaData PropMeta
+37834>>>>>        Variant vRet
+37834>>>>>        
+37834>>>>>        Delegate Get TruncateName sObj to sDynamicObjectId
+37836>>>>>        Get DynamicObject sDynamicObjectId to hoObj
+37837>>>>>        
+37837>>>>>        If (hoObj <> 0) Begin
+37839>>>>>            Get FindWebPropertyMetaByName of hoObj sProp to PropMeta
+37840>>>>>            Get GetSyncProp of hoObj hoObj PropMeta.hmGetter PropMeta.sName to vRet
+37841>>>>>        End
+37841>>>>>>
+37841>>>>>        
+37841>>>>>        Function_Return vRet
+37842>>>>>    End_Function
+37843>>>>>    
+37843>>>>>    Function TrimDynamicObjectName String sObjName Returns String
+37845>>>>>        String[] asObjName
+37846>>>>>        String sRetName
+37846>>>>>        
+37846>>>>>        Delegate Get TruncateName sObjName to sObjName
+37848>>>>>        
+37848>>>>>        Move (StrSplitToArray(sObjName, psDynamicWidgetID(Self))) to asObjName
+37849>>>>>        
+37849>>>>>        If (SizeOfArray(asObjName) > 1) Begin
+37851>>>>>            Move asObjName[1] to sRetName
+37852>>>>>            // Get rid of initial '.' if we end up with such a name
+37852>>>>>            If ((Pos('.', sRetName)) = 1) Begin
+37854>>>>>                Move (Replace('.', sRetName, '')) to sRetName
+37855>>>>>            End
+37855>>>>>>
+37855>>>>>        End
+37855>>>>>>
+37855>>>>>        
+37855>>>>>        Function_Return sRetName
+37856>>>>>    End_Function
+37857>>>>>    
+37857>>>>>    Function CreateConfigurableProp Handle hoObj Handle hmPropFunc Returns tWidgetConfigProp
+37859>>>>>        tWidgetConfigProp WidgetConfigProp
+37859>>>>>        tWidgetConfigProp WidgetConfigProp
+37859>>>>>        tWebPropMetaData PropMeta
+37859>>>>>        tWebPropMetaData PropMeta
+37859>>>>>        String sObjName
+37859>>>>>        String[] asObjName
+37860>>>>>        Boolean bIsDynamic
+37860>>>>>        
+37860>>>>>        Get IsDynamicObject of hoObj to bIsDynamic
+37861>>>>>        If (bIsDynamic) Begin
+37863>>>>>            Get TrimDynamicObjectName (WebObjectName(hoObj)) to WidgetConfigProp.sObjName
+37864>>>>>        End
+37864>>>>>>
+37864>>>>>        Else Begin
+37865>>>>>            // Assume Default widget & top level prop (will correct itself when attempting to apply)
+37865>>>>>            Move "" to WidgetConfigProp.sObjName
+37866>>>>>        End
+37866>>>>>>
+37866>>>>>
+37866>>>>>        Get FindWebPropertyMeta of hoObj hmPropFunc to PropMeta
+37867>>>>>        Move PropMeta.sName to WidgetConfigProp.sPropName
+37868>>>>>
+37868>>>>>        Function_Return WidgetConfigProp
+37869>>>>>    End_Function
+37870>>>>>    
+37870>>>>>    Procedure OnInitializeWidget
+37872>>>>>    End_Procedure
+37873>>>>>    
+37873>>>>>    Procedure OnGetConfigurableProps tWidgetConfigProp[] ByRef aConfigurableProps
+37875>>>>>        // This event can be used to modify the initial set of configurable props based on for example permissions
+37875>>>>>    End_Procedure
+37876>>>>>    
+37876>>>>>    Procedure OnWidgetPropsChanged
+37878>>>>>    End_Procedure
+37879>>>>>    
+37879>>>>>    Procedure OnDetermineConfigurableState Boolean ByRef bAllow
+37881>>>>>    End_Procedure
+37882>>>>>    
+37882>>>>>    Function AllowAccess Returns Boolean
+37884>>>>>        // Override with your custom logic to determine if this widget should be rendered or not under certain circumstances
+37884>>>>>        Function_Return True
+37885>>>>>    End_Function
+37886>>>>>    
+37886>>>>>    // Used by AllowViewAccess to determine the name passed to the session manager.
+37886>>>>>    Function ViewName Returns String
+37888>>>>>        Function_Return (psWidgetName(Self))
+37889>>>>>    End_Function
+37890>>>>>    
+37890>>>>>    // DDO Sync logic
+37890>>>>>    Procedure Call_PreSync
+37892>>>>>        Boolean bAllow bOrigSync
+37892>>>>>        
+37892>>>>>        Get pbSynchronizing to bOrigSync
+37893>>>>>        Set pbSynchronizing to True
+37894>>>>>        
+37894>>>>>        Get SyncDDOs to bAllow        
+37895>>>>>         
+37895>>>>>        Broadcast Recursive Send UpdateDataBinding
+37897>>>>>        
+37897>>>>>        Set pbSynchronizing to bOrigSync
+37898>>>>>    End_Procedure
+37899>>>>>    
+37899>>>>>    Procedure Call_PostSync
+37901>>>>>        Send StoreDDOStates
+37902>>>>>    End_Procedure
+37903>>>>>    
+37903>>>>>    
+37903>>>>>    Procedure RegisterDDOStructure
+37905>>>>>        // Override to do nothing
+37905>>>>>    End_Procedure
+37906>>>>>    
+37906>>>>>    // Called by cWebDDOSync_mixin
+37906>>>>>    Function IsDynamicConstraints Returns Boolean
+37908>>>>>        Function_Return False
+37909>>>>>    End_Function
+37910>>>>>
+37910>>>>>    // Override to not check parent, widgets should be encapsulated - we don't want to bleed the view's DDO's into them
+37910>>>>>    Function Server Returns Integer
+37912>>>>>        Integer hoServer
+37912>>>>>        Get private_Server to hoServer
+37913>>>>>//        If (hoServer = 0) Begin
+37913>>>>>//            Function_Return (Locate_Server(parent(Self)))
+37913>>>>>//        End
+37913>>>>>        Function_Return hoServer
+37914>>>>>    End_Function  
+37915>>>>>
+37915>>>>>    Function Widget Returns Handle 
+37917>>>>>        Function_Return Self
+37918>>>>>    End_Function
+37919>>>>>
+37919>>>>>    Procedure End_Construct_Object
+37921>>>>>        Forward Send End_Construct_Object
+37923>>>>>        
+37923>>>>>        Send Attach_Deo_To_Server                       // Attach the DEO to the server DDs
+37924>>>>>        Broadcast Recursive Send Attach_Deo_To_Server   // Make Child DEO's attach to their server
+37926>>>>>        Broadcast Recursive Set In_Use_State to True    // Set each DDO's In_Use_State
+37928>>>>>        Send WriteDDOCache                              // Store a cache of the DDO objects
+37929>>>>>    End_Procedure
+37930>>>>>   
+37930>>>>>End_Class
+37931>>>
+37931>>>Composite oDummineDniValidation is a cWebWidget
+37935>>>
+37935>>>    // Your DDO structure will go here
+37935>>>
+37935>>>    Set piDefaultColSpan to 4
+37936>>>    Set piDefaultRowSpan to 5
+37937>>>    
+37937>>>    Set psWidgetName to "oDummineDniValidation"
+37938>>>    Set psWidgetCaption to "DummineDniValidation"
+37939>>>    Set psWidgetDescription to "My custom widget"
+37940>>>
+37940>>>    Set piColumnCount to 12
+37941>>>        
+37941>>>End_Composite
+37943>    Use DummieDni.wo
+Including file: DummieDni.wo    (C:\DataFlex Projects\Centros\AppSrc\DummieDni.wo)
+37943>>>Use cWebView.pkg
+37943>>>Use cWebPanel.pkg
+37943>>>Use cWebForm.pkg 
+37943>>>Use cWebButton.pkg
+37943>>>Use cWebSpacer.pkg
+37943>>>Use cWebLabel.pkg
+37943>>>
+37943>>>Use zDniValidation.pkg
+Including file: zDniValidation.pkg    (C:\DataFlex Projects\Centros\AppSrc\zDniValidation.pkg)
+37943>>>>>Function zDniValidation  String sDni  String ByRef sMsg Returns Boolean
+37946>>>>>    String sLetter sNumber 
+37946>>>>>    Boolean bRet
+37946>>>>>    
+37946>>>>>    Get zNieComprobation sDni to sDni
+37947>>>>>    
+37947>>>>>    Get zDniNumberComprobation sDni (&sMsg) to bRet
+37948>>>>>    If (not (bRet)) Function_Return False
+37951>>>>>    
+37951>>>>>    Move (Mid(sDni, 1 , 9)) to   sLetter
+37952>>>>>    Move (Mid(sDni, 8, 1 ))  to sNumber
+37953>>>>>    Move (Uppercase(sLetter)) to sLetter
+37954>>>>>
+37954>>>>>   
+37954>>>>>   Get zDniLetterComprobation sLetter sNumber (&sMsg) to bRet
+37955>>>>>   If (not (bRet)) Function_Return False
+37958>>>>>  Function_Return True
+37959>>>>>      
+37959>>>>>End_Function
+37960>>>>>
+37960>>>>>Function zNieComprobation String sDni Returns String 
+37963>>>>>
+37963>>>>>    
+37963>>>>>    
+37963>>>>>       If (Uppercase(sDni) matches "X????????" )  Begin
+37965>>>>>        Move ("0" + Mid (sDni, 8, 2)) to sDni
+37966>>>>>        Function_Return (sDni)
+37967>>>>>    End
+37967>>>>>>
+37967>>>>>       If (Uppercase(sDni) matches "Y????????" )  Begin
+37969>>>>>       
+37969>>>>>        Move ("1" + Mid (sDni, 8, 2)) to sDni
+37970>>>>>        Function_Return sDni
+37971>>>>>    End
+37971>>>>>>
+37971>>>>>     If (Uppercase(sDni) matches "Z????????" )  Begin
+37973>>>>>       
+37973>>>>>        Move ("2" + Mid (sDni, 8, 2)) to sDni
+37974>>>>>        Function_Return sDni
+37975>>>>>    End
+37975>>>>>>
+37975>>>>>   
+37975>>>>>    Function_Return sDni
+37976>>>>>End_Function
+37977>>>>>
+37977>>>>>
+37977>>>>>
+37977>>>>>Function zDniNumberComprobation String sDni String ByRef sMSg Returns Boolean
+37980>>>>>    String[] aRet
+37981>>>>>    Object oDnipattern is a cRegEx
+37983>>>>>        Set psExpression to "^[0-9]{8}[a-zA-Z]{1}+$"
+37984>>>>>    End_Object
+37985>>>>>    Get MatchAll of oDnipattern (sDni) to aRet
+37986>>>>>    If (SizeOfArray(aRet) = 1) Begin
+37988>>>>>        Function_Return True
+37989>>>>>    End
+37989>>>>>>
+37989>>>>>    
+37989>>>>>    Move "Porfavor Introduzca un formato de dni valido 8 digitos y una letra" to sMSg
+37990>>>>>    Function_Return False
+37991>>>>>End_Function
+37992>>>>>
+37992>>>>>
+37992>>>>>/**Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean    String sValidationLeter    Move "T,R,W,A,G,M,Y,F,P,D,X,B,N,J,Z,S,Q,V,H,L,C,K,E" to sValidationLeter     String[] aValidationLeter        Move (StrSplitToArray (sValidationLeter, ",")) to aValidationLeter    If (aValidationLeter[(Mod(Integer(sNumber), 23 ) )] = sLetter ) Begin        Function_Return True    End    Move "La letra no es coincidene con los numeros" to sMsg    Function_Return False    End_Function**/
+37992>>>>>
+37992>>>>>
+37992>>>>>Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean
+37995>>>>>    String sValidationLeter sTrueLetter
+37995>>>>>    Move "TRWAGMYFPDXBNJZSQVHLCKE" to sValidationLeter
+37996>>>>>
+37996>>>>>    
+37996>>>>>    Move (Mid(sValidationLeter, 1 , (Mod(Integer(sNumber), 23) + 1))) to sTrueLetter
+37997>>>>>    If (sTrueLetter = sLetter ) Begin
+37999>>>>>        Function_Return True
+38000>>>>>    End
+38000>>>>>>
+38000>>>>>    Move "La letra no es coincidene con los numeros" to sMsg
+38001>>>>>    Function_Return False
+38002>>>>>    
+38002>>>>>End_Function
+38003>>>
+38003>>>Object oDummieDni is a cWebView
+38005>>>    Set piWidth to 700
+38006>>>    Set psCaption to "DummieDni"
+38007>>>
+38007>>>    // Your DDO structure will go here
+38007>>>
+38007>>>    Object oWebMainPanel is a cWebPanel
+38009>>>        Set piColumnCount to 12
+38010>>>        
+38010>>>        // place controls here
+38010>>>        // Your view will grow as controls are added
+38010>>>        
+38010>>>        Object oForm_Dni is a cWebForm
+38012>>>            Set piColumnSpan to 0
+38013>>>            Set psLabel to "introduzca DNI"
+38014>>>        End_Object
+38015>>>
+38015>>>        Object oWebLabel_sMsg_Err is a cWebLabel
+38017>>>            Set psCaption to ""
+38018>>>            Set piColumnIndex to 0
+38019>>>            Set piColumnSpan to 12
+38020>>>        End_Object
+38021>>>
+38021>>>        Object oWebSpacer1 is a cWebSpacer
+38023>>>            Set piColumnSpan to 12
+38024>>>        End_Object
+38025>>>
+38025>>>        Object oValidationButton is a cWebButton
+38027>>>            Set piColumnSpan to 6
+38028>>>            Set psCaption to "Validar"
+38029>>>            Set piColumnIndex to 3
+38030>>>        
+38030>>>            Procedure OnClick
+38033>>>                Boolean bRet
+38033>>>                String sDni sMsg
+38033>>>                WebGet psValue of oForm_Dni to sDni
+38034>>>                Get zDniValidation sDni (&sMsg) to bRet
+38035>>>                
+38035>>>                WebSet psBackgroundColor of oForm_Dni to "#ffffff"
+38036>>>                WebSet psCaption of oWebLabel_sMsg_Err to ""
+38037>>>                
+38037>>>                If (bRet) Begin
+38039>>>                    WebSet psBackgroundColor of oForm_Dni to "green"
+38040>>>                    
+38040>>>                End
+38040>>>>
+38040>>>                If (not (bRet)) Begin
+38042>>>                    WebSet psBackgroundColor of oForm_Dni to "red"
+38043>>>                    WebSet psCaption of oWebLabel_sMsg_Err to sMsg
+38044>>>                End
+38044>>>>
+38044>>>                
+38044>>>                
+38044>>>            End_Procedure
+38045>>>        End_Object
+38046>>>        
+38046>>>    End_Object 
+38047>>>
+38047>>>End_Object
+38048>    Use ZoomAllStudents.wo
+Including file: ZoomAllStudents.wo    (C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo)
+38048>>>// C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
+38048>>>// Todos los estudiantes
+38048>>>//
+38048>>>
+38048>>>Use cWebView.pkg
+38048>>>Use cWebPanel.pkg
+38048>>>Use cWebMenuGroup.pkg
+38048>>>Use cWebMenuItem.pkg
+38048>>>Use cWebForm.pkg
+38048>>>Use cWebTabContainer.pkg
+38048>>>Use cWebTabPage.pkg
+38048>>>Use cWebCheckBox.pkg
+38048>>>
+38048>>>Use cCentrosDataDictionary.dd
+Including file: cCentrosDataDictionary.dd    (C:\DataFlex Projects\Centros\DDSrc\cCentrosDataDictionary.dd)
+38048>>>>>Use DataDict.pkg
+38048>>>>>
+38048>>>>>Open Centros
+Including file: Centros.fd    (C:\DataFlex Projects\Centros\DDSrc\Centros.fd)
+38050>>>>>Open Alumnos
+Including file: Alumnos.fd    (C:\DataFlex Projects\Centros\DDSrc\Alumnos.fd)
+38052>>>>>
+38052>>>>>Class cCentrosDataDictionary is a DataDictionary
+38053>>>>>    
+38053>>>>>    Procedure Construct_Object
+38055>>>>>        Forward Send Construct_Object
+38057>>>>>        Set Main_File to Centros.File_Number
+38058>>>>>
+38058>>>>>        Set Add_Client_File to Alumnos.File_Number
+38059>>>>>
+38059>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+38060>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+38061>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+38062>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+38063>>>>>
+38063>>>>>        Set Field_Mask_Type Field Centros.CodigoPostal to Mask_Numeric_Window
+38064>>>>>        
+38064>>>>>
+38064>>>>>
+38064>>>>>        Set Field_Mask_Type Field Centros.FechaCreacionRegistro to Mask_DateTime_Window
+38065>>>>>        Set Field_Option Field Centros.FechaCreacionRegistro DD_NOENTER to True
+38066>>>>>
+38066>>>>>        Set Field_Mask_Type Field Centros.FechaUltimaModificacion to Mask_DateTime_Window
+38067>>>>>        Set Field_Option Field Centros.FechaUltimaModificacion DD_NOENTER to True
+38068>>>>>       
+38068>>>>>         
+38068>>>>>
+38068>>>>>    End_Procedure
+38069>>>>>
+38069>>>>>    Procedure Field_Defaults
+38071>>>>>         DateTime dtCurrentDateTime
+38071>>>>>         
+38071>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
+38072>>>>>       
+38072>>>>>        Forward Send Field_Defaults
+38074>>>>>        Set Field_Changed_Value Field Centros.FechaCreacionRegistro to  dtCurrentDateTime 
+38075>>>>>        Set Field_Changed_Value Field Centros.FechaUltimaModificacion to  dtCurrentDateTime 
+38076>>>>>        
+38076>>>>>    End_Procedure
+38077>>>>>    
+38077>>>>>     Procedure Update
+38079>>>>>        Forward Send Update
+38081>>>>>        Move  (CurrentDateTime())  to Centros.FechaUltimaModificacion
+38082>>>>>    End_Procedure
+38083>>>>>
+38083>>>>>
+38083>>>>>End_Class
+38084>>>Use cAlumnosDataDictionary.dd
+Including file: cAlumnosDataDictionary.dd    (C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd)
+38084>>>>>Use DataDict.pkg
+38084>>>>>
+38084>>>>>Use zEmailValidation.pkg
+38084>>>>>
+38084>>>>>
+38084>>>>>Open Alumnos
+38086>>>>>Open Centros
+38088>>>>>
+38088>>>>>Register_Function zValidateErr_StudentEmail Integer iField Returns Boolean
+38088>>>>>
+38088>>>>>Object oGender is a DescriptionValidationTable
+38090>>>>>    Procedure Fill_List
+38093>>>>>        Forward Send Fill_List
+38095>>>>>        Send Add_Table_Value "H" "Hombre"
+38096>>>>>        Send Add_Table_Value "M" "Mujer"
+38097>>>>>        Send Add_Table_Value "N" "Prefiero no responder"
+38098>>>>>        Send Add_Table_Value "O" "Otro"
+38099>>>>>    End_Procedure
+38100>>>>>End_Object
+38101>>>>>
+38101>>>>>
+38101>>>>>
+38101>>>>>
+38101>>>>>Class cAlumnosDataDictionary is a DataDictionary
+38102>>>>>    
+38102>>>>>    Procedure Construct_Object
+38104>>>>>        Forward Send Construct_Object
+38106>>>>>        Set Main_File to Alumnos.File_Number
+38107>>>>>
+38107>>>>>        Set Add_Server_File to Centros.File_Number
+38108>>>>>
+38108>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+38109>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+38110>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+38111>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+38112>>>>>
+38112>>>>>        Set Field_Option Field Alumnos.AlumnosId DD_REQUIRED to True
+38113>>>>>
+38113>>>>>        Set Field_Class_Name Field Alumnos.Sexo to "Combo"
+38114>>>>>        Set Field_Value_Table Field Alumnos.Sexo to oGender
+38115>>>>>
+38115>>>>>        Set Field_Mask_Type Field Alumnos.CodigoPostal to Mask_Numeric_Window
+38116>>>>>        
+38116>>>>>
+38116>>>>>
+38116>>>>>        Set Field_Mask_Type Field Alumnos.FechaCreacionRegistro to Mask_DateTime_Window
+38117>>>>>        Set Field_Option Field Alumnos.FechaCreacionRegistro DD_NOENTER to True
+38118>>>>>
+38118>>>>>        Set Field_Mask_Type Field Alumnos.FechaUltimaModificacion to Mask_DateTime_Window
+38119>>>>>        Set Field_Option Field Alumnos.FechaUltimaModificacion DD_NOENTER to True
+38120>>>>>        Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
+38121>>>>>
+38121>>>>>    End_Procedure
+38122>>>>>
+38122>>>>>
+38122>>>>>
+38122>>>>>    Function zValidateErr_StudentEmail Integer iField Returns Boolean
+38124>>>>>        Boolean bret
+38124>>>>>        String sEmail sMsg
+38124>>>>>        Get Field_Current_Value Field Alumnos.Email to sEmail
+38125>>>>>        Get zValidarEmail sEmail (&sMsg) to bret
+38126>>>>>        If (not (bret)) Begin
+38128>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
+38129>>>>>        Function_Return bret        
+38130>>>>>        End
+38130>>>>>>
+38130>>>>>    End_Function
+38131>>>>>                
+38131>>>>>  
+38131>>>>>  
+38131>>>>>    Procedure Field_Defaults
+38133>>>>>         DateTime dtCurrentDateTime
+38133>>>>>         
+38133>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
+38134>>>>>       
+38134>>>>>        Forward Send Field_Defaults
+38136>>>>>        Set Field_Changed_Value Field Alumnos.FechaCreacionRegistro to  dtCurrentDateTime
+38137>>>>>        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime 
+38138>>>>>    End_Procedure
+38139>>>>>
+38139>>>>>    Procedure Update
+38141>>>>>        Forward Send Update
+38143>>>>>        
+38143>>>>>         DateTime dtCurrentDateTime
+38143>>>>>         
+38143>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
+38144>>>>>       
+38144>>>>>        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime
+38145>>>>>        
+38145>>>>>    End_Procedure
+38146>>>>>
+38146>>>>>
+38146>>>>>End_Class
+38147>>>
+38147>>>Object oZoomAllStudents is a cWebView
+38149>>>    Set piColumnCount to 12
+38150>>>    Set psCaption to "Todos los estudiantes"
+38151>>>    Set peWebViewStyle to wvsDrilldown
+38152>>>    Set peViewType to vtZoom
+38153>>>    Set pbShowCaption to False
+38154>>>    Set Verify_Save_Msg to 0
+38155>>>    Set piMaxWidth to 1024
+38156>>>
+38156>>>    Object oCentros_DD is a cCentrosDataDictionary
+38158>>>    End_Object 
+38159>>>
+38159>>>    Object oAlumnos_DD is a cAlumnosDataDictionary
+38161>>>        Set DDO_Server To oCentros_DD
+38162>>>    End_Object 
+38163>>>
+38163>>>    Set Main_DD To oAlumnos_DD
+38164>>>    Set Server  To oAlumnos_DD
+38165>>>
+38165>>>
+38165>>>    Object oWebMainPanel is a cWebPanel
+38167>>>        Set piColumnCount to 12
+38168>>>        WebSetResponsive piColumnCount rmMobile to 4
+38169>>>
+38169>>>        Object oAlumnosNombre is a cWebForm
+38171>>>            Entry_Item Alumnos.Nombre
+38172>>>            Set piColumnSpan to 6
+38173>>>            Set piColumnIndex to 0
+38174>>>            Set peLabelPosition to lpTop
+38175>>>            Set psLabel to "Nombre"
+38176>>>        End_Object 
+38177>>>
+38177>>>        Object oAlumnosApellidos is a cWebForm
+38179>>>            Entry_Item Alumnos.Apellidos
+38180>>>            Set piColumnSpan to 6
+38181>>>            Set piColumnIndex to 6
+38182>>>            Set peLabelPosition to lpTop
+38183>>>            Set psLabel to "Apellidos"
+38184>>>        End_Object 
+38185>>>
+38185>>>        Object oWebTabContainer is a cWebTabContainer
+38187>>>            Set pbFillHeight to True
+38188>>>            Set piColumnSpan to 12
+38189>>>            Set pbShowLabel to False
+38190>>>
+38190>>>            Object oPage1 is a cWebTabPage
+38192>>>                Set piColumnCount to 12
+38193>>>                Set psCaption to "información Personal"
+38194>>>                WebSetResponsive piColumnCount rmMobile to 4
+38195>>>
+38195>>>                Object oAlumnosNumeroTelefono is a cWebForm
+38197>>>                    Entry_Item Alumnos.NumeroTelefono
+38198>>>                    Set piColumnSpan to 3
+38199>>>                    Set piColumnIndex to 0
+38200>>>                    Set peLabelPosition to lpTop
+38201>>>                    Set psLabel to "Numero Telefono"
+38202>>>                End_Object 
+38203>>>
+38203>>>                Object oAlumnosDni is a cWebForm
+38205>>>                    Entry_Item Alumnos.Dni
+38206>>>                    Set piColumnSpan to 2
+38207>>>                    Set piColumnIndex to 4
+38208>>>                    Set peLabelPosition to lpTop
+38209>>>                    Set psLabel to "Dni"
+38210>>>                End_Object 
+38211>>>
+38211>>>                Object oAlumnosSexo is a cWebCombo
+38213>>>                    Entry_Item Alumnos.Sexo
+38214>>>                    Set piColumnSpan to 3
+38215>>>                    Set piColumnIndex to 7
+38216>>>                    Set psCaption to "Sexo"
+38217>>>                    Set pbShowLabel to True
+38218>>>                    Set peLabelPosition to lpTop
+38219>>>                    Set psLabel to "Género"
+38220>>>                End_Object 
+38221>>>
+38221>>>                Object oAlumnosEmail is a cWebForm
+38223>>>             
+38223>>>                    Entry_Item Alumnos.Email
+38224>>>                    Set piColumnSpan to 12
+38225>>>                    Set piColumnIndex to 0
+38226>>>                    Set peLabelPosition to lpTop
+38227>>>                    Set psLabel to "Email"
+38228>>>                End_Object 
+38229>>>            End_Object 
+38230>>>
+38230>>>            Object oPage2 is a cWebTabPage
+38232>>>                Set piColumnCount to 12
+38233>>>                Set psCaption to "Ubicación"
+38234>>>                WebSetResponsive piColumnCount rmMobile to 4
+38235>>>
+38235>>>                Object oAlumnosPais is a cWebCombo
+38237>>>                    Entry_Item Alumnos.Pais
+38238>>>                    Set piColumnSpan to 3
+38239>>>                    Set piColumnIndex to 0
+38240>>>                    Set peLabelPosition to lpTop
+38241>>>                    Set psLabel to "Pais"
+38242>>>                    
+38242>>>                    Set pbServerOnChange to True
+38243>>>                    
+38243>>>                    String[][] aResultsPaises
+38243>>>
+38243>>>                    Procedure OnFill
+38246>>>                    Integer inumPaises i
+38246>>>                        Forward Send OnFill
+38248>>>                        
+38248>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre                            FROM Centros.dbo.Country;" to aResultsPaises
+38249>>>                            
+38249>>>                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+38250>>>                        If (not(Err)) Begin
+38252>>>                             For i from 0 to (inumPaises - 1)
+38258>>>>
+38258>>>                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+38259>>>                             Loop
+38260>>>>
+38260>>>                        End
+38260>>>>
+38260>>>                     
+38260>>>                        
+38260>>>                        
+38260>>>                    End_Procedure
+38261>>>
+38261>>>                    Procedure OnChange String sNewValue String sOldValue
+38264>>>                        Forward Send OnChange sNewValue sOldValue
+38266>>>                        WebSet psValue of oAlumnosComunidadAutonoma to ""
+38267>>>                        WebSet psValue of oAlumnosLocalidad to ""
+38268>>>                       Send Refill of oAlumnosComunidadAutonoma 
+38269>>>                    End_Procedure
+38270>>>
+38270>>>                    
+38270>>>                    
+38270>>>
+38270>>>
+38270>>>                End_Object 
+38271>>>
+38271>>>                Object oAlumnosComunidadAutonoma is a cWebCombo
+38273>>>                    Entry_Item Alumnos.ComunidadAutonoma
+38274>>>                    Set piColumnSpan to 3
+38275>>>                    Set piColumnIndex to 4
+38276>>>                    Set peLabelPosition to lpTop
+38277>>>                    Set psLabel to "Comunidad Autonoma"
+38278>>>                    Set pbServerOnChange to True
+38279>>>                    
+38279>>>                    
+38279>>>                    Procedure OnFill
+38282>>>                        Forward Send OnFill
+38284>>>                        String  sPaisElegido sSQL
+38284>>>                        Integer  inumComunidadAutonoma  i
+38284>>>                        String[][]  aResults
+38285>>>                 
+38285>>>                        WebGet psValue of oAlumnosPais to sPaisElegido                   
+38286>>>                        If (sPaisElegido = "") Procedure_Return
+38289>>>                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
+38290>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+38291>>>                                                
+38291>>>                        If (not(Err)) Begin
+38293>>>                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
+38294>>>                            For i from 0 to (inumComunidadAutonoma - 1)
+38300>>>>
+38300>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+38301>>>                            Loop
+38302>>>>
+38302>>>                        End                        
+38302>>>>
+38302>>>                    End_Procedure
+38303>>>                    
+38303>>>                    Procedure OnChange String sNewValue String sOldValue
+38306>>>                        Forward Send OnChange sNewValue sOldValue
+38308>>>                        Send Refill of oAlumnosLocalidad 
+38309>>>                        WebSet psValue of oAlumnosLocalidad to ""
+38310>>>                    End_Procedure    
+38311>>>                    
+38311>>>                End_Object 
+38312>>>
+38312>>>                Object oAlumnosLocalidad is a cWebCombo
+38314>>>                    Entry_Item Alumnos.Localidad
+38315>>>                    Set piColumnSpan to 4
+38316>>>                    Set piColumnIndex to 8
+38317>>>                    Set peLabelPosition to lpTop
+38318>>>                    Set psLabel to "Localidad"
+38319>>>                    
+38319>>>                    Procedure OnFill
+38322>>>                        Forward Send OnFill
+38324>>>                        String  sComunidadAutonomaElegida sSQL
+38324>>>                        Integer  inumProvincia  i
+38324>>>                        String[][]  aResults
+38325>>>                 
+38325>>>                        WebGet psValue of oAlumnosComunidadAutonoma to sComunidadAutonomaElegida                   
+38326>>>                        If (sComunidadAutonomaElegida = "") Procedure_Return
+38329>>>                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
+38330>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+38331>>>                                                
+38331>>>                        If (not(Err)) Begin
+38333>>>                            Move (SizeOfArray(aResults)) to inumProvincia    
+38334>>>                            For i from 0 to (inumProvincia - 1)
+38340>>>>
+38340>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+38341>>>                            Loop
+38342>>>>
+38342>>>                        End                        
+38342>>>>
+38342>>>                    End_Procedure
+38343>>>                    
+38343>>>                    
+38343>>>                End_Object 
+38344>>>
+38344>>>                Object oAlumnosDirreccion is a cWebForm
+38346>>>                    Entry_Item Alumnos.Dirreccion
+38347>>>                    Set piColumnSpan to 7
+38348>>>                    Set piColumnIndex to 0
+38349>>>                    Set peLabelPosition to lpTop
+38350>>>                    Set psLabel to "Dirreccion"
+38351>>>                End_Object 
+38352>>>
+38352>>>                Object oAlumnosCodigoPostal is a cWebForm
+38354>>>                    Entry_Item Alumnos.CodigoPostal
+38355>>>                    Set piColumnSpan to 2
+38356>>>                    Set piColumnIndex to 8
+38357>>>                    Set peLabelPosition to lpTop
+38358>>>                    Set psLabel to "Codigo Postal"
+38359>>>                End_Object 
+38360>>>
+38360>>>                Object oCentrosId is a cWebForm
+38362>>>                    Entry_Item Centros.Id
+38363>>>                    Set piColumnSpan to 2
+38364>>>                    Set piColumnIndex to 10
+38365>>>                    Set peLabelPosition to lpTop
+38366>>>                    Set psLabel to "id del Centro "
+38367>>>                    Set pbPromptButton to True
+38368>>>
+38368>>>// ToDo: Fill in the from-child parent Select view object name for navigate forward
+38368>>>                    WebRegisterPath ntNavigateForward oSelectCentro
+38374>>>
+38374>>>                    Procedure OnPrompt
+38377>>>                        Send NavigatePath
+38378>>>                        
+38378>>>                        
+38378>>>                        
+38378>>>                    End_Procedure
+38379>>>                End_Object 
+38380>>>            End_Object 
+38381>>>
+38381>>>            Object oPage3 is a cWebTabPage
+38383>>>                Set piColumnCount to 12
+38384>>>                Set psCaption to "Registros"
+38385>>>                WebSetResponsive piColumnCount rmMobile to 4
+38386>>>
+38386>>>                Object oAlumnosFechaCreacionRegistro is a cWebForm
+38388>>>                    Entry_Item Alumnos.FechaCreacionRegistro
+38389>>>                    Set piColumnSpan to 3
+38390>>>                    Set piColumnIndex to 0
+38391>>>                    Set peLabelPosition to lpTop
+38392>>>                    Set psLabel to "Fecha de creacion del registro"
+38393>>>                End_Object 
+38394>>>
+38394>>>                Object oAlumnosFechaUltimaModificacion is a cWebForm
+38396>>>                    Entry_Item Alumnos.FechaUltimaModificacion
+38397>>>                    Set piColumnSpan to 3
+38398>>>                    Set piColumnIndex to 3
+38399>>>                    Set peLabelPosition to lpTop
+38400>>>                    Set psLabel to "Fecha ultima modificacion"
+38401>>>                End_Object 
+38402>>>            End_Object 
+38403>>>        End_Object 
+38404>>>    End_Object 
+38405>>>
+38405>>>    Object oActionGroup is a cWebMenuGroup
+38407>>>
+38407>>>        Object oSaveBtn is a cWebMenuItem
+38409>>>            Set psCSSClass to "WebSaveMenuItem"
+38410>>>            Set psCaption to "Save"
+38411>>>
+38411>>>            Procedure OnClick
+38414>>>                Send Request_Save
+38415>>>            End_Procedure
+38416>>>
+38416>>>        End_Object 
+38417>>>
+38417>>>        Object oEditBtn is a cWebMenuItem
+38419>>>            Set psCSSClass to "WebEditMenuItem"
+38420>>>            Set psCaption to "Edit"
+38421>>>            Procedure OnClick
+38424>>>                Send ChangeEditMode True
+38425>>>                Send SetActionButtons
+38426>>>            End_Procedure
+38427>>>
+38427>>>        End_Object 
+38428>>>
+38428>>>        Object oDeleteBtn is a cWebMenuItem
+38430>>>            Set psCSSClass to "WebDeleteMenuItem"
+38431>>>            Set psCaption to "Delete"
+38432>>>            Set peActionDisplay to adMenu
+38433>>>
+38433>>>            Procedure OnClick
+38436>>>                Send Request_Delete
+38437>>>            End_Procedure
+38438>>>
+38438>>>        End_Object 
+38439>>>
+38439>>>        Object oCancelChangesBtn is a cWebMenuItem
+38441>>>            Set psCSSClass to "WebIcon_Refresh"
+38442>>>            Set psCaption to "Clear Changes"
+38443>>>            Set peActionDisplay to adMenu
+38444>>>            Procedure OnClick
+38447>>>                Send RefreshRecord
+38448>>>            End_Procedure
+38449>>>
+38449>>>        End_Object 
+38450>>>    End_Object 
+38451>>>
+38451>>>    Procedure SetActionButtons
+38454>>>        tWebNavigateData NavigateData
+38454>>>        tWebNavigateData NavigateData
+38454>>>        Boolean bHasRecord
+38454>>>        Handle hoDD
+38454>>>
+38454>>>        Get Server to hoDD
+38455>>>        Get GetNavigateData to NavigateData
+38456>>>        Get HasRecord of hoDD to bHasRecord
+38457>>>
+38457>>>        // let's hide all buttons and then Show the ones we want
+38457>>>        WebSet pbRender of oEditBtn to False
+38458>>>        WebSet pbRender of oSaveBtn to False
+38459>>>        WebSet pbRender of oCancelChangesBtn to False
+38460>>>        WebSet pbRender of oDeleteBtn to False
+38461>>>
+38461>>>        If (NavigateData.bReadOnly) Begin
+38463>>>            WebSet pbRender of oEditBtn to True
+38464>>>        End
+38464>>>>
+38464>>>        Else Begin
+38465>>>            WebSet pbRender of oSaveBtn to True
+38466>>>            WebSet pbRender of oCancelChangesBtn to True
+38467>>>            WebSet pbRender of oDeleteBtn to bHasRecord
+38468>>>        End
+38468>>>>
+38468>>>    End_Procedure
+38469>>>
+38469>>>    Procedure OnViewSaved Handle hoServer Boolean bChanged
+38472>>>        // Close after save
+38472>>>        Send NavigateClose Self
+38473>>>    End_Procedure
+38474>>>
+38474>>>    // this will close the view after a delete
+38474>>>    Procedure OnViewDeleted Handle hoDDO
+38477>>>        Send NavigateClose Self
+38478>>>    End_Procedure
+38479>>>
+38479>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+38482>>>        Case Begin
+38482>>>            Case (NavigateData.eNavigateType = nfFromMain)
+38484>>>                // If from main, this is a propbably a main file Select to Zoom.
+38484>>>                Case Break
+38485>>>
+38485>>>            Case (NavigateData.eNavigateType = nfFromParent)
+38488>>>                // If from parent, this is a constrained drill down.
+38488>>>                Case Break
+38489>>>
+38489>>>            Case (NavigateData.eNavigateType = nfFromChild)
+38492>>>                // If from child, this is a probably a parent Zoom from a Zoom.
+38492>>>                Case Break
+38493>>>
+38493>>>            Case Else // must be nfUndefined
+38493>>>
+38493>>>        Case End
+38493>>>
+38493>>>        Send SetActionButtons
+38494>>>
+38494>>>    End_Procedure
+38495>>>
+38495>>>End_Object 
+38496>    Use SelectStudents.wo
+Including file: SelectStudents.wo    (C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo)
+38496>>>// C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo
+38496>>>// Students
+38496>>>//
+38496>>>
+38496>>>Use cWebView.pkg
+38496>>>Use cWebList.pkg
+38496>>>Use cWebMenuGroup.pkg
+38496>>>Use cWebMenuItem.pkg
+38496>>>Use cWebColumnButton.pkg
+38496>>>Use cWebColumn.pkg
+38496>>>Use ZoomAllStudents.wo
+38496>>>
+38496>>>Use cCentrosDataDictionary.dd
+38496>>>Use cAlumnosDataDictionary.dd
+38496>>>
+38496>>>Object oSelectStudents is a cWebView
+38498>>>    Set psCaption to "Students"
+38499>>>    Set peWebViewStyle to wvsDrilldown
+38500>>>    Set peViewType to vtSelect
+38501>>>    Set piColumnCount to 12
+38502>>>    Set pbShowCaption to False
+38503>>>    Set piMaxWidth to 1024
+38504>>>
+38504>>>    Object oCentros_DD is a cCentrosDataDictionary
+38506>>>    End_Object 
+38507>>>
+38507>>>    Object oAlumnos_DD is a cAlumnosDataDictionary
+38509>>>        Set DDO_Server To oCentros_DD
+38510>>>    End_Object 
+38511>>>
+38511>>>    Set Main_DD To oAlumnos_DD
+38512>>>    Set Server  To oAlumnos_DD
+38513>>>
+38513>>>
+38513>>>    Object oList is a cWebList
+38515>>>        Set piColumnSpan to 0
+38516>>>        Set psCSSClass to "MobileList"
+38517>>>        Set pbServerOnRowClick to True
+38518>>>        Set pbFillHeight to True
+38519>>>        Set pbShowHeader to False
+38520>>>        Set piSortColumn to 0
+38521>>>
+38521>>>        Object oAlumnosNombre is a cWebColumn
+38523>>>            Entry_Item Alumnos.Nombre
+38524>>>            Set psCaption to "Alumnos.Nombre"
+38525>>>            Set piWidth to 1000
+38526>>>        End_Object 
+38527>>>
+38527>>>        Object oAlumnosApellidos is a cWebColumn
+38529>>>            Entry_Item Alumnos.Apellidos
+38530>>>            Set psCaption to "Alumnos.Apellidos"
+38531>>>            Set piWidth to 1000
+38532>>>        End_Object 
+38533>>>
+38533>>>        Object oDetailButton is a cWebColumnButton
+38535>>>            Set psCaption to "btn"
+38536>>>            Set piWidth to 45
+38537>>>            Set pbFixedWidth to True
+38538>>>            Set pbResizable to False
+38539>>>            Set piListRowSpan to 2
+38540>>>            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
+38541>>>            Set peAlign to alignRight
+38542>>>
+38542>>>            WebRegisterPath ntNavigateForward oZoomAllStudents
+38548>>>
+38548>>>            Procedure OnClick
+38551>>>                Send NavigatePath
+38552>>>            End_Procedure
+38553>>>
+38553>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38556>>>                Move True to NavigateData.bReadOnly
+38557>>>            End_Procedure
+38558>>>
+38558>>>        End_Object 
+38559>>>
+38559>>>        Object oAlumnosDni is a cWebColumn
+38561>>>            Entry_Item Alumnos.Dni
+38562>>>            Set psCaption to "Alumnos.Dni"
+38563>>>            Set piWidth to 100
+38564>>>            Set pbNewLine to True
+38565>>>            Set psCSSClass to "RowDetail"
+38566>>>        End_Object 
+38567>>>
+38567>>>        Object oCentrosId is a cWebColumn
+38569>>>            Entry_Item Centros.Id
+38570>>>            Set psCaption to "Alumnos.CentrosId"
+38571>>>            Set piWidth to 100
+38572>>>            Set psCSSClass to "RowDetail"
+38573>>>        End_Object 
+38574>>>
+38574>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+38574>>>//        WebRegisterPath ntNavigateForward oSelectView
+38574>>>
+38574>>>        Procedure OnRowClick String sRowId
+38577>>>            tWebNavigateData NavigateData
+38577>>>            tWebNavigateData NavigateData
+38577>>>            Get GetNavigateData to NavigateData
+38578>>>
+38578>>>            Case Begin
+38578>>>                Case (NavigateData.eNavigateType = nfFromParent)
+38580>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+38580>>>Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+38581>>>>
+38581>>>//                    Send NavigateForward of oSelectView Self
+38581>>>                    Case Break
+38582>>>
+38582>>>                Case (NavigateData.eNavigateType = nfFromChild)
+38585>>>                    Send NavigateClose Self
+38586>>>                    Case Break
+38587>>>
+38587>>>                Case (NavigateData.eNavigateType = nfFromMain)
+38590>>>                    Send NavigateClose Self
+38591>>>                    Case Break
+38592>>>
+38592>>>                Case Else // must be nfUndefined
+38592>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+38592>>>Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+38593>>>>
+38593>>>//                    Send NavigateForward of oSelectView Self
+38593>>>
+38593>>>            Case End
+38593>>>        End_Procedure
+38594>>>
+38594>>>        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38597>>>            Move True to NavigateData.bReadOnly
+38598>>>        End_Procedure
+38599>>>
+38599>>>    End_Object 
+38600>>>
+38600>>>    Object oActionGroup is a cWebMenuGroup
+38602>>>
+38602>>>        Object oSearch is a cWebMenuItem
+38604>>>            Set psCSSClass to "WebPromptMenuItem"
+38605>>>            Set psCaption to "Search"
+38606>>>
+38606>>>            Procedure OnClick
+38609>>>                Send Search of oList
+38610>>>            End_Procedure
+38611>>>
+38611>>>        End_Object 
+38612>>>
+38612>>>        Object oNewButton is a cWebMenuItem
+38614>>>            Set psCSSClass to "WebClearMenuItem"
+38615>>>            Set psCaption to "New"
+38616>>>
+38616>>>            WebRegisterPath ntNavigateForward oZoomAllStudents
+38622>>>
+38622>>>            Procedure OnClick
+38625>>>                Send NavigatePath
+38626>>>            End_Procedure
+38627>>>
+38627>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38630>>>                Move True to NavigateData.bNewRecord
+38631>>>            End_Procedure
+38632>>>
+38632>>>        End_Object 
+38633>>>    End_Object 
+38634>>>
+38634>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+38637>>>        WebSet pbRender of oNewButton to True
+38638>>>        WebSet pbRender of oDetailButton to True
+38639>>>
+38639>>>        Case Begin
+38639>>>            Case (NavigateData.eNavigateType = nfFromParent)
+38641>>>                // If from parent, this is a constrained drill down
+38641>>>                Case Break
+38642>>>
+38642>>>            Case (NavigateData.eNavigateType = nfFromChild)
+38645>>>                // If from child, this is a probably a parent lookup from a Zoom
+38645>>>                Case Break
+38646>>>
+38646>>>            Case (NavigateData.eNavigateType = nfFromMain)
+38649>>>                // If from main, this is a probably a main-file lookup from a Zoom
+38649>>>                WebSet pbRender of oDetailButton to False
+38650>>>                Case Break
+38651>>>
+38651>>>            Case Else // must be nfUndefined
+38651>>>                // This may be the start of a drilldown query or this may be used for some kind of custom query.
+38651>>>
+38651>>>        Case End
+38651>>>
+38651>>>    End_Procedure
+38652>>>
+38652>>>
+38652>>>End_Object 
+38653>    Use ZoomCentros.wo
+Including file: ZoomCentros.wo    (C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo)
+38653>>>// C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo
+38653>>>// Centros
+38653>>>//
+38653>>>
+38653>>>Use cWebView.pkg
+38653>>>Use cWebPanel.pkg
+38653>>>Use cWebMenuGroup.pkg
+38653>>>Use cWebMenuItem.pkg
+38653>>>Use cWebForm.pkg
+38653>>>Use cWebTabContainer.pkg
+38653>>>Use cWebTabPage.pkg
+38653>>>
+38653>>>Use cCentrosDataDictionary.dd
+38653>>>
+38653>>>Object oZoomCentros is a cWebView
+38655>>>    Set piColumnCount to 12
+38656>>>    Set psCaption to "Centros"
+38657>>>    Set peWebViewStyle to wvsDrilldown
+38658>>>    Set peViewType to vtZoom
+38659>>>    Set pbShowCaption to False
+38660>>>    Set Verify_Save_Msg to 0
+38661>>>    Set piMaxWidth to 1024
+38662>>>
+38662>>>    Object oCentros_DD is a cCentrosDataDictionary
+38664>>>    End_Object 
+38665>>>
+38665>>>    Set Main_DD To oCentros_DD
+38666>>>    Set Server  To oCentros_DD
+38667>>>
+38667>>>
+38667>>>    Object oWebMainPanel is a cWebPanel
+38669>>>        Set piColumnCount to 12
+38670>>>        WebSetResponsive piColumnCount rmMobile to 4
+38671>>>
+38671>>>        Object oCentrosNombre is a cWebForm
+38673>>>            Entry_Item Centros.Nombre
+38674>>>            Set piColumnSpan to 6
+38675>>>            Set piColumnIndex to 0
+38676>>>            Set peLabelPosition to lpTop
+38677>>>            Set psLabel to "Nombre"
+38678>>>        End_Object 
+38679>>>
+38679>>>        Object oCentrosPsNombre is a cWebForm
+38681>>>            Entry_Item Centros.PsNombre
+38682>>>            Set piColumnSpan to 6
+38683>>>            Set piColumnIndex to 6
+38684>>>            Set peLabelPosition to lpTop
+38685>>>            Set psLabel to "PsNombre"
+38686>>>        End_Object 
+38687>>>
+38687>>>        Object oCentrosEmpresa is a cWebForm
+38689>>>            Entry_Item Centros.Empresa
+38690>>>            Set piColumnSpan to 8
+38691>>>            Set piColumnIndex to 0
+38692>>>            Set peLabelPosition to lpTop
+38693>>>            Set psLabel to "Empresa"
+38694>>>        End_Object 
+38695>>>
+38695>>>        Object oWebTabContainer is a cWebTabContainer
+38697>>>            Set pbFillHeight to True
+38698>>>            Set piColumnSpan to 12
+38699>>>            Set pbShowLabel to False
+38700>>>
+38700>>>            Object oPage1 is a cWebTabPage
+38702>>>                Set piColumnCount to 12
+38703>>>                Set psCaption to "Ubicación"
+38704>>>                WebSetResponsive piColumnCount rmMobile to 4
+38705>>>
+38705>>>                Object oCentrosPais is a cWebCombo
+38707>>>                    Entry_Item Centros.Pais
+38708>>>                    Set piColumnSpan to 4
+38709>>>                    Set piColumnIndex to 0
+38710>>>                    Set peLabelPosition to lpTop
+38711>>>                    Set psLabel to "Pais"
+38712>>>                    Set pbServerOnChange to True
+38713>>>//                    
+38713>>>//                    String[][] aResultsPaises
+38713>>>
+38713>>>                    Procedure OnFill
+38716>>>                    Integer inumPaises i
+38716>>>                        Forward Send OnFill
+38718>>>                        
+38718>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre                            from Centros.dbo.Country;" to aResultsPaises
+38719>>>                            
+38719>>>                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+38720>>>                        If (not(Err)) Begin
+38722>>>                             For i from 0 to (inumPaises - 1)
+38728>>>>
+38728>>>                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+38729>>>                             Loop
+38730>>>>
+38730>>>                        End
+38730>>>>
+38730>>>                     
+38730>>>                        
+38730>>>                        
+38730>>>                    End_Procedure
+38731>>>
+38731>>>                    Procedure OnChange String sNewValue String sOldValue
+38734>>>                        Forward Send OnChange sNewValue sOldValue
+38736>>>                        WebSet psValue of oCentrosComunidadAutonoma to ""
+38737>>>                        WebSet psValue of oCentrosLocalidad to ""
+38738>>>                       Send Refill of oCentrosComunidadAutonoma 
+38739>>>                    End_Procedure
+38740>>>
+38740>>>                    
+38740>>>                    
+38740>>>                End_Object 
+38741>>>
+38741>>>                Object oCentrosComunidadAutonoma is a cWebCombo
+38743>>>                    Entry_Item Centros.ComunidadAutonoma                   
+38744>>>                    Set piColumnSpan to 4
+38745>>>                    Set piColumnIndex to 4
+38746>>>                    Set peLabelPosition to lpTop
+38747>>>                    Set psLabel to "Comunidad Autonoma"
+38748>>>                    Set pbServerOnChange to True
+38749>>>                    
+38749>>>                    
+38749>>>                    Procedure OnFill
+38752>>>                        Forward Send OnFill
+38754>>>                        String  sPaisElegido sSQL
+38754>>>                        Integer  inumComunidadAutonoma  i
+38754>>>                        String[][]  aResults
+38755>>>                 
+38755>>>                        WebGet psValue of oCentrosPais to sPaisElegido                   
+38756>>>                        If (sPaisElegido = "") Procedure_Return
+38759>>>                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
+38760>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+38761>>>                                                
+38761>>>                        If (not(Err)) Begin
+38763>>>                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
+38764>>>                            For i from 0 to (inumComunidadAutonoma - 1)
+38770>>>>
+38770>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+38771>>>                            Loop
+38772>>>>
+38772>>>                        End                        
+38772>>>>
+38772>>>                    End_Procedure
+38773>>>                    
+38773>>>                    Procedure OnChange String sNewValue String sOldValue
+38776>>>                        Forward Send OnChange sNewValue sOldValue
+38778>>>                        Send Refill of oCentrosLocalidad 
+38779>>>                        WebSet psValue of oCentrosLocalidad to ""
+38780>>>                    End_Procedure    
+38781>>>                    
+38781>>>                    
+38781>>>                End_Object 
+38782>>>
+38782>>>                Object oCentrosLocalidad is a cWebCombo
+38784>>>                    Entry_Item Centros.Localidad
+38785>>>                    Set piColumnSpan to 4
+38786>>>                    Set piColumnIndex to 8
+38787>>>                    Set peLabelPosition to lpTop
+38788>>>                    Set psLabel to "Provincia"
+38789>>>                    Set pbServerOnChange to True
+38790>>>                    
+38790>>>                    
+38790>>>                    Procedure OnFill
+38793>>>                        Forward Send OnFill
+38795>>>                        String  sComunidadAutonomaElegida sSQL
+38795>>>                        Integer  inumProvincia  i
+38795>>>                        String[][]  aResults
+38796>>>                 
+38796>>>                        WebGet psValue of oCentrosComunidadAutonoma to sComunidadAutonomaElegida                   
+38797>>>                        If (sComunidadAutonomaElegida = "") Procedure_Return
+38800>>>                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
+38801>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+38802>>>                                                
+38802>>>                        If (not(Err)) Begin
+38804>>>                            Move (SizeOfArray(aResults)) to inumProvincia    
+38805>>>                            For i from 0 to (inumProvincia - 1)
+38811>>>>
+38811>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+38812>>>                            Loop
+38813>>>>
+38813>>>                        End                        
+38813>>>>
+38813>>>                    End_Procedure
+38814>>>            
+38814>>>                End_Object 
+38815>>>
+38815>>>                Object oCentrosDireccion is a cWebForm
+38817>>>                    Entry_Item Centros.Direccion
+38818>>>                    Set piColumnSpan to 9
+38819>>>                    Set piColumnIndex to 0
+38820>>>                    Set peLabelPosition to lpTop
+38821>>>                    Set psLabel to "Direccion"
+38822>>>                End_Object 
+38823>>>
+38823>>>                Object oCentrosCodigoPostal is a cWebForm
+38825>>>                    Entry_Item Centros.CodigoPostal
+38826>>>                    Set piColumnSpan to 2
+38827>>>                    Set piColumnIndex to 9
+38828>>>                    Set peLabelPosition to lpTop
+38829>>>                    Set psLabel to "Codigo Postal"
+38830>>>                End_Object 
+38831>>>            End_Object 
+38832>>>
+38832>>>            Object oPage2 is a cWebTabPage
+38834>>>                Set piColumnCount to 12
+38835>>>                Set psCaption to "Datos de Registro"
+38836>>>                WebSetResponsive piColumnCount rmMobile to 4
+38837>>>
+38837>>>                Object oCentrosFechaCreacionRegistro is a cWebForm
+38839>>>                    Entry_Item Centros.FechaCreacionRegistro
+38840>>>                    Set piColumnSpan to 3
+38841>>>                    Set piColumnIndex to 0
+38842>>>                    Set peLabelPosition to lpTop
+38843>>>                    Set psLabel to "Fecha de creacion del registro"
+38844>>>                End_Object 
+38845>>>
+38845>>>                Object oCentrosFechaUltimaModificacion is a cWebForm
+38847>>>                    Entry_Item Centros.FechaUltimaModificacion
+38848>>>                    Set piColumnSpan to 3
+38849>>>                    Set piColumnIndex to 3
+38850>>>                    Set peLabelPosition to lpTop
+38851>>>                    Set psLabel to "Fecha ultima de la modificacion"
+38852>>>                End_Object 
+38853>>>            End_Object 
+38854>>>        End_Object 
+38855>>>    End_Object 
+38856>>>
+38856>>>    Object oActionGroup is a cWebMenuGroup
+38858>>>
+38858>>>        Object oSaveBtn is a cWebMenuItem
+38860>>>            Set psCSSClass to "WebSaveMenuItem"
+38861>>>            Set psCaption to "Save"
+38862>>>
+38862>>>            Procedure OnClick
+38865>>>                Send Request_Save
+38866>>>            End_Procedure
+38867>>>
+38867>>>        End_Object 
+38868>>>
+38868>>>        Object oEditBtn is a cWebMenuItem
+38870>>>            Set psCSSClass to "WebEditMenuItem"
+38871>>>            Set psCaption to "Edit"
+38872>>>            Procedure OnClick
+38875>>>                Send ChangeEditMode True
+38876>>>                Send SetActionButtons
+38877>>>            End_Procedure
+38878>>>
+38878>>>        End_Object 
+38879>>>
+38879>>>        Object oDeleteBtn is a cWebMenuItem
+38881>>>            Set psCSSClass to "WebDeleteMenuItem"
+38882>>>            Set psCaption to "Delete"
+38883>>>            Set peActionDisplay to adMenu
+38884>>>
+38884>>>            Procedure OnClick
+38887>>>                Send Request_Delete
+38888>>>            End_Procedure
+38889>>>
+38889>>>        End_Object 
+38890>>>
+38890>>>        Object oCancelChangesBtn is a cWebMenuItem
+38892>>>            Set psCSSClass to "WebIcon_Refresh"
+38893>>>            Set psCaption to "Clear Changes"
+38894>>>            Set peActionDisplay to adMenu
+38895>>>            Procedure OnClick
+38898>>>                Send RefreshRecord
+38899>>>            End_Procedure
+38900>>>
+38900>>>        End_Object 
+38901>>>    End_Object 
+38902>>>
+38902>>>    Procedure SetActionButtons
+38905>>>        tWebNavigateData NavigateData
+38905>>>        tWebNavigateData NavigateData
+38905>>>        Boolean bHasRecord
+38905>>>        Handle hoDD
+38905>>>
+38905>>>        Get Server to hoDD
+38906>>>        Get GetNavigateData to NavigateData
+38907>>>        Get HasRecord of hoDD to bHasRecord
+38908>>>
+38908>>>        // let's hide all buttons and then Show the ones we want
+38908>>>        WebSet pbRender of oEditBtn to False
+38909>>>        WebSet pbRender of oSaveBtn to False
+38910>>>        WebSet pbRender of oCancelChangesBtn to False
+38911>>>        WebSet pbRender of oDeleteBtn to False
+38912>>>
+38912>>>        If (NavigateData.bReadOnly) Begin
+38914>>>            WebSet pbRender of oEditBtn to True
+38915>>>        End
+38915>>>>
+38915>>>        Else Begin
+38916>>>            WebSet pbRender of oSaveBtn to True
+38917>>>            WebSet pbRender of oCancelChangesBtn to True
+38918>>>            WebSet pbRender of oDeleteBtn to bHasRecord
+38919>>>        End
+38919>>>>
+38919>>>    End_Procedure
+38920>>>
+38920>>>    Procedure OnViewSaved Handle hoServer Boolean bChanged
+38923>>>        // Close after save
+38923>>>        Send NavigateClose Self
+38924>>>    End_Procedure
+38925>>>
+38925>>>    // this will close the view after a delete
+38925>>>    Procedure OnViewDeleted Handle hoDDO
+38928>>>        Send NavigateClose Self
+38929>>>    End_Procedure
+38930>>>
+38930>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+38933>>>        Case Begin
+38933>>>            Case (NavigateData.eNavigateType = nfFromMain)
+38935>>>                // If from main, this is a propbably a main file Select to Zoom.
+38935>>>                Case Break
+38936>>>
+38936>>>            Case (NavigateData.eNavigateType = nfFromParent)
+38939>>>                // If from parent, this is a constrained drill down.
+38939>>>                Case Break
+38940>>>
+38940>>>            Case (NavigateData.eNavigateType = nfFromChild)
+38943>>>                // If from child, this is a probably a parent Zoom from a Zoom.
+38943>>>                Case Break
+38944>>>
+38944>>>            Case Else // must be nfUndefined
+38944>>>
+38944>>>        Case End
+38944>>>
+38944>>>        Send SetActionButtons
+38945>>>
+38945>>>    End_Procedure
+38946>>>
+38946>>>    Procedure OnBeforeShow
+38949>>>        Forward Send OnBeforeShow
+38951>>>        Send Refill of oCentrosComunidadAutonoma
+38952>>>        Send Refill of oCentrosLocalidad
+38953>>>    End_Procedure
+38954>>>
+38954>>>End_Object 
+38955>    Use SelectCentro.wo
+Including file: SelectCentro.wo    (C:\DataFlex Projects\Centros\AppSrc\SelectCentro.wo)
+38955>>>// C:\DataFlex Projects\Centros\AppSrc\SelectCentro.wo
+38955>>>// Centro
+38955>>>//
+38955>>>
+38955>>>Use cWebView.pkg
+38955>>>Use cWebList.pkg
+38955>>>Use cWebMenuGroup.pkg
+38955>>>Use cWebMenuItem.pkg
+38955>>>Use cWebColumnButton.pkg
+38955>>>Use cWebColumn.pkg
+38955>>>Use ZoomCentros.wo
+38955>>>
+38955>>>Use cCentrosDataDictionary.dd
+38955>>>Use cWebLabel.pkg
+38955>>>
+38955>>>Object oSelectCentro is a cWebView
+38957>>>    Set psCaption to "Centro"
+38958>>>    Set peWebViewStyle to wvsDrilldown
+38959>>>    Set peViewType to vtSelect
+38960>>>    Set piColumnCount to 12
+38961>>>    Set pbShowCaption to False
+38962>>>    Set piMaxWidth to 1024
+38963>>>
+38963>>>    Object oCentros_DD is a cCentrosDataDictionary
+38965>>>    End_Object 
+38966>>>
+38966>>>    Set Main_DD To oCentros_DD
+38967>>>    Set Server  To oCentros_DD
+38968>>>
+38968>>>
+38968>>>    Object oList is a cWebList
+38970>>>        Set piColumnSpan to 0
+38971>>>        Set psCSSClass to "MobileList"
+38972>>>        Set pbServerOnRowClick to True
+38973>>>        Set pbFillHeight to True
+38974>>>        Set pbShowHeader to False
+38975>>>        Set piSortColumn to 0
+38976>>>
+38976>>> 
+38976>>>        
+38976>>>        Object oCentrosPsNombre is a cWebColumn
+38978>>>            Entry_Item Centros.PsNombre
+38979>>>            Set psCaption to "Centros.PsNombre"
+38980>>>            Set psCSSClass to "RowCapion"
+38981>>>            Set piWidth to 750
+38982>>>        End_Object 
+38983>>>    
+38983>>>        Object oCentrosEmpresa is a cWebColumn
+38985>>>            Entry_Item Centros.Empresa
+38986>>>            Set psCaption to "Centros.Empresa"
+38987>>>            Set piWidth to 188
+38988>>>        End_Object 
+38989>>>
+38989>>>        Object oDetailButton is a cWebColumnButton
+38991>>>            Set psCaption to "btn"
+38992>>>            Set piWidth to 126
+38993>>>            Set pbFixedWidth to True
+38994>>>            Set pbResizable to False
+38995>>>            Set piListRowSpan to 2
+38996>>>            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
+38997>>>            Set peAlign to alignRight
+38998>>>            
+38998>>>
+38998>>>            WebRegisterPath ntNavigateForward oZoomCentros
+39004>>>
+39004>>>            Procedure OnClick
+39007>>>                Send NavigatePath
+39008>>>            End_Procedure
+39009>>>
+39009>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+39012>>>                Move True to NavigateData.bReadOnly
+39013>>>            End_Procedure
+39014>>>
+39014>>>        End_Object 
+39015>>>
+39015>>>        
+39015>>>        Object oCentrosNombre is a cWebColumn
+39017>>>            Entry_Item Centros.Nombre
+39018>>>            Set psCaption to "Centros.Nombre"
+39019>>>            Set piWidth to 750
+39020>>>            Set psCSSClass to "RowDetail"
+39021>>>            Set pbNewLine to True
+39022>>>        End_Object
+39023>>>
+39023>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+39023>>>       WebRegisterPath ntNavigateForward oZoomCentros
+39029>>>
+39029>>>        Procedure OnRowClick String sRowId
+39032>>>            tWebNavigateData NavigateData
+39032>>>            tWebNavigateData NavigateData
+39032>>>            Get GetNavigateData to NavigateData
+39033>>>
+39033>>>            Case Begin
+39033>>>                Case (NavigateData.eNavigateType = nfFromParent)
+39035>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+39035>>>//Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+39035>>>//                    Send NavigateForward of oSelectView Self
+39035>>>                    Case Break
+39036>>>
+39036>>>                Case (NavigateData.eNavigateType = nfFromChild)
+39039>>>                    Send NavigateClose Self
+39040>>>                    Case Break
+39041>>>
+39041>>>                Case (NavigateData.eNavigateType = nfFromMain)
+39044>>>                    Send NavigateClose Self
+39045>>>                    Case Break
+39046>>>
+39046>>>                Case Else // must be nfUndefined
+39046>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+39046>>>//Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+39046>>>//                    Send NavigateForward of oSelectCentro Self
+39046>>>
+39046>>>            Case End
+39046>>>        End_Procedure
+39047>>>
+39047>>>        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+39050>>>            Move True to NavigateData.bReadOnly
+39051>>>        End_Procedure
+39052>>>
+39052>>>    End_Object 
+39053>>>
+39053>>>    Object oActionGroup is a cWebMenuGroup
+39055>>>
+39055>>>        Object oSearch is a cWebMenuItem
+39057>>>            Set psCSSClass to "WebPromptMenuItem"
+39058>>>            Set psCaption to "Search"
+39059>>>
+39059>>>            Procedure OnClick
+39062>>>                Send Search of oList
+39063>>>            End_Procedure
+39064>>>
+39064>>>        End_Object 
+39065>>>
+39065>>>        Object oNewButton is a cWebMenuItem
+39067>>>            Set psCSSClass to "WebClearMenuItem"
+39068>>>            Set psCaption to "New"
+39069>>>
+39069>>>            WebRegisterPath ntNavigateForward oZoomCentros
+39075>>>
+39075>>>            Procedure OnClick
+39078>>>                Send NavigatePath
+39079>>>            End_Procedure
+39080>>>
+39080>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+39083>>>                Move True to NavigateData.bNewRecord
+39084>>>            End_Procedure
+39085>>>
+39085>>>        End_Object 
+39086>>>    End_Object 
+39087>>>
+39087>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+39090>>>        WebSet pbRender of oNewButton to True
+39091>>>        WebSet pbRender of oDetailButton to True
+39092>>>
+39092>>>        Case Begin
+39092>>>            Case (NavigateData.eNavigateType = nfFromParent)
+39094>>>                // If from parent, this is a constrained drill down
+39094>>>                Case Break
+39095>>>
+39095>>>            Case (NavigateData.eNavigateType = nfFromChild)
+39098>>>                // If from child, this is a probably a parent lookup from a Zoom
+39098>>>                Case Break
+39099>>>
+39099>>>            Case (NavigateData.eNavigateType = nfFromMain)
+39102>>>                // If from main, this is a probably a main-file lookup from a Zoom
+39102>>>                WebSet pbRender of oDetailButton to False
+39103>>>                Case Break
+39104>>>
+39104>>>            Case Else // must be nfUndefined
+39104>>>                // This may be the start of a drilldown query or this may be used for some kind of custom query.
+39104>>>
+39104>>>        Case End
+39104>>>
+39104>>>    End_Procedure
+39105>>>
+39105>>>
+39105>>>End_Object 
+39106>    Set phoDefaultView to oDashboard
+39107>
+39107>End_Object
+39108>
+39108>Send StartWebApp of oWebApp
+39109>
+Summary
+Memory Available: 9197649920
+Total Warnings : 0
+Total Errors   : 0
+Total Symbols  : 25772
+Total Resources: 0
+Total Commands : 39108
+Total Windows  : 0
+Total Pages    : 0
+Static Data    : 489097
+Message area   : 260959
+Total Blocks   : 17411

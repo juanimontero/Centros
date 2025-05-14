@@ -1,0 +1,13 @@
+#REPLACE FILE2 Centros
+#REPLACE Centros.File_Number |CI2
+#REPLACE Centros.Id |FN2,1
+#REPLACE Centros.Nombre |FS2,2
+#REPLACE Centros.PsNombre |FS2,3
+#REPLACE Centros.Direccion |FS2,4
+#REPLACE Centros.Localidad |FS2,5
+#REPLACE Centros.CodigoPostal |FN2,6
+#REPLACE Centros.ComunidadAutonoma |FS2,7
+#REPLACE Centros.Pais |FS2,8
+#REPLACE Centros.Empresa |FS2,9
+#REPLACE Centros.FechaCreacionRegistro |FM2,10
+#REPLACE Centros.FechaUltimaModificacion |FM2,11

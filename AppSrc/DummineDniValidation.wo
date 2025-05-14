@@ -1,0 +1,16 @@
+﻿Use cWebWidget.pkg
+
+Composite oDummineDniValidation is a cWebWidget
+
+    // Your DDO structure will go here
+
+    Set piDefaultColSpan to 4
+    Set piDefaultRowSpan to 5
+    
+    Set psWidgetName to "oDummineDniValidation"
+    Set psWidgetCaption to "DummineDniValidation"
+    Set psWidgetDescription to "My custom widget"
+
+    Set piColumnCount to 12
+        
+End_Composite

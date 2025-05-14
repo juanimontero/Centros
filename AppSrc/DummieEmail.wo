@@ -1,0 +1,67 @@
+﻿Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg 
+
+Use zEmailValidation.pkg
+Use cWebButton.pkg
+Use cWebSpacer.pkg
+Use cWebLabel.pkg
+
+Object oDummieEmail is a cWebView
+    Set piWidth to 700
+    Set psCaption to "DummieEmail"
+
+    // Your DDO structure will go here
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        
+        // place controls here
+        // Your view will grow as controls are added
+        
+        Object oEmail_Form is a cWebForm
+            Set piColumnSpan to 0
+            Set psLabel to "Email"
+        End_Object
+
+        Object oError_Label is a cWebLabel
+            Set psCaption to ""
+            Set piColumnSpan to 13
+            Set piColumnIndex to 0
+        End_Object
+
+        Object oWebSpacer1 is a cWebSpacer
+            Set piColumnSpan to 12
+        End_Object
+
+        Object oValidar_Button is a cWebButton
+            Set piColumnSpan to 4
+            Set piColumnIndex to 4
+            Set psCaption to "Validar"
+        
+            Procedure OnClick
+                Boolean bRet
+                String sEmail sMsg
+                WebGet psValue of oEmail_Form to sEmail
+                Get zValidarEmail sEmail (&sMsg) to bRet
+                
+                WebSet psBackgroundColor of oEmail_Form to "#ffffff"
+                WebSet psCaption of oError_Label to ""
+                
+                If (bRet) Begin
+                    WebSet psBackgroundColor of oEmail_Form to "green"
+                    
+                End
+                If (not (bRet)) Begin
+                    WebSet psBackgroundColor of oEmail_Form to "red"
+                    WebSet psCaption of oError_Label to sMsg
+                End
+                
+            End_Procedure
+        End_Object
+        
+        
+        
+    End_Object 
+
+End_Object

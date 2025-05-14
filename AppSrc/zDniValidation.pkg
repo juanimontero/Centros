@@ -1,0 +1,89 @@
+﻿Function zDniValidation  String sDni  String ByRef sMsg Returns Boolean
+    String sLetter sNumber 
+    Boolean bRet
+    
+    Get zNieComprobation sDni to sDni
+    
+    Get zDniNumberComprobation sDni (&sMsg) to bRet
+    If (not (bRet)) Function_Return False
+    
+    Move (Mid(sDni, 1 , 9)) to   sLetter
+    Move (Mid(sDni, 8, 1 ))  to sNumber
+    Move (Uppercase(sLetter)) to sLetter
+
+   
+   Get zDniLetterComprobation sLetter sNumber (&sMsg) to bRet
+   If (not (bRet)) Function_Return False
+  Function_Return True
+      
+End_Function
+
+Function zNieComprobation String sDni Returns String 
+
+    
+    
+       If (Uppercase(sDni) matches "X????????" )  Begin
+        Move ("0" + Mid (sDni, 8, 2)) to sDni
+        Function_Return (sDni)
+    End
+       If (Uppercase(sDni) matches "Y????????" )  Begin
+       
+        Move ("1" + Mid (sDni, 8, 2)) to sDni
+        Function_Return sDni
+    End
+     If (Uppercase(sDni) matches "Z????????" )  Begin
+       
+        Move ("2" + Mid (sDni, 8, 2)) to sDni
+        Function_Return sDni
+    End
+   
+    Function_Return sDni
+End_Function
+
+
+
+Function zDniNumberComprobation String sDni String ByRef sMSg Returns Boolean
+    String[] aRet
+    Object oDnipattern is a cRegEx
+        Set psExpression to "^[0-9]{8}[a-zA-Z]{1}+$"
+    End_Object
+    Get MatchAll of oDnipattern (sDni) to aRet
+    If (SizeOfArray(aRet) = 1) Begin
+        Function_Return True
+    End
+    
+    Move "Porfavor Introduzca un formato de dni valido 8 digitos y una letra" to sMSg
+    Function_Return False
+End_Function
+
+
+/**
+Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean
+    String sValidationLeter
+    Move "T,R,W,A,G,M,Y,F,P,D,X,B,N,J,Z,S,Q,V,H,L,C,K,E" to sValidationLeter
+     String[] aValidationLeter
+    
+    Move (StrSplitToArray (sValidationLeter, ",")) to aValidationLeter
+    If (aValidationLeter[(Mod(Integer(sNumber), 23 ) )] = sLetter ) Begin
+        Function_Return True
+    End
+    Move "La letra no es coincidene con los numeros" to sMsg
+    Function_Return False
+    
+End_Function
+**/
+
+
+Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean
+    String sValidationLeter sTrueLetter
+    Move "TRWAGMYFPDXBNJZSQVHLCKE" to sValidationLeter
+
+    
+    Move (Mid(sValidationLeter, 1 , (Mod(Integer(sNumber), 23) + 1))) to sTrueLetter
+    If (sTrueLetter = sLetter ) Begin
+        Function_Return True
+    End
+    Move "La letra no es coincidene con los numeros" to sMsg
+    Function_Return False
+    
+End_Function

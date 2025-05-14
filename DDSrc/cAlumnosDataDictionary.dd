@@ -1,0 +1,92 @@
+﻿Use DataDict.pkg
+
+Use zEmailValidation.pkg
+
+
+Open Alumnos
+Open Centros
+
+Register_Function zValidateErr_StudentEmail Integer iField Returns Boolean
+
+Object oGender is a DescriptionValidationTable
+    Procedure Fill_List
+        Forward Send Fill_List
+        Send Add_Table_Value "H" "Hombre"
+        Send Add_Table_Value "M" "Mujer"
+        Send Add_Table_Value "N" "Prefiero no responder"
+        Send Add_Table_Value "O" "Otro"
+    End_Procedure
+End_Object
+
+
+
+
+Class cAlumnosDataDictionary is a DataDictionary
+    
+    Procedure Construct_Object
+        Forward Send Construct_Object
+        Set Main_File to Alumnos.File_Number
+
+        Set Add_Server_File to Centros.File_Number
+
+        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+
+        Set Field_Option Field Alumnos.AlumnosId DD_REQUIRED to True
+
+        Set Field_Class_Name Field Alumnos.Sexo to "Combo"
+        Set Field_Value_Table Field Alumnos.Sexo to oGender
+
+        Set Field_Mask_Type Field Alumnos.CodigoPostal to Mask_Numeric_Window
+        
+
+
+        Set Field_Mask_Type Field Alumnos.FechaCreacionRegistro to Mask_DateTime_Window
+        Set Field_Option Field Alumnos.FechaCreacionRegistro DD_NOENTER to True
+
+        Set Field_Mask_Type Field Alumnos.FechaUltimaModificacion to Mask_DateTime_Window
+        Set Field_Option Field Alumnos.FechaUltimaModificacion DD_NOENTER to True
+        Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
+
+    End_Procedure
+
+
+
+    Function zValidateErr_StudentEmail Integer iField Returns Boolean
+        Boolean bret
+        String sEmail sMsg
+        Get Field_Current_Value Field Alumnos.Email to sEmail
+        Get zValidarEmail sEmail (&sMsg) to bret
+        If (not (bret)) Begin
+                Send Data_set_error iField DFERR_OPERATOR sMsg
+        Function_Return bret        
+        End
+    End_Function
+                
+  
+  
+    Procedure Field_Defaults
+         DateTime dtCurrentDateTime
+         
+         Move (CurrentDateTime()) to dtCurrentDateTime
+       
+        Forward Send Field_Defaults
+        Set Field_Changed_Value Field Alumnos.FechaCreacionRegistro to  dtCurrentDateTime
+        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime 
+    End_Procedure
+
+    Procedure Update
+        Forward Send Update
+        
+         DateTime dtCurrentDateTime
+         
+         Move (CurrentDateTime()) to dtCurrentDateTime
+       
+        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime
+        
+    End_Procedure
+
+
+End_Class

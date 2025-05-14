@@ -1,0 +1,376 @@
+﻿// C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
+// Todos los estudiantes
+//
+
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+Use cWebForm.pkg
+Use cWebTabContainer.pkg
+Use cWebTabPage.pkg
+Use cWebCheckBox.pkg
+
+Use cCentrosDataDictionary.dd
+Use cAlumnosDataDictionary.dd
+
+Object oZoomAllStudents is a cWebView
+    Set piColumnCount to 12
+    Set psCaption to "Todos los estudiantes"
+    Set peWebViewStyle to wvsDrilldown
+    Set peViewType to vtZoom
+    Set pbShowCaption to False
+    Set Verify_Save_Msg to 0
+    Set piMaxWidth to 1024
+
+    Object oCentros_DD is a cCentrosDataDictionary
+    End_Object 
+
+    Object oAlumnos_DD is a cAlumnosDataDictionary
+        Set DDO_Server To oCentros_DD
+    End_Object 
+
+    Set Main_DD To oAlumnos_DD
+    Set Server  To oAlumnos_DD
+
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        WebSetResponsive piColumnCount rmMobile to 4
+
+        Object oAlumnosNombre is a cWebForm
+            Entry_Item Alumnos.Nombre
+            Set piColumnSpan to 6
+            Set piColumnIndex to 0
+            Set peLabelPosition to lpTop
+            Set psLabel to "Nombre"
+        End_Object 
+
+        Object oAlumnosApellidos is a cWebForm
+            Entry_Item Alumnos.Apellidos
+            Set piColumnSpan to 6
+            Set piColumnIndex to 6
+            Set peLabelPosition to lpTop
+            Set psLabel to "Apellidos"
+        End_Object 
+
+        Object oWebTabContainer is a cWebTabContainer
+            Set pbFillHeight to True
+            Set piColumnSpan to 12
+            Set pbShowLabel to False
+
+            Object oPage1 is a cWebTabPage
+                Set piColumnCount to 12
+                Set psCaption to "información Personal"
+                WebSetResponsive piColumnCount rmMobile to 4
+
+                Object oAlumnosNumeroTelefono is a cWebForm
+                    Entry_Item Alumnos.NumeroTelefono
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Numero Telefono"
+                End_Object 
+
+                Object oAlumnosDni is a cWebForm
+                    Entry_Item Alumnos.Dni
+                    Set piColumnSpan to 2
+                    Set piColumnIndex to 4
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Dni"
+                End_Object 
+
+                Object oAlumnosSexo is a cWebCombo
+                    Entry_Item Alumnos.Sexo
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 7
+                    Set psCaption to "Sexo"
+                    Set pbShowLabel to True
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Género"
+                End_Object 
+
+                Object oAlumnosEmail is a cWebForm
+             
+                    Entry_Item Alumnos.Email
+                    Set piColumnSpan to 12
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Email"
+                End_Object 
+            End_Object 
+
+            Object oPage2 is a cWebTabPage
+                Set piColumnCount to 12
+                Set psCaption to "Ubicación"
+                WebSetResponsive piColumnCount rmMobile to 4
+
+                Object oAlumnosPais is a cWebCombo
+                    Entry_Item Alumnos.Pais
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Pais"
+                    
+                    Set pbServerOnChange to True
+                    
+                    String[][] aResultsPaises
+
+                    Procedure OnFill
+                    Integer inumPaises i
+                        Forward Send OnFill
+                        
+                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre
+                            FROM Centros.dbo.Country;" to aResultsPaises
+                            
+                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+                        If (not(Err)) Begin
+                             For i from 0 to (inumPaises - 1)
+                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+                             Loop
+                        End
+                     
+                        
+                        
+                    End_Procedure
+
+                    Procedure OnChange String sNewValue String sOldValue
+                        Forward Send OnChange sNewValue sOldValue
+                        WebSet psValue of oAlumnosComunidadAutonoma to ""
+                        WebSet psValue of oAlumnosLocalidad to ""
+                       Send Refill of oAlumnosComunidadAutonoma 
+                    End_Procedure
+
+                    
+                    
+
+
+                End_Object 
+
+                Object oAlumnosComunidadAutonoma is a cWebCombo
+                    Entry_Item Alumnos.ComunidadAutonoma
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 4
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Comunidad Autonoma"
+                    Set pbServerOnChange to True
+                    
+                    
+                    Procedure OnFill
+                        Forward Send OnFill
+                        String  sPaisElegido sSQL
+                        Integer  inumComunidadAutonoma  i
+                        String[][]  aResults
+                 
+                        WebGet psValue of oAlumnosPais to sPaisElegido                   
+                        If (sPaisElegido = "") Procedure_Return
+                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
+                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+                                                
+                        If (not(Err)) Begin
+                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
+                            For i from 0 to (inumComunidadAutonoma - 1)
+                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+                            Loop
+                        End                        
+                    End_Procedure
+                    
+                    Procedure OnChange String sNewValue String sOldValue
+                        Forward Send OnChange sNewValue sOldValue
+                        Send Refill of oAlumnosLocalidad 
+                        WebSet psValue of oAlumnosLocalidad to ""
+                    End_Procedure    
+                    
+                End_Object 
+
+                Object oAlumnosLocalidad is a cWebCombo
+                    Entry_Item Alumnos.Localidad
+                    Set piColumnSpan to 4
+                    Set piColumnIndex to 8
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Localidad"
+                    
+                    Procedure OnFill
+                        Forward Send OnFill
+                        String  sComunidadAutonomaElegida sSQL
+                        Integer  inumProvincia  i
+                        String[][]  aResults
+                 
+                        WebGet psValue of oAlumnosComunidadAutonoma to sComunidadAutonomaElegida                   
+                        If (sComunidadAutonomaElegida = "") Procedure_Return
+                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
+                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+                                                
+                        If (not(Err)) Begin
+                            Move (SizeOfArray(aResults)) to inumProvincia    
+                            For i from 0 to (inumProvincia - 1)
+                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+                            Loop
+                        End                        
+                    End_Procedure
+                    
+                    
+                End_Object 
+
+                Object oAlumnosDirreccion is a cWebForm
+                    Entry_Item Alumnos.Dirreccion
+                    Set piColumnSpan to 7
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Dirreccion"
+                End_Object 
+
+                Object oAlumnosCodigoPostal is a cWebForm
+                    Entry_Item Alumnos.CodigoPostal
+                    Set piColumnSpan to 2
+                    Set piColumnIndex to 8
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Codigo Postal"
+                End_Object 
+
+                Object oCentrosId is a cWebForm
+                    Entry_Item Centros.Id
+                    Set piColumnSpan to 2
+                    Set piColumnIndex to 10
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "id del Centro "
+                    Set pbPromptButton to True
+
+// ToDo: Fill in the from-child parent Select view object name for navigate forward
+                    WebRegisterPath ntNavigateForward oSelectCentro
+
+                    Procedure OnPrompt
+                        Send NavigatePath
+                        
+                        
+                        
+                    End_Procedure
+                End_Object 
+            End_Object 
+
+            Object oPage3 is a cWebTabPage
+                Set piColumnCount to 12
+                Set psCaption to "Registros"
+                WebSetResponsive piColumnCount rmMobile to 4
+
+                Object oAlumnosFechaCreacionRegistro is a cWebForm
+                    Entry_Item Alumnos.FechaCreacionRegistro
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 0
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Fecha de creacion del registro"
+                End_Object 
+
+                Object oAlumnosFechaUltimaModificacion is a cWebForm
+                    Entry_Item Alumnos.FechaUltimaModificacion
+                    Set piColumnSpan to 3
+                    Set piColumnIndex to 3
+                    Set peLabelPosition to lpTop
+                    Set psLabel to "Fecha ultima modificacion"
+                End_Object 
+            End_Object 
+        End_Object 
+    End_Object 
+
+    Object oActionGroup is a cWebMenuGroup
+
+        Object oSaveBtn is a cWebMenuItem
+            Set psCSSClass to "WebSaveMenuItem"
+            Set psCaption to "Save"
+
+            Procedure OnClick
+                Send Request_Save
+            End_Procedure
+
+        End_Object 
+
+        Object oEditBtn is a cWebMenuItem
+            Set psCSSClass to "WebEditMenuItem"
+            Set psCaption to "Edit"
+            Procedure OnClick
+                Send ChangeEditMode True
+                Send SetActionButtons
+            End_Procedure
+
+        End_Object 
+
+        Object oDeleteBtn is a cWebMenuItem
+            Set psCSSClass to "WebDeleteMenuItem"
+            Set psCaption to "Delete"
+            Set peActionDisplay to adMenu
+
+            Procedure OnClick
+                Send Request_Delete
+            End_Procedure
+
+        End_Object 
+
+        Object oCancelChangesBtn is a cWebMenuItem
+            Set psCSSClass to "WebIcon_Refresh"
+            Set psCaption to "Clear Changes"
+            Set peActionDisplay to adMenu
+            Procedure OnClick
+                Send RefreshRecord
+            End_Procedure
+
+        End_Object 
+    End_Object 
+
+    Procedure SetActionButtons
+        tWebNavigateData NavigateData
+        Boolean bHasRecord
+        Handle hoDD
+
+        Get Server to hoDD
+        Get GetNavigateData to NavigateData
+        Get HasRecord of hoDD to bHasRecord
+
+        // let's hide all buttons and then Show the ones we want
+        WebSet pbRender of oEditBtn to False
+        WebSet pbRender of oSaveBtn to False
+        WebSet pbRender of oCancelChangesBtn to False
+        WebSet pbRender of oDeleteBtn to False
+
+        If (NavigateData.bReadOnly) Begin
+            WebSet pbRender of oEditBtn to True
+        End
+        Else Begin
+            WebSet pbRender of oSaveBtn to True
+            WebSet pbRender of oCancelChangesBtn to True
+            WebSet pbRender of oDeleteBtn to bHasRecord
+        End
+    End_Procedure
+
+    Procedure OnViewSaved Handle hoServer Boolean bChanged
+        // Close after save
+        Send NavigateClose Self
+    End_Procedure
+
+    // this will close the view after a delete
+    Procedure OnViewDeleted Handle hoDDO
+        Send NavigateClose Self
+    End_Procedure
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+        Case Begin
+            Case (NavigateData.eNavigateType = nfFromMain)
+                // If from main, this is a propbably a main file Select to Zoom.
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromParent)
+                // If from parent, this is a constrained drill down.
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromChild)
+                // If from child, this is a probably a parent Zoom from a Zoom.
+                Case Break
+
+            Case Else // must be nfUndefined
+
+        Case End
+
+        Send SetActionButtons
+
+    End_Procedure
+
+End_Object 

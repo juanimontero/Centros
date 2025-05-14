@@ -1,0 +1,50 @@
+﻿Use DataDict.pkg
+
+Open Centros
+Open Alumnos
+
+Class cCentrosDataDictionary is a DataDictionary
+    
+    Procedure Construct_Object
+        Forward Send Construct_Object
+        Set Main_File to Centros.File_Number
+
+        Set Add_Client_File to Alumnos.File_Number
+
+        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+
+        Set Field_Mask_Type Field Centros.CodigoPostal to Mask_Numeric_Window
+        
+
+
+        Set Field_Mask_Type Field Centros.FechaCreacionRegistro to Mask_DateTime_Window
+        Set Field_Option Field Centros.FechaCreacionRegistro DD_NOENTER to True
+
+        Set Field_Mask_Type Field Centros.FechaUltimaModificacion to Mask_DateTime_Window
+        Set Field_Option Field Centros.FechaUltimaModificacion DD_NOENTER to True
+       
+         
+
+    End_Procedure
+
+    Procedure Field_Defaults
+         DateTime dtCurrentDateTime
+         
+         Move (CurrentDateTime()) to dtCurrentDateTime
+       
+        Forward Send Field_Defaults
+        Set Field_Changed_Value Field Centros.FechaCreacionRegistro to  dtCurrentDateTime 
+        Set Field_Changed_Value Field Centros.FechaUltimaModificacion to  dtCurrentDateTime 
+        
+    End_Procedure
+    
+     Procedure Update
+        Forward Send Update
+        Move  (CurrentDateTime())  to Centros.FechaUltimaModificacion
+    End_Procedure
+
+
+End_Class

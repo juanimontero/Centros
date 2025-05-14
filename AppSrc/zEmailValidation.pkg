@@ -1,0 +1,123 @@
+﻿Function zValidarEmail String sEmail  String ByRef sMsg Returns Boolean
+ 
+  Boolean bRet
+  String[] aEmail 
+  
+    Get zSplitEmail sEmail  to aEmail 
+    
+    Get zArrobaCheck aEmail (&sMsg)  to bRet
+    If (not (bRet)) Function_Return False 
+    
+    Get zLocalAndressCheck aEmail (&sMsg)  to bRet
+    If (not (bRet)) Function_Return False
+    
+    Get zDominioAndExtensionCheck aEmail (&sMsg) to bRet
+    If (not (bRet)) Function_Return False
+    
+    Get zLocalAndressSizeCheck aEmail (&sMsg) to bRet 
+    If (not (bRet)) Function_Return False 
+    
+    Get zDomSizeCheck aEmail (&sMsg) to bRet 
+    If (not (bRet)) Function_Return False
+    
+    
+    Function_Return True
+End_Function
+
+
+
+Function zSplitEmail String sEmail Returns String[]
+    String[] aEmail
+    
+    Move (StrSplitToArray (sEmail , "@")) to aEmail
+    Function_Return aEmail
+End_Function
+
+
+
+Function zArrobaCheck String[] aEmail String ByRef sMsg Returns Boolean
+    If (SizeOfArray(aEmail) > 2) Begin 
+        Move "No se permite más de un @ en el correo" to sMsg
+        Function_Return False 
+        
+    End
+    If (SizeOfArray(aEmail) < 2) Begin
+        Move "Porfavor el correo tiene que contener un @" to sMsg
+        Function_Return False
+    End
+    Function_Return True
+
+End_Function
+
+
+Function zLocalAndressCheck String[] aEmail String ByRef sMsg Returns Boolean
+    
+    String[] aRet
+    Object oEmailPattern is a cRegEx
+        Set psExpression to "^[a-zA-Z0-9._%+]+$"
+    End_Object
+    
+    Get MatchAll of oEmailPattern (aEmail[0]) to aRet
+    
+    If (SizeOfArray(aRet) = 1 ) Begin
+            Function_Return True
+            
+    End
+    
+    Move "Antes del @ solo puede haber un codigo alfanumerico y/o (. , _ , % , +)" to sMsg
+    Function_Return False
+End_Function
+
+Function zDominioAndExtensionCheck String[] aEmail String ByRef sMsg Returns Boolean
+    
+    String[] aRet aDomRet
+    Integer iPospoint
+    String sExtensionDom
+    Object oEmailPattern is a cRegEx
+        Set psExpression to "^[a-zA-Z0-9-]+\.[a-zA-Z]{2,7}$"
+    End_Object
+    
+    Get MatchAll of oEmailPattern (aEmail[1]) to aRet
+    
+    
+    Move (RightPos ( "." , aRet[0] )) to iPospoint
+    Move (Mid(aRet[0] , (Length(aRet[0]) - iPospoint) , (iPospoint + 1))) to sExtensionDom
+    
+    If (SizeOfArray(aRet) = 1 ) Begin
+        If (Length(sExtensionDom) > 1 and Length(sExtensionDom) < 8) Begin
+            
+            Function_Return True 
+        End
+            
+    End
+    
+    Move "Despues del @ solo puede contener un codigo alfanumerico seguido de un punto y la extesion que tiene una longitud enttre 2 y 7, solo permitiendo letras" to sMsg
+    Function_Return False
+    
+    
+End_Function
+
+Function zLocalAndressSizeCheck String[] aEmail String ByRef sMsg Returns Boolean
+    
+     If (Length(aEmail[0]) < 65) Begin
+        Function_Return True
+     End
+     Move "La parte de la dirección local Solo puede tener un maximo de 65 caracteres " to sMsg
+        Function_Return False
+End_Function
+
+
+Function zDomSizeCheck String[] aEmail String ByRef sMsg Returns Boolean
+    
+   
+    If (Length(aEmail[1]) < 256 ) Begin
+        Function_Return True
+    End
+    
+    Move "El el dominio no puede superar los 255 caracteres" to sMsg
+    
+    
+    Function_Return False 
+End_Function
+
+
