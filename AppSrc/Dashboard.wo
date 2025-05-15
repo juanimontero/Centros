@@ -122,6 +122,19 @@ Object oDashboard is a cWebView
                     Send NavigatePath
                 End_Procedure
             End_Object
+            
+             Object oTile6 is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Dark"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Telefono</div><div class="Tile_Subtitle"></div></div>'
+    
+                 WebRegisterPath ntNavigateForwardCustom oDummieTelefono
+                
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+            End_Object
         End_Object
     
     End_Object

@@ -13,6 +13,7 @@ Use cWebCheckBox.pkg
 
 Use cCentrosDataDictionary.dd
 Use cAlumnosDataDictionary.dd
+Use cWebCombo.pkg
 
 Object oZoomAllStudents is a cWebView
     Set piColumnCount to 12
@@ -62,12 +63,41 @@ Object oZoomAllStudents is a cWebView
             Object oPage1 is a cWebTabPage
                 Set piColumnCount to 12
                 Set psCaption to "información Personal"
+
+                Object oAlumnoPrefijoTlfn is a cWebCombo
+                    Entry_Item Alumnos.PrefijoTlfn
+                    Set psLabel to "Prefijo"
+                    Set piColumnIndex to 0
+                    
+                    
+                    Set pbServerOnChange to True
+                    Set peLabelPosition to lpTop
+                    Set piColumnSpan to 2
+                    
+                    String[][] aResultsPrefijosPaises
+
+                    Procedure OnFill
+                    Integer inumPaises i
+                        Forward Send OnFill
+                        
+                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT PrefijoTlfn, ISO3
+                            FROM Centros.dbo.Country;" to aResultsPrefijosPaises
+                            
+                        Move (SizeOfArray(aResultsPrefijosPaises)) to inumPaises    
+                        If (not(Err)) Begin
+                             For i from 0 to (inumPaises - 1)
+                                Send AddComboItem aResultsPrefijosPaises[i][0] (aResultsPrefijosPaises[i][1] + "(" + aResultsPrefijosPaises[i][0] + ")")
+                             Loop
+                        End
+                        
+                    End_Procedure 
+                End_Object
                 WebSetResponsive piColumnCount rmMobile to 4
 
                 Object oAlumnosNumeroTelefono is a cWebForm
                     Entry_Item Alumnos.NumeroTelefono
                     Set piColumnSpan to 3
-                    Set piColumnIndex to 0
+                    Set piColumnIndex to 2
                     Set peLabelPosition to lpTop
                     Set psLabel to "Numero Telefono"
                 End_Object 
@@ -75,7 +105,7 @@ Object oZoomAllStudents is a cWebView
                 Object oAlumnosDni is a cWebForm
                     Entry_Item Alumnos.Dni
                     Set piColumnSpan to 2
-                    Set piColumnIndex to 4
+                    Set piColumnIndex to 5
                     Set peLabelPosition to lpTop
                     Set psLabel to "Dni"
                 End_Object 
@@ -83,7 +113,7 @@ Object oZoomAllStudents is a cWebView
                 Object oAlumnosSexo is a cWebCombo
                     Entry_Item Alumnos.Sexo
                     Set piColumnSpan to 3
-                    Set piColumnIndex to 7
+                    Set piColumnIndex to 8
                     Set psCaption to "Sexo"
                     Set pbShowLabel to True
                     Set peLabelPosition to lpTop

@@ -1,0 +1,28 @@
+﻿Function zTelefonoValidation  String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
+    
+     Boolean bRet
+     
+     
+     Get zNumeroCorrecto sTelefono (&sMsg) to bRet
+     If (not(bRet)) Function_Return False 
+    
+    Function_Return True
+End_Function
+
+
+
+Function zNumeroCorrecto String sTelefono String ByRef sMSg Returns Boolean
+    String[] aRet
+    Object oTelefonopattern is a cRegEx
+        Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
+    End_Object
+    Get MatchAll of oTelefonopattern (sTelefono) to aRet
+        If (SizeOfArray(aRet) = 1) Begin
+        Function_Return True
+        End
+    
+    Move "Porfavor Introduzca un formato de Telefono valido" to sMSg
+    Function_Return False    
+End_Function 
+    
+    

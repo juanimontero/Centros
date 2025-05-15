@@ -15,3 +15,4 @@
 #REPLACE Alumnos.FechaUltimaModificacion |FM1,13
 #REPLACE Alumnos.Localidad |FS1,14
 #REPLACE Alumnos.ComunidadAutonoma |FS1,15
+#REPLACE Alumnos.PrefijoTlfn |FS1,16
