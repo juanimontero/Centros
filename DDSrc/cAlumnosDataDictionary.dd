@@ -1,13 +1,14 @@
 ﻿Use DataDict.pkg
 
 Use zEmailValidation.pkg
+Use zDniValidation.pkg
 
 
 Open Alumnos
 Open Centros
 
 Register_Function zValidateErr_StudentEmail Integer iField Returns Boolean
-
+Register_Function zValidateErr_StudentDni Integer iField Returns Boolean
 Object oGender is a DescriptionValidationTable
     Procedure Fill_List
         Forward Send Fill_List
@@ -48,10 +49,25 @@ Class cAlumnosDataDictionary is a DataDictionary
 
         Set Field_Mask_Type Field Alumnos.FechaUltimaModificacion to Mask_DateTime_Window
         Set Field_Option Field Alumnos.FechaUltimaModificacion DD_NOENTER to True
+        
         Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
+        Set Field_Validate_msg Field Alumnos.Dni to get_zValidateErr_StudentDni
 
     End_Procedure
 
+
+
+    Function zValidateErr_StudentDni Integer iField Returns Boolean
+        Boolean bret
+        String sDni sMsg
+        Get Field_Current_Value Field Alumnos.Dni to sDni
+        Get zDniValidation sDni (&sMsg) to bret
+        If (not (bret)) Begin
+                Send Data_set_error iField DFERR_OPERATOR sMsg
+        Function_Return True        
+        End
+        Function_Return False
+    End_Function
 
 
     Function zValidateErr_StudentEmail Integer iField Returns Boolean
