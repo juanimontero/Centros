@@ -9,6 +9,17 @@ HorizontalGroups=0
 GroupSize=40
 SelectedTab=0
 [Window0]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\ErrorNum.inc
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=381
+CursorColumn=0
+TabIndex=3
+TabGroup=0
+[Window1]
 Filename=C:\DataFlex Projects\Centros\AppSrc\zEmailValidation.pkg
 ViewType=1
 Top=21
@@ -16,39 +27,39 @@ Left=0
 Bottom=723
 Right=1332
 CursorLine=0
-CursorColumn=9
+CursorColumn=0
 TabIndex=1
 TabGroup=0
-[Window1]
+[Window2]
 Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=87
-CursorColumn=29
-TabIndex=2
+CursorLine=281
+CursorColumn=33
+TabIndex=4
 TabGroup=0
-[Window2]
+[Window3]
 Filename=C:\Program Files\DataFlex 25.0\Pkg\DataDict.pkg
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=3263
-CursorColumn=0
-TabIndex=3
+CursorLine=4563
+CursorColumn=3
+TabIndex=2
 TabGroup=0
-[Window3]
+[Window4]
 Filename=C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=57
-CursorColumn=0
+CursorLine=65
+CursorColumn=29
 TabIndex=0
 TabGroup=0
