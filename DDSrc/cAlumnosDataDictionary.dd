@@ -61,8 +61,9 @@ Class cAlumnosDataDictionary is a DataDictionary
         Get zValidarEmail sEmail (&sMsg) to bret
         If (not (bret)) Begin
                 Send Data_set_error iField DFERR_OPERATOR sMsg
-        Function_Return bret        
+        Function_Return True        
         End
+        Function_Return False
     End_Function
                 
   

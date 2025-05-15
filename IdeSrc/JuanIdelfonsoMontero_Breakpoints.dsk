@@ -1,0 +1,10 @@
+[C:\Program Files\DataFlex 25.0\Pkg\DataDict.pkg]
+Source4567=Procedure Data_set_error Integer iField Integer iErr String sMess ;
+ConditionEnabled4567=0
+Condition4567= 
+4567=1
+[C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo]
+Source281=Send Request_Save
+ConditionEnabled281=0
+Condition281= 
+281=1

@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 9220931584
+Memory Available: 11114827776
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -2636,7 +2636,7 @@ Including file: cAlumnosDataDictionary.dd    (C:\DataFlex Projects\Centros\DDSrc
 38125>>>>>        Get zValidarEmail sEmail (&sMsg) to bret
 38126>>>>>        If (not (bret)) Begin
 38128>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
-38129>>>>>        Function_Return bret        
+38129>>>>>        Function_Return True        
 38130>>>>>        End
 38130>>>>>>
 38130>>>>>    End_Function
@@ -3747,7 +3747,7 @@ Including file: SelectCentro.wo    (C:\DataFlex Projects\Centros\AppSrc\SelectCe
 39108>Send StartWebApp of oWebApp
 39109>
 Summary
-Memory Available: 9197649920
+Memory Available: 11097575424
 Total Warnings : 0
 Total Errors   : 0
 Total Symbols  : 25772
