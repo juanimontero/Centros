@@ -1,17 +1,21 @@
-﻿Function zTelefonoValidation  String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
+﻿Use cJsonHttpTransfer.pkg
+
+
+Function zTelefonoValidation Boolean bUseApi String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
     
      Boolean bRet
      
      
      Get zNumeroCorrecto sTelefono (&sMsg) to bRet
      If (not(bRet)) Function_Return False 
-    
+     If (bUseApi) Get zValidarConApi sTelefono sPrefijo (&sMsg) to bRet
+     If (not(bRet)) Function_Return False
     Function_Return True
 End_Function
 
 
 
-Function zNumeroCorrecto String sTelefono String ByRef sMSg Returns Boolean
+Function zNumeroCorrecto String sTelefono String ByRef sMsg Returns Boolean
     String[] aRet
     Object oTelefonopattern is a cRegEx
         Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
@@ -21,8 +25,34 @@ Function zNumeroCorrecto String sTelefono String ByRef sMSg Returns Boolean
         Function_Return True
         End
     
-    Move "Porfavor Introduzca un formato de Telefono valido" to sMSg
+    Move "Porfavor Introduzca un formato de Telefono valido" to sMsg
     Function_Return False    
 End_Function 
+
+Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Returns Boolean
+    
+    Handle hoJsonReceived hoHttp
+    Boolean bOk bIsNull bRet
+    String  sNum sUrl
+     
+    Move (sPrefijo + sTelefono) to sNum
+   
+    Get Create (RefClass(cJsonHttpTransfer)) to hoHttp
+    Move False to bRet
+    
+    Get HttpGetJson of hohttp ("phonevalidation.abstractapi.com") ("/v1/?api_key=713383f7f21e45b1ac4054a472e00971&phone=" + sNum) (&bOk) to hoJsonReceived
+
+
+    If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin
+        
+        If (HasMember(hoJsonReceived,"valid"))  Begin
+            Get IsMemberOfJsonType of hoJsonReceived "valid" jsonTypeNull  to bIsNull
+            If bIsNull  Move False to bRet
+            Else Move (MemberValue(hoJsonReceived,"valid")) to bRet
+        End
+    End
+    Send Destroy of hohttp
+    Function_Return bRet
+End_Function
     
     

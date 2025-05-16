@@ -54,7 +54,7 @@ Object oDummieTelefono is a cWebView
                 String sTelefono sPrefijo sMsg
                 WebGet psValue of oForm_telefono to sTelefono
                 WebGet psValue of oForm_Prefijo to sPrefijo
-                Get zTelefonoValidation sPrefijo sTelefono (&sMsg) to bRet
+                Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
                 
                 WebSet psBackgroundColor of oForm_telefono to "#ffffff"
                 WebSet psBackgroundColor of oForm_Prefijo to "#ffffff"

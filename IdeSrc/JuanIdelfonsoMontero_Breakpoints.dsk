@@ -1,5 +1,21 @@
 [C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg]
-Source19=If (SizeOfArray(aRet) = 1) Begin
-ConditionEnabled19=0
-Condition19= 
-19=1
+Source8=Get zNumeroCorrecto sTelefono (&sMsg) to bRet
+ConditionEnabled8=0
+Condition8= 
+8=1
+Source18=String[] aRet
+ConditionEnabled18=0
+Condition18= 
+18=1
+Source37=Move (sPrefijo + sTelefono) to sNum
+ConditionEnabled37=0
+Condition37= 
+37=1
+Source45=If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin
+ConditionEnabled45=0
+Condition45= 
+45=1
+Source48=Get IsMemberOfJsonType of hoJsonReceived "valid" jsonTypeNull  to bIsNull
+ConditionEnabled48=0
+Condition48= 
+48=1

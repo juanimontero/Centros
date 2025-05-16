@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 8546258944
+Memory Available: 7019065344
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -3814,129 +3814,591 @@ Including file: DummieTelefono.wo    (C:\DataFlex Projects\Centros\AppSrc\Dummie
 39163>>>
 39163>>>Use zTelefonoiValidation.pkg
 Including file: zTelefonoiValidation.pkg    (C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg)
-39163>>>>>Function zTelefonoValidation  String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
-39166>>>>>    
-39166>>>>>     Boolean bRet
-39166>>>>>     
-39166>>>>>     
-39166>>>>>     Get zNumeroCorrecto sTelefono (&sMsg) to bRet
-39167>>>>>     If (not(bRet)) Function_Return False 
-39170>>>>>    
-39170>>>>>    Function_Return True
-39171>>>>>End_Function
-39172>>>>>
-39172>>>>>
-39172>>>>>
-39172>>>>>Function zNumeroCorrecto String sTelefono String ByRef sMSg Returns Boolean
-39175>>>>>    String[] aRet
-39176>>>>>    Object oTelefonopattern is a cRegEx
-39178>>>>>        Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
-39179>>>>>    End_Object
-39180>>>>>    Get MatchAll of oTelefonopattern (sTelefono) to aRet
-39181>>>>>        If (SizeOfArray(aRet) = 1) Begin
-39183>>>>>        Function_Return True
-39184>>>>>        End
-39184>>>>>>
-39184>>>>>    
-39184>>>>>    Move "Porfavor Introduzca un formato de Telefono valido" to sMSg
-39185>>>>>    Function_Return False    
-39186>>>>>End_Function 
-39187>>>>>    
-39187>>>>>    
-39187>>>
-39187>>>Object oDummieTelefono is a cWebView
-39189>>>
-39189>>>    // Your DDO structure will go here
-39189>>>    Set piWidth to 700
-39190>>>    Set psCaption to "DummieDni"
-39191>>>
-39191>>>    // Your DDO structure will go here
-39191>>>
-39191>>>    Object oWebMainPanel is a cWebPanel
-39193>>>        Set piColumnCount to 12
-39194>>>
-39194>>>        Object oForm_Prefijo is a cWebForm
-39196>>>            Set piColumnSpan to 3
-39197>>>            Set psLabel to "Prefijo telefonico"
-39198>>>            Set peLabelPosition to lpTop
-39199>>>        End_Object
-39200>>>        
-39200>>>        // place controls here
-39200>>>        // Your view will grow as controls are added
-39200>>>        
-39200>>>        Object oForm_telefono is a cWebForm
-39202>>>            Set piColumnSpan to 9
-39203>>>            Set psLabel to "Introduzca el telefono"
-39204>>>            Set piColumnIndex to 3
-39205>>>            Set peLabelPosition to lpTop
-39206>>>        End_Object
-39207>>>
-39207>>>        Object oWebLabel_sMsg_Err is a cWebLabel
-39209>>>            Set psCaption to ""
-39210>>>            Set piColumnIndex to 0
-39211>>>            Set piColumnSpan to 12
-39212>>>        End_Object
-39213>>>
-39213>>>        Object oWebSpacer1 is a cWebSpacer
-39215>>>            Set piColumnSpan to 12
-39216>>>        End_Object
-39217>>>
-39217>>>        Object oValidationButton is a cWebButton
-39219>>>            Set piColumnSpan to 6
-39220>>>            Set psCaption to "Validar"
-39221>>>            Set piColumnIndex to 3
-39222>>>        
-39222>>>            Procedure OnClick
-39225>>>                Boolean bRet
-39225>>>                String sTelefono sPrefijo sMsg
-39225>>>                WebGet psValue of oForm_telefono to sTelefono
-39226>>>                WebGet psValue of oForm_Prefijo to sPrefijo
-39227>>>                Get zTelefonoValidation sPrefijo sTelefono (&sMsg) to bRet
-39228>>>                
-39228>>>                WebSet psBackgroundColor of oForm_telefono to "#ffffff"
-39229>>>                WebSet psBackgroundColor of oForm_Prefijo to "#ffffff"
-39230>>>                WebSet psCaption of oWebLabel_sMsg_Err to ""
-39231>>>                
-39231>>>                If (bRet) Begin
-39233>>>                    WebSet psBackgroundColor of oForm_telefono to "green"
-39234>>>                    WebSet psBackgroundColor of oForm_Prefijo to "green"
-39235>>>                    
-39235>>>                End
-39235>>>>
-39235>>>                If (not (bRet)) Begin
-39237>>>                    WebSet psBackgroundColor of oForm_Prefijo to "red"
-39238>>>                    WebSet psBackgroundColor of oForm_telefono to "red"
-39239>>>                    WebSet psCaption of oWebLabel_sMsg_Err to sMsg
-39240>>>                End
-39240>>>>
-39240>>>                
-39240>>>                
-39240>>>            End_Procedure
-39241>>>        End_Object
-39242>>>        
-39242>>>    End_Object
-39243>>>
-39243>>>    Procedure OnBeforeShow
-39246>>>        Forward Send OnBeforeShow
-39248>>>        WebSet psValue of oForm_Prefijo to "+34"
-39249>>>    End_Procedure
-39250>>>
-39250>>>End_Object
-39251>    Set phoDefaultView to oDashboard
-39252>
-39252>End_Object
-39253>
-39253>Send StartWebApp of oWebApp
-39254>
+39163>>>>>Use cJsonHttpTransfer.pkg
+Including file: cJsonHttpTransfer.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cJsonHttpTransfer.pkg)
+39163>>>>>>>// DF JSON internet transfer class definitions.
+39163>>>>>>>Use cHttpTransfer.pkg
+Including file: cHttpTransfer.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cHttpTransfer.pkg)
+39163>>>>>>>>>Use VDFBase.pkg
+39163>>>>>>>>>Use GlobalFunctionsProcedures.pkg
+39163>>>>>>>>>
+39163>>>>>>>>>External_Function WinAPI_HttpQueryInfo "HttpQueryInfoW" WinInet.dll ;    Handle hRequest ;    DWord dwInfoLevel ;    Pointer lpBuffer ;    Pointer lpdwBufferLength ;    Pointer lpdwIndex ;    Returns Integer
+39164>>>>>>>>>
+39164>>>>>>>>>/*BOOL InternetSetOptionW(  [in] HINTERNET hInternet,  [in] DWORD     dwOption,  [in] LPVOID    lpBuffer,  [in] DWORD     dwBufferLength);*/
+39164>>>>>>>>>External_Function WinAPI_InternetSetOption "InternetSetOptionW" WinInet.dll ;    Handle hInternet ;    DWord dwOption ;    Pointer lpBuffer ;    DWord dwBufferLength ;    Returns Integer
+39165>>>>>>>>>
+39165>>>>>>>>>/*BOOL InternetQueryOptionW(  [in]      HINTERNET hInternet,  [in]      DWORD     dwOption,  [out]     LPVOID    lpBuffer,  [in, out] LPDWORD   lpdwBufferLength);*/
+39165>>>>>>>>>External_Function WinAPI_InternetQueryOption "InternetQueryOptionW" WinInet.dll ;    Handle hInternet ;    DWord dwOption ;    Pointer lpBuffer ;    Pointer lpdwBufferLength ;    Returns Integer
+39166>>>>>>>>>
+39166>>>>>>>>>
+39166>>>>>>>>>//  Available options for dwInfoLevel of WinAPI_HttpQueryInfo
+39166>>>>>>>>>Define HTTP_QUERY_MIME_VERSION                for 0
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_TYPE                for 1
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_TRANSFER_ENCODING   for 2
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_ID                  for 3
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_DESCRIPTION         for 4
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_LENGTH              for 5
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_LANGUAGE            for 6
+39166>>>>>>>>>Define HTTP_QUERY_ALLOW                       for 7
+39166>>>>>>>>>Define HTTP_QUERY_PUBLIC                      for 8
+39166>>>>>>>>>Define HTTP_QUERY_DATE                        for 9
+39166>>>>>>>>>Define HTTP_QUERY_EXPIRES                     for 10
+39166>>>>>>>>>Define HTTP_QUERY_LAST_MODIFIED               for 11
+39166>>>>>>>>>Define HTTP_QUERY_MESSAGE_ID                  for 12
+39166>>>>>>>>>Define HTTP_QUERY_URI                         for 13
+39166>>>>>>>>>Define HTTP_QUERY_DERIVED_FROM                for 14
+39166>>>>>>>>>Define HTTP_QUERY_COST                        for 15
+39166>>>>>>>>>Define HTTP_QUERY_LINK                        for 16
+39166>>>>>>>>>Define HTTP_QUERY_PRAGMA                      for 17
+39166>>>>>>>>>Define HTTP_QUERY_VERSION                     for 18  // special: part of status line
+39166>>>>>>>>>Define HTTP_QUERY_STATUS_CODE                 for 19  // special: part of status line
+39166>>>>>>>>>Define HTTP_QUERY_STATUS_TEXT                 for 20  // special: part of status line
+39166>>>>>>>>>Define HTTP_QUERY_RAW_HEADERS                 for 21  // special: all headers as ASCIIZ
+39166>>>>>>>>>Define HTTP_QUERY_RAW_HEADERS_CRLF            for 22  // special: all headers
+39166>>>>>>>>>Define HTTP_QUERY_CONNECTION                  for 23
+39166>>>>>>>>>Define HTTP_QUERY_ACCEPT                      for 24
+39166>>>>>>>>>Define HTTP_QUERY_ACCEPT_CHARSET              for 25
+39166>>>>>>>>>Define HTTP_QUERY_ACCEPT_ENCODING             for 26
+39166>>>>>>>>>Define HTTP_QUERY_ACCEPT_LANGUAGE             for 27
+39166>>>>>>>>>Define HTTP_QUERY_AUTHORIZATION               for 28
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_ENCODING            for 29
+39166>>>>>>>>>Define HTTP_QUERY_FORWARDED                   for 30
+39166>>>>>>>>>Define HTTP_QUERY_FROM                        for 31
+39166>>>>>>>>>Define HTTP_QUERY_IF_MODIFIED_SINCE           for 32
+39166>>>>>>>>>Define HTTP_QUERY_LOCATION                    for 33
+39166>>>>>>>>>Define HTTP_QUERY_ORIG_URI                    for 34
+39166>>>>>>>>>Define HTTP_QUERY_REFERER                     for 35
+39166>>>>>>>>>Define HTTP_QUERY_RETRY_AFTER                 for 36
+39166>>>>>>>>>Define HTTP_QUERY_SERVER                      for 37
+39166>>>>>>>>>Define HTTP_QUERY_TITLE                       for 38
+39166>>>>>>>>>Define HTTP_QUERY_USER_AGENT                  for 39
+39166>>>>>>>>>Define HTTP_QUERY_WWW_AUTHENTICATE            for 40
+39166>>>>>>>>>Define HTTP_QUERY_PROXY_AUTHENTICATE          for 41
+39166>>>>>>>>>Define HTTP_QUERY_ACCEPT_RANGES               for 42
+39166>>>>>>>>>Define HTTP_QUERY_SET_COOKIE                  for 43
+39166>>>>>>>>>Define HTTP_QUERY_COOKIE                      for 44
+39166>>>>>>>>>Define HTTP_QUERY_REQUEST_METHOD              for 45  // special: GET/POST etc.
+39166>>>>>>>>>Define HTTP_QUERY_REFRESH                     for 46
+39166>>>>>>>>>Define HTTP_QUERY_CONTENT_DISPOSITION         for 47
+39166>>>>>>>>>
+39166>>>>>>>>>
+39166>>>>>>>>>Class cHttpTransfer is a cBaseHttpTransfer
+39167>>>>>>>>>    
+39167>>>>>>>>>    Function HttpPostRequest String sFilePath String sData Integer bDataIsFile Returns Integer
+39169>>>>>>>>>        Integer bStat
+39169>>>>>>>>>        Get HttpPostAddrRequest sFilePath (AddressOf(sData)) (SizeOfString(sData)) bDataIsfile to bStat
+39170>>>>>>>>>        Function_Return bStat
+39171>>>>>>>>>    End_Function
+39172>>>>>>>>>    
+39172>>>>>>>>>    // This event is triggered from the runtime. It now uses UChar arrays as the data might 
+39172>>>>>>>>>    // not be a valid string (it can be any binary data). It still calls the original event for 
+39172>>>>>>>>>    // backwards compatibility.
+39172>>>>>>>>>    Procedure OnDataReceivedUC String sContentType UChar[] ucData
+39174>>>>>>>>>        Send OnDataReceived sContentType (UCharArrayToString(ucData))
+39175>>>>>>>>>    End_Procedure
+39176>>>>>>>>>    
+39176>>>>>>>>>    // Only use this event if you know for sure the data is a string and make sure piBufferSize is
+39176>>>>>>>>>    // smaller than the argument size.
+39176>>>>>>>>>    Procedure OnDataReceived String sContentType String sData
+39178>>>>>>>>>        
+39178>>>>>>>>>    End_Procedure
+39179>>>>>>>>>    
+39179>>>>>>>>>    // Called just before the request is sent. Use this message to set options to the RequestHandle if nessecary.
+39179>>>>>>>>>    Procedure OnPreSendRequest 
+39181>>>>>>>>>        
+39181>>>>>>>>>    End_Procedure
+39182>>>>>>>>>    
+39182>>>>>>>>>    Function HttpPutRequest String sFilePath String sData Integer bDataIsFile Returns Integer
+39184>>>>>>>>>        Integer bStat
+39184>>>>>>>>>        Get HttpPutAddrRequest sFilePath (AddressOf(sData)) (SizeOfString(sData)) bDataIsfile to bStat
+39185>>>>>>>>>        Function_Return bStat
+39186>>>>>>>>>    End_Function
+39187>>>>>>>>>    
+39187>>>>>>>>>    // Retrieve header information associated with the previous request.
+39187>>>>>>>>>    Function QueryInfo DWord dwInfoLevel Returns String
+39189>>>>>>>>>        Handle hRequestHandle
+39189>>>>>>>>>        WString wResult
+39189>>>>>>>>>        Integer iBufferSize iRes iVoid
+39189>>>>>>>>>
+39189>>>>>>>>>        Get RequestHandle to hRequestHandle
+39190>>>>>>>>>        
+39190>>>>>>>>>        If (hRequestHandle) Begin
+39192>>>>>>>>>            Move 200 to iBufferSize
+39193>>>>>>>>>            Move (Repeat(" ", iBufferSize)) to wResult
+39194>>>>>>>>>            Move (WinAPI_HttpQueryInfo(hRequestHandle, dwInfoLevel, AddressOf(wResult), AddressOf(iBufferSize), 0)) to iRes
+39195>>>>>>>>>            
+39195>>>>>>>>>            If (not(iRes) and GetLastError() = 122) Begin //  Insufficient buffersize, retry with received iBufferSize value
+39197>>>>>>>>>                Increment iBufferSize      
+39198>>>>>>>>>                
+39198>>>>>>>>>                Move (Repeat(" ", iBufferSize)) to wResult
+39199>>>>>>>>>                Move (WinAPI_HttpQueryInfo(hRequestHandle, dwInfoLevel, AddressOf(wResult), AddressOf(iBufferSize), 0)) to iRes  
+39200>>>>>>>>>            End
+39200>>>>>>>>>>
+39200>>>>>>>>>            
+39200>>>>>>>>>            If (not(iRes)) Begin
+39202>>>>>>>>>                Move (ShowLastError()) to iVoid
+39203>>>>>>>>>            End
+39203>>>>>>>>>>
+39203>>>>>>>>>        End
+39203>>>>>>>>>>
+39203>>>>>>>>>        
+39203>>>>>>>>>        Function_Return (CString(wResult))
+39204>>>>>>>>>    End_Function
+39205>>>>>>>>>    
+39205>>>>>>>>>    // Returns the statustext returned by the previous request.
+39205>>>>>>>>>    Function ResponseStatusText Returns String
+39207>>>>>>>>>        String sStatus
+39207>>>>>>>>>        
+39207>>>>>>>>>        Get QueryInfo HTTP_QUERY_STATUS_TEXT to sStatus
+39208>>>>>>>>>        
+39208>>>>>>>>>        Function_Return sStatus
+39209>>>>>>>>>    End_Function
+39210>>>>>>>>>    
+39210>>>>>>>>>End_Class
+39211>>>>>>>Use cJsonObject.pkg
+39211>>>>>>>Use GlobalFunctionsProcedures.pkg
+39211>>>>>>>
+39211>>>>>>>// these define the three characters that define BOM for utf8.
+39211>>>>>>>// These serve no purpos and are rarely used. If used they must be removed
+39211>>>>>>>Define C_BOM1 for |CI$EF
+39211>>>>>>>Define C_BOM2 for |CI$BB
+39211>>>>>>>Define C_BOM3 for |CI$BF
+39211>>>>>>>
+39211>>>>>>>
+39211>>>>>>>
+39211>>>>>>>// define JSON transfer status codes used by peJsonTransferStatus
+39211>>>>>>>Enum_List
+39211>>>>>>>    Define jtsOk                 // ok
+39211>>>>>>>    Define jtsHttpRequestFailed  // the post/get http request returned an error
+39211>>>>>>>    Define jtsInvalidContentType // response content type not JSON
+39211>>>>>>>    Define jtsNotJson            // return value not JSON (could not load in object)
+39211>>>>>>>    Define jtsError              // unspecified return error
+39211>>>>>>>End_Enum_List
+39211>>>>>>>
+39211>>>>>>>
+39211>>>>>>>Class cJsonHttpTransfer is a cHttpTransfer
+39212>>>>>>>    
+39212>>>>>>>    Procedure Construct_Object
+39214>>>>>>>        Forward Send Construct_object
+39216>>>>>>>        
+39216>>>>>>>        Property String  psContentTypeSent "application/json; charset=utf-8"     // default content type for posted data
+39217>>>>>>>        
+39217>>>>>>>        Property Boolean pbClearHeaders      True         // should headers always be cleared after a post
+39218>>>>>>>        
+39218>>>>>>>        Property UChar[] pucDataReceived                 // maintained by object
+39219>>>>>>>        
+39219>>>>>>>        Property String  psContentTypeReceived ''         // content type received
+39220>>>>>>>        
+39220>>>>>>>        Property String  psJsonParseError ''              // Set if response JSON can't be parsed
+39221>>>>>>>        
+39221>>>>>>>        Property String  psContentTypeExpected 'application/json' // content type received - expected value should be contained in here.
+39222>>>>>>>        
+39222>>>>>>>        Property Integer peJsonTransferStatus jtsOk
+39223>>>>>>>        
+39223>>>>>>>        // if true, the http post does not happend and whatever was posted is just returned as a copy.
+39223>>>>>>>        // Good for internal Testing
+39223>>>>>>>        Property Boolean pbPostLoopTest False
+39224>>>>>>>        
+39224>>>>>>>        Set piBufferSize to -1  //  No chunking needed
+39225>>>>>>>        Set psAcceptTypes to "application/json"
+39226>>>>>>>    End_Procedure
+39227>>>>>>>    
+39227>>>>>>>    // private helper function. Convert data passed by pointer to an JSON document.
+39227>>>>>>>    // return 0, if error
+39227>>>>>>>    //
+39227>>>>>>>    Function UCharDatatoJson UChar[] ucJson Returns Handle
+39229>>>>>>>        Integer iVoid bOk
+39229>>>>>>>        Handle hoJson
+39229>>>>>>>        String sError
+39229>>>>>>>        Get Create of Desktop (RefClass(cJsonObject)) to hoJson
+39230>>>>>>>        Get ParseUTF8 of hoJson ucJson to bOk
+39231>>>>>>>        If not bOk Begin
+39233>>>>>>>            // store the JSON parse error info
+39233>>>>>>>            Get psParseError of hoJson to sError
+39234>>>>>>>            Set psJsonParseError to sError
+39235>>>>>>>            Send Destroy of hoJson
+39236>>>>>>>            Move 0 to hoJson
+39237>>>>>>>        End
+39237>>>>>>>>
+39237>>>>>>>        Function_Return hoJson
+39238>>>>>>>    End_Function
+39239>>>>>>>    
+39239>>>>>>>    // Clear pucDataReceived
+39239>>>>>>>    Procedure ClearDataReceived
+39241>>>>>>>        UChar[] ucEmpty
+39242>>>>>>>        
+39242>>>>>>>        Set pucDataReceived to ucEmpty
+39243>>>>>>>        Set psJsonParseError to ''
+39244>>>>>>>    End_Procedure
+39245>>>>>>>    
+39245>>>>>>>    // augment to release any memor
+39245>>>>>>>    Procedure Destroy_Object
+39247>>>>>>>        Send ClearDataReceived
+39248>>>>>>>        Forward Send Destroy_object
+39250>>>>>>>    End_Procedure
+39251>>>>>>>    
+39251>>>>>>>    // called during http transfer. Take passed data and append to pucDataReceived.
+39251>>>>>>>    // If new transfer save contenttype.
+39251>>>>>>>    Procedure OnDataReceivedUC String sContentType UChar[] ucData
+39253>>>>>>>        UChar[] ucBuffer
+39254>>>>>>>        Integer iDataLen
+39254>>>>>>>        
+39254>>>>>>>        Move (SizeOfArray(ucData)) to iDataLen
+39255>>>>>>>        
+39255>>>>>>>        If (iDataLen > 0) Begin
+39257>>>>>>>            Get pucDataReceived to ucBuffer
+39258>>>>>>>            If (SizeOfArray(ucBuffer) > 0) Begin
+39260>>>>>>>                Set pucDataReceived to (AppendArray(ucBuffer, ucData))
+39261>>>>>>>            End
+39261>>>>>>>>
+39261>>>>>>>            Else Begin
+39262>>>>>>>                Set psContentTypeReceived to sContentType
+39263>>>>>>>                
+39263>>>>>>>                If (iDataLen > 3 and ucData[0]=C_BOM1 and ucData[1]=C_BOM2 and ucData[2]=C_BOM3) Begin
+39265>>>>>>>                    Set pucDataReceived to (CopyArray(ucData, 3, iDataLen - 1))
+39266>>>>>>>                End
+39266>>>>>>>>
+39266>>>>>>>                Else Begin
+39267>>>>>>>                    Set pucDataReceived to ucData
+39268>>>>>>>                End
+39268>>>>>>>>
+39268>>>>>>>            End
+39268>>>>>>>>
+39268>>>>>>>        End
+39268>>>>>>>>
+39268>>>>>>>    End_Procedure
+39269>>>>>>>    
+39269>>>>>>>    Function LoopDataBack UChar[] ucData Returns Boolean
+39271>>>>>>>        Pointer pInData
+39271>>>>>>>        Boolean bOk
+39271>>>>>>>        
+39271>>>>>>>        Set pucDataReceived to ucData
+39272>>>>>>>        Set psContentTypeReceived to (psContentTypeExpected(Self))
+39273>>>>>>>        
+39273>>>>>>>        Function_Return True
+39274>>>>>>>    End_Function
+39275>>>>>>>    
+39275>>>>>>>    
+39275>>>>>>>    Function HttpVerbJsonAddrExec String sHost String sFilePath Pointer pJson Integer iLen String sVerb  Returns Boolean
+39277>>>>>>>        Boolean bOk
+39277>>>>>>>        Integer iError
+39277>>>>>>>        String sContentType
+39277>>>>>>>        
+39277>>>>>>>        Send ClearDataReceived  // this should be zero, just in case it is not
+39278>>>>>>>        Set psRemoteHost to sHost
+39279>>>>>>>        
+39279>>>>>>>        Get psContentTypeSent to sContentType
+39280>>>>>>>        If (iLen > 0 and sContentType <> "") Begin
+39282>>>>>>>            Get AddHeader "Content-Type" sContentType to bok
+39283>>>>>>>        End
+39283>>>>>>>>
+39283>>>>>>>        Get HttpVerbAddrRequest sFilePath pJson iLen False sVerb to bOK
+39284>>>>>>>        
+39284>>>>>>>        // You need to clear headers between posts. If you need to set custom headers you should
+39284>>>>>>>        // set pbClearHeaders to false and then manually send ClearHeaders and AddHeaders in your code
+39284>>>>>>>        If (pbClearHeaders(Self)) ;            Send ClearHeaders
+39287>>>>>>>        
+39287>>>>>>>        
+39287>>>>>>>        Function_Return bOk
+39288>>>>>>>    End_Function
+39289>>>>>>>    
+39289>>>>>>>    // We assume but do not verify that the data in ucJson is actually UTF8 JSON
+39289>>>>>>>    Function HttpVerbJsonUChar String sHost String sFilePath UChar[] ucJson String sVerb Returns UChar[]
+39291>>>>>>>        Integer iLen
+39291>>>>>>>        Boolean bOk
+39291>>>>>>>        UChar[] ucJsonReceived
+39292>>>>>>>        String sContentTypeReceived sContentTypeExpected
+39292>>>>>>>        
+39292>>>>>>>        Move (SizeOfArray(ucJson)) to iLen
+39293>>>>>>>        
+39293>>>>>>>        If (pbPostLoopTest(Self)) Begin
+39295>>>>>>>            Get LoopDataBack ucJson to bOk
+39296>>>>>>>        End
+39296>>>>>>>>
+39296>>>>>>>        Else Begin
+39297>>>>>>>            Get HttpVerbJsonAddrExec sHost sFilePath (AddressOf(ucJson)) iLen sVerb to bOk
+39298>>>>>>>        End
+39298>>>>>>>>
+39298>>>>>>>                
+39298>>>>>>>        If bOk Begin
+39300>>>>>>>            Set peJsonTransferStatus to jtsOk
+39301>>>>>>>            Get pucDataReceived to ucJsonReceived
+39302>>>>>>>            
+39302>>>>>>>            If (SizeOfArray(ucJsonReceived) > 0) Begin
+39304>>>>>>>                // we have data, check that the content type is ok. This is as far
+39304>>>>>>>                // as we can go here.
+39304>>>>>>>                Get psContentTypeReceived to sContentTypeReceived
+39305>>>>>>>                Get psContentTypeExpected to sContentTypeExpected
+39306>>>>>>>                // If contentType expected is empty, we allow anything
+39306>>>>>>>                If (sContentTypeExpected<>"" and pos(lowercase(sContentTypeExpected),lowercase(sContentTypeReceived))=0) Begin
+39308>>>>>>>                    Set peJsonTransferStatus to jtsInvalidContentType
+39309>>>>>>>                End
+39309>>>>>>>>
+39309>>>>>>>            End
+39309>>>>>>>>
+39309>>>>>>>        End
+39309>>>>>>>>
+39309>>>>>>>        Else Begin
+39310>>>>>>>            Set peJsonTransferStatus to jtsHttpRequestFailed
+39311>>>>>>>        End
+39311>>>>>>>>
+39311>>>>>>>                
+39311>>>>>>>        Function_Return ucJsonReceived
+39312>>>>>>>    End_Function
+39313>>>>>>>    
+39313>>>>>>>    // Generic HTTP Request - it is passed the Verb. Used by all other http requests
+39313>>>>>>>    Function HttpVerbJson  String sHost String sFilePath Handle  hoJsonRequest String sVerb Boolean ByRef bOk Returns Handle
+39315>>>>>>>        UChar[] ucJsonRequest ucJsonResponse
+39317>>>>>>>        Handle hoJsonResponse
+39317>>>>>>>        Integer eStat
+39317>>>>>>>        
+39317>>>>>>>        If (hoJsonRequest<>0) Begin
+39319>>>>>>>            Get StringifyUTF8 of hoJsonRequest to ucJsonRequest
+39320>>>>>>>        End
+39320>>>>>>>>
+39320>>>>>>>        
+39320>>>>>>>        Get HttpVerbJsonUChar sHost sFilePath ucJsonRequest sVerb to ucJsonResponse
+39321>>>>>>>        
+39321>>>>>>>        If (SizeOfArray(ucJsonResponse)) Begin
+39323>>>>>>>            Get UCharDatatoJson ucJsonResponse to hoJsonResponse
+39324>>>>>>>            If (hoJsonResponse=0) Begin
+39326>>>>>>>                // this indicates that data was returned but it could not be loaded as Json
+39326>>>>>>>                Set peJsonTransferStatus to jtsNotJson
+39327>>>>>>>                // note bad data is still is ppDataReceived (might be useful for debugging)
+39327>>>>>>>            End
+39327>>>>>>>>
+39327>>>>>>>        End
+39327>>>>>>>>
+39327>>>>>>>        
+39327>>>>>>>        // return Ok status by reference
+39327>>>>>>>        Get peJsonTransferStatus to eStat
+39328>>>>>>>        Move (eStat=jtsOk) to bOk
+39329>>>>>>>        
+39329>>>>>>>        Function_Return hoJsonResponse
+39330>>>>>>>    End_Function
+39331>>>>>>>    
+39331>>>>>>>    Function HttpPostJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+39333>>>>>>>        Handle hoJson
+39333>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "POST" (&bOk) to hoJson
+39334>>>>>>>        Function_Return hoJson
+39335>>>>>>>    End_Function
+39336>>>>>>>    
+39336>>>>>>>    Function HttpGetJson String sHost String sFilePath Boolean ByRef bOk Returns Handle
+39338>>>>>>>        Pointer pJson
+39338>>>>>>>        Integer iVoid iLen
+39338>>>>>>>        Handle hoJson
+39338>>>>>>>        Get HttpVerbJson sHost sFilePath 0 "GET" (&bOk) to hoJson
+39339>>>>>>>        Function_Return hoJson
+39340>>>>>>>    End_Function
+39341>>>>>>>    
+39341>>>>>>>    Function HttpPutJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+39343>>>>>>>        Handle hoJson
+39343>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "PUT" (&bOk) to hoJson
+39344>>>>>>>        Function_Return hoJson
+39345>>>>>>>    End_Function
+39346>>>>>>>    
+39346>>>>>>>    Function HttpDeleteJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+39348>>>>>>>        Handle hoJson
+39348>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "DELETE" (&bOk) to hoJson
+39349>>>>>>>        Function_Return hoJson
+39350>>>>>>>    End_Function
+39351>>>>>>>    
+39351>>>>>>>    Function HttpPatchJson  String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+39353>>>>>>>        Handle hoJson
+39353>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "PATCH" (&bOk) to hoJson
+39354>>>>>>>        Function_Return hoJson
+39355>>>>>>>    End_Function
+39356>>>>>>>    
+39356>>>>>>>    // After an Json xfer request this message can be sent to display an error message if one occurred.
+39356>>>>>>>    // Normally you would first check peJsonTransferStatus to see if it is not jtsOk. If not, send
+39356>>>>>>>    // LastError to see the error
+39356>>>>>>>    
+39356>>>>>>>    // return last JSON transfer error text
+39356>>>>>>>    Function TransferErrorDescription Returns String
+39358>>>>>>>        String  sError sJsonError
+39358>>>>>>>        Integer eJsonTransferStatus
+39358>>>>>>>        Get peJsonTransferStatus to eJsonTransferStatus
+39359>>>>>>>        Get psJsonParseError to sJsonError
+39360>>>>>>>        Case Begin
+39360>>>>>>>            Case (eJsonTransferStatus=jtsOk) ;                Move '' to sError
+39363>>>>>>>            Case (eJsonTransferStatus=jtsHttpRequestFailed) ;                Move C_$HttpRequestFailed to sError
+39367>>>>>>>            Case (eJsonTransferStatus=jtsInvalidContentType) ;                Move (SFormat(C_$InvalidContentTypeReceived,psContentTypeReceived(Self))) to sError
+39371>>>>>>>            Case (eJsonTransferStatus=jtsNotJson) ;                Move (C_$ReceivedDataNotInJsonFormat * sJsonError) to sError
+39375>>>>>>>            Case Else ;                Move C_$ReceivedDataIsBad to sError
+39377>>>>>>>        Case End
+39377>>>>>>>        Function_Return sError
+39378>>>>>>>    End_Function
+39379>>>>>>>    
+39379>>>>>>>    // can be send to raise an error.
+39379>>>>>>>    Procedure LastError
+39381>>>>>>>        Integer eJsonTransferStatus
+39381>>>>>>>        String sError
+39381>>>>>>>        
+39381>>>>>>>        Get peJsonTransferStatus to eJsonTransferStatus
+39382>>>>>>>        If (eJsonTransferStatus<>jtsOk) Begin
+39384>>>>>>>            Get TransferErrorDescription to sError
+39385>>>>>>>            Error DFERR_JSON_HTTP sError
+39386>>>>>>>>
+39386>>>>>>>        End
+39386>>>>>>>>
+39386>>>>>>>    End_Procedure
+39387>>>>>>>    
+39387>>>>>>>    
+39387>>>>>>>End_Class
+39388>>>>>
+39388>>>>>
+39388>>>>>Function zTelefonoValidation Boolean bUseApi String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
+39391>>>>>    
+39391>>>>>     Boolean bRet
+39391>>>>>     
+39391>>>>>     
+39391>>>>>     Get zNumeroCorrecto sTelefono (&sMsg) to bRet
+39392>>>>>     If (not(bRet)) Function_Return False 
+39395>>>>>     If (bUseApi) Get zValidarConApi sTelefono sPrefijo (&sMsg) to bRet
+39398>>>>>     If (not(bRet)) Function_Return False
+39401>>>>>    Function_Return True
+39402>>>>>End_Function
+39403>>>>>
+39403>>>>>
+39403>>>>>
+39403>>>>>Function zNumeroCorrecto String sTelefono String ByRef sMsg Returns Boolean
+39406>>>>>    String[] aRet
+39407>>>>>    Object oTelefonopattern is a cRegEx
+39409>>>>>        Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
+39410>>>>>    End_Object
+39411>>>>>    Get MatchAll of oTelefonopattern (sTelefono) to aRet
+39412>>>>>        If (SizeOfArray(aRet) = 1) Begin
+39414>>>>>        Function_Return True
+39415>>>>>        End
+39415>>>>>>
+39415>>>>>    
+39415>>>>>    Move "Porfavor Introduzca un formato de Telefono valido" to sMsg
+39416>>>>>    Function_Return False    
+39417>>>>>End_Function 
+39418>>>>>
+39418>>>>>Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Returns Boolean
+39421>>>>>    
+39421>>>>>    Handle hoJsonReceived hoHttp
+39421>>>>>    Boolean bOk bIsNull bRet
+39421>>>>>    String  sNum sUrl
+39421>>>>>     
+39421>>>>>    Move (sPrefijo + sTelefono) to sNum
+39422>>>>>   
+39422>>>>>    Get Create (RefClass(cJsonHttpTransfer)) to hoHttp
+39423>>>>>    Move False to bRet
+39424>>>>>    
+39424>>>>>    Get HttpGetJson of hohttp ("phonevalidation.abstractapi.com") ("/v1/?api_key=713383f7f21e45b1ac4054a472e00971&phone=" + sNum) (&bOk) to hoJsonReceived
+39425>>>>>
+39425>>>>>
+39425>>>>>    If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin
+39427>>>>>        
+39427>>>>>        If (HasMember(hoJsonReceived,"valid"))  Begin
+39429>>>>>            Get IsMemberOfJsonType of hoJsonReceived "valid" jsonTypeNull  to bIsNull
+39430>>>>>            If bIsNull  Move False to bRet
+39433>>>>>            Else Move (MemberValue(hoJsonReceived,"valid")) to bRet
+39435>>>>>        End
+39435>>>>>>
+39435>>>>>    End
+39435>>>>>>
+39435>>>>>    Send Destroy of hohttp
+39436>>>>>    Function_Return bRet
+39437>>>>>End_Function
+39438>>>>>    
+39438>>>>>    
+39438>>>
+39438>>>Object oDummieTelefono is a cWebView
+39440>>>
+39440>>>    // Your DDO structure will go here
+39440>>>    Set piWidth to 700
+39441>>>    Set psCaption to "DummieDni"
+39442>>>
+39442>>>    // Your DDO structure will go here
+39442>>>
+39442>>>    Object oWebMainPanel is a cWebPanel
+39444>>>        Set piColumnCount to 12
+39445>>>
+39445>>>        Object oForm_Prefijo is a cWebForm
+39447>>>            Set piColumnSpan to 3
+39448>>>            Set psLabel to "Prefijo telefonico"
+39449>>>            Set peLabelPosition to lpTop
+39450>>>        End_Object
+39451>>>        
+39451>>>        // place controls here
+39451>>>        // Your view will grow as controls are added
+39451>>>        
+39451>>>        Object oForm_telefono is a cWebForm
+39453>>>            Set piColumnSpan to 9
+39454>>>            Set psLabel to "Introduzca el telefono"
+39455>>>            Set piColumnIndex to 3
+39456>>>            Set peLabelPosition to lpTop
+39457>>>        End_Object
+39458>>>
+39458>>>        Object oWebLabel_sMsg_Err is a cWebLabel
+39460>>>            Set psCaption to ""
+39461>>>            Set piColumnIndex to 0
+39462>>>            Set piColumnSpan to 12
+39463>>>        End_Object
+39464>>>
+39464>>>        Object oWebSpacer1 is a cWebSpacer
+39466>>>            Set piColumnSpan to 12
+39467>>>        End_Object
+39468>>>
+39468>>>        Object oValidationButton is a cWebButton
+39470>>>            Set piColumnSpan to 6
+39471>>>            Set psCaption to "Validar"
+39472>>>            Set piColumnIndex to 3
+39473>>>        
+39473>>>            Procedure OnClick
+39476>>>                Boolean bRet
+39476>>>                String sTelefono sPrefijo sMsg
+39476>>>                WebGet psValue of oForm_telefono to sTelefono
+39477>>>                WebGet psValue of oForm_Prefijo to sPrefijo
+39478>>>                Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
+39479>>>                
+39479>>>                WebSet psBackgroundColor of oForm_telefono to "#ffffff"
+39480>>>                WebSet psBackgroundColor of oForm_Prefijo to "#ffffff"
+39481>>>                WebSet psCaption of oWebLabel_sMsg_Err to ""
+39482>>>                
+39482>>>                If (bRet) Begin
+39484>>>                    WebSet psBackgroundColor of oForm_telefono to "green"
+39485>>>                    WebSet psBackgroundColor of oForm_Prefijo to "green"
+39486>>>                    
+39486>>>                End
+39486>>>>
+39486>>>                If (not (bRet)) Begin
+39488>>>                    WebSet psBackgroundColor of oForm_Prefijo to "red"
+39489>>>                    WebSet psBackgroundColor of oForm_telefono to "red"
+39490>>>                    WebSet psCaption of oWebLabel_sMsg_Err to sMsg
+39491>>>                End
+39491>>>>
+39491>>>                
+39491>>>                
+39491>>>            End_Procedure
+39492>>>        End_Object
+39493>>>        
+39493>>>    End_Object
+39494>>>
+39494>>>    Procedure OnBeforeShow
+39497>>>        Forward Send OnBeforeShow
+39499>>>        WebSet psValue of oForm_Prefijo to "+34"
+39500>>>    End_Procedure
+39501>>>
+39501>>>End_Object
+39502>    Set phoDefaultView to oDashboard
+39503>
+39503>End_Object
+39504>
+39504>Send StartWebApp of oWebApp
+39505>
 Summary
-Memory Available: 8538894336
+Memory Available: 7021486080
 Total Warnings : 0
 Total Errors   : 0
-Total Symbols  : 25816
+Total Symbols  : 26019
 Total Resources: 0
-Total Commands : 39253
+Total Commands : 39504
 Total Windows  : 0
 Total Pages    : 0
-Static Data    : 491561
-Message area   : 262505
-Total Blocks   : 17472
+Static Data    : 494365
+Message area   : 264356
+Total Blocks   : 17585
