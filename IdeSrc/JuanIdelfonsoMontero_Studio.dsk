@@ -7,7 +7,7 @@ GroupCount=1
 HorizontalGroups=0
 [TabGroup0]
 GroupSize=40
-SelectedTab=2
+SelectedTab=1
 [Window0]
 Filename=C:\DataFlex Projects\Centros\AppSrc\DummieDni.wo
 ViewType=1
@@ -20,68 +20,24 @@ CursorColumn=0
 TabIndex=0
 TabGroup=0
 [Window1]
-Filename=C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo
+Filename=C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=73
-CursorColumn=16
-TabIndex=1
+CursorLine=89
+CursorColumn=20
+TabIndex=2
 TabGroup=0
 [Window2]
-Filename=C:\DataFlex Projects\Centros\AppSrc\zDniValidation.pkg
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=18
-CursorColumn=0
-TabIndex=3
-TabGroup=0
-[Window3]
-Filename=C:\DataFlex Projects\Centros\AppSrc\Dashboard.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=131
-CursorColumn=72
-TabIndex=4
-TabGroup=0
-[Window4]
-Filename=C:\DataFlex Projects\Centros\AppSrc\DummieEmail.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=4
-CursorColumn=14
-TabIndex=5
-TabGroup=0
-[Window5]
-Filename=C:\DataFlex Projects\Centros\AppSrc\zEmailValidation.pkg
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=0
-CursorColumn=0
-TabIndex=6
-TabGroup=0
-[Window6]
 Filename=C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=42
-CursorColumn=63
-TabIndex=2
+CursorLine=23
+CursorColumn=0
+TabIndex=1
 TabGroup=0

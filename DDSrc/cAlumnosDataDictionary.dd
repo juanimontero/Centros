@@ -2,13 +2,15 @@
 
 Use zEmailValidation.pkg
 Use zDniValidation.pkg
-
+Use zTelefonoiValidation.pkg
 
 Open Alumnos
 Open Centros
 
 Register_Function zValidateErr_StudentEmail Integer iField Returns Boolean
 Register_Function zValidateErr_StudentDni Integer iField Returns Boolean
+Register_Function zValidateErr_StudentTelefono Integer iField Returns Boolean
+
 Object oGender is a DescriptionValidationTable
     Procedure Fill_List
         Forward Send Fill_List
@@ -52,6 +54,7 @@ Class cAlumnosDataDictionary is a DataDictionary
         
         Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
         Set Field_Validate_msg Field Alumnos.Dni to get_zValidateErr_StudentDni
+        Set Field_Validate_msg Field Alumnos.NumeroTelefono to get_zValidateErr_StudentTelefono
 
     End_Procedure
 
@@ -82,6 +85,19 @@ Class cAlumnosDataDictionary is a DataDictionary
         Function_Return False
     End_Function
                 
+
+    Function zValidateErr_StudentTelefono Integer iField Returns Boolean
+        Boolean bret
+        String sPrefijo sTelefono sMsg
+        Get Field_Current_Value Field Alumnos.NumeroTelefono to sTelefono
+        Get Field_Current_Value Field Alumnos.PrefijoTlfn to sPrefijo
+        Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bret
+        If (not (bret)) Begin
+                Send Data_set_error iField DFERR_OPERATOR sMsg
+        Function_Return True        
+        End
+        Function_Return False
+    End_Function            
   
   
     Procedure Field_Defaults

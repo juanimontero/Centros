@@ -52,6 +52,7 @@ Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Retur
         End
     End
     Send Destroy of hohttp
+    If (not(bRet)) Move "Fallo validación API" to sMsg
     Function_Return bRet
 End_Function
     
