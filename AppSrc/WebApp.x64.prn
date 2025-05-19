@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 10893713408
+Memory Available: 8106024960
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -4410,7 +4410,7 @@ Including file: DummieTelefono.wo    (C:\DataFlex Projects\Centros\AppSrc\Dummie
 39519>Send StartWebApp of oWebApp
 39520>
 Summary
-Memory Available: 10880397312
+Memory Available: 8100663296
 Total Warnings : 0
 Total Errors   : 0
 Total Symbols  : 26024
