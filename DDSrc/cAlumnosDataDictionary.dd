@@ -51,7 +51,7 @@ Class cAlumnosDataDictionary is a DataDictionary
 
         Set Field_Mask_Type Field Alumnos.FechaUltimaModificacion to Mask_DateTime_Window
         Set Field_Option Field Alumnos.FechaUltimaModificacion DD_NOENTER to True
-        
+//-------------------llamada a validaciones propias-------------------        
         Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
         Set Field_Validate_msg Field Alumnos.Dni to get_zValidateErr_StudentDni
         Set Field_Validate_msg Field Alumnos.NumeroTelefono to get_zValidateErr_StudentTelefono
@@ -112,13 +112,7 @@ Class cAlumnosDataDictionary is a DataDictionary
 
     Procedure Update
         Forward Send Update
-        
-         DateTime dtCurrentDateTime
-         
-         Move (CurrentDateTime()) to dtCurrentDateTime
-       
-        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime
-        
+        Move  (CurrentDateTime())  to Alumnos.FechaUltimaModificacion
     End_Procedure
 
 

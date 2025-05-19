@@ -404,4 +404,11 @@ Object oZoomAllStudents is a cWebView
 
     End_Procedure
 
+    
+    Procedure OnBeforeShow
+        Forward Send OnBeforeShow
+        Send Refill of oAlumnosComunidadAutonoma
+        Send Refill of oAlumnosLocalidad
+    End_Procedure
+
 End_Object 

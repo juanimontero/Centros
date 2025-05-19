@@ -2,57 +2,54 @@
 
 
 Function zTelefonoValidation Boolean bUseApi String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
-    
-     Boolean bRet
-     
-     
+     Boolean bRet    
+//-------------------LLamada a Validacion basica-------------------       
      Get zNumeroCorrecto sTelefono (&sMsg) to bRet
      If (not(bRet)) Function_Return False 
+//-------------------LLamada a Api-------------------     
      If (bUseApi) Get zValidarConApi sTelefono sPrefijo (&sMsg) to bRet
      If (not(bRet)) Function_Return False
+//-------------------Si todo ha salido bien retorna true-------------------      
     Function_Return True
 End_Function
 
-
-
 Function zNumeroCorrecto String sTelefono String ByRef sMsg Returns Boolean
     String[] aRet
+//-------------------Expresion regular para cualquier formato internacional de telefono-------------------  
     Object oTelefonopattern is a cRegEx
         Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
     End_Object
     Get MatchAll of oTelefonopattern (sTelefono) to aRet
         If (SizeOfArray(aRet) = 1) Begin
-        Function_Return True
+            Function_Return True
         End
-    
     Move "Porfavor Introduzca un formato de Telefono valido" to sMsg
     Function_Return False    
 End_Function 
 
-Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Returns Boolean
-    
+Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Returns Boolean    
     Handle hoJsonReceived hoHttp
     Boolean bOk bIsNull bRet
     String  sNum sUrl
-     
-    Move (sPrefijo + sTelefono) to sNum
-   
+     // ----
+    Move (sPrefijo + sTelefono) to sNum   
     Get Create (RefClass(cJsonHttpTransfer)) to hoHttp
     Move False to bRet
-    
+//-------------------LLamada a Api-------------------      
     Get HttpGetJson of hohttp ("phonevalidation.abstractapi.com") ("/v1/?api_key=713383f7f21e45b1ac4054a472e00971&phone=" + sNum) (&bOk) to hoJsonReceived
-
-
-    If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin
-        
+//-------------------Lanza un mensaje de error si la llamada a fallado-------------------      
+    If (not(bOk)) Move "La llamada a la Api ha fallado" to sMsg
+//-------------------LLamada a Api-------------------  
+    If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin        
         If (HasMember(hoJsonReceived,"valid"))  Begin
             Get IsMemberOfJsonType of hoJsonReceived "valid" jsonTypeNull  to bIsNull
             If bIsNull  Move False to bRet
             Else Move (MemberValue(hoJsonReceived,"valid")) to bRet
         End
+//-------------------Lanza un mensaje de error si No existe ese número-------------------          
+        If (not(bRet)) Move "No es valido el dni" to sMsg
     End
     Send Destroy of hohttp
-    If (not(bRet)) Move "Fallo validación API" to sMsg
     Function_Return bRet
 End_Function
     

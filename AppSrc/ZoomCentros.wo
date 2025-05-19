@@ -73,20 +73,20 @@ Object oZoomCentros is a cWebView
                     Set peLabelPosition to lpTop
                     Set psLabel to "Pais"
                     Set pbServerOnChange to True
-//                    
-//                    String[][] aResultsPaises
-
+                    
+                     String[][] aResultsPaisesCentros
+                    
                     Procedure OnFill
                     Integer inumPaises i
                         Forward Send OnFill
                         
                         Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre
-                            from Centros.dbo.Country;" to aResultsPaises
+                            FROM Centros.dbo.Country;" to aResultsPaisesCentros
                             
-                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+                        Move (SizeOfArray(aResultsPaisesCentros[0])) to inumPaises    
                         If (not(Err)) Begin
-                             For i from 0 to (inumPaises - 1)
-                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+                             For i from 0 to (aResultsPaisesCentros - 1)
+                                Send AddComboItem aResultsPaisesCentros[i][0] aResultsPaisesCentros[i][1] 
                              Loop
                         End
                      
