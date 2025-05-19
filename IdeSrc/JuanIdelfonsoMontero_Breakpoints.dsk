@@ -1,8 +1,4 @@
 [C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg]
-Source8=Get zNumeroCorrecto sTelefono (&sMsg) to bRet
-ConditionEnabled8=0
-Condition8= 
-8=1
 Source23=If (SizeOfArray(aRet) = 1) Begin
 ConditionEnabled23=0
 Condition23= 

@@ -110,15 +110,9 @@ Class cAlumnosDataDictionary is a DataDictionary
         Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime 
     End_Procedure
 
-    Procedure Update
+      Procedure Update
         Forward Send Update
-        
-         DateTime dtCurrentDateTime
-         
-         Move (CurrentDateTime()) to dtCurrentDateTime
-       
-        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime
-        
+        Move  (CurrentDateTime())  to Alumnos.FechaUltimaModificacion
     End_Procedure
 
 
