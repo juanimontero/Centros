@@ -10,3 +10,4 @@
 8="hoJsonReceived"
 9="("https://phonevalidation.abstractapi.com/v1/?api_key=713383f7f21e45b1ac4054a472e00971&phone=" + sNum)"
 10="(Stringify(hoJsonReceived))"
+11="iStatusActual"

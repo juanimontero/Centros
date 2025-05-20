@@ -4,7 +4,7 @@ ConditionEnabled23=0
 Condition23= 
 23=2
 [C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd]
-Source93=Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bret
-ConditionEnabled93=0
-Condition93= 
-93=2
+Source81=Get zValidarEmail sValue (&sMsg) to bret
+ConditionEnabled81=0
+Condition81= 
+81=2

@@ -1,65 +1,21 @@
 [Workspace]
 CurrentProject=WebApp.src
 Location=C:\DataFlex Projects\Centros\IdeSrc\JuanIdelfonsoMontero_Studio.dsk
-CreateNew=5
+CreateNew=3
 [TabWindows]
 GroupCount=1
 HorizontalGroups=0
 [TabGroup0]
 GroupSize=40
-SelectedTab=2
+SelectedTab=0
 [Window0]
-Filename=C:\DataFlex Projects\Centros\AppSrc\DummieDni.wo
+Filename=C:\DataFlex Projects\Centros\AppSrc\StatusAPI.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=12
-CursorColumn=0
+CursorLine=11
+CursorColumn=18
 TabIndex=0
-TabGroup=0
-[Window1]
-Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=12
-CursorColumn=26
-TabIndex=3
-TabGroup=0
-[Window2]
-Filename=C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=8
-CursorColumn=0
-TabIndex=1
-TabGroup=0
-[Window3]
-Filename=C:\DataFlex Projects\Centros\DDSrc\cCentrosDataDictionary.dd
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=43
-CursorColumn=3
-TabIndex=4
-TabGroup=0
-[Window4]
-Filename=C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=116
-CursorColumn=0
-TabIndex=2
 TabGroup=0

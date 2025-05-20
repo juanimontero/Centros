@@ -195,6 +195,7 @@ Object oWebApp is a cWebApp
     Use ZoomCentros.wo
     Use SelectCentro.wo
     Use DummieTelefono.wo
+    Use StatusAPI.wo
     Set phoDefaultView to oDashboard
 
 End_Object

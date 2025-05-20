@@ -16,6 +16,9 @@ Class cCentrosDataDictionary is a DataDictionary
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
 
+        Set Field_Option Field Centros.Id DD_DISPLAYONLY to True
+        Set Key_Field_State Field Centros.Id to True
+
         Set Field_Mask_Type Field Centros.CodigoPostal to Mask_Numeric_Window
         
 

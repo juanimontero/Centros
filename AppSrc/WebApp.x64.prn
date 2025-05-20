@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 8675704832
+Memory Available: 9654276096
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -1684,7 +1684,9 @@ Including file: Dashboard.wo    (C:\DataFlex Projects\Centros\AppSrc\Dashboard.w
 37522>>>                Procedure OnClick String sId String sParam
 37525>>>                    Send NavigatePath
 37526>>>                End_Procedure
-37527>>>            End_Object
+37527>>>             End_Object
+37528>>>             
+37528>>>         
 37528>>>        End_Object
 37529>>>    
 37529>>>    End_Object
@@ -2437,10 +2439,6 @@ Including file: zDniValidation.pkg    (C:\DataFlex Projects\Centros\AppSrc\zDniV
 38008>>>>>    Function_Return False
 38009>>>>>End_Function
 38010>>>>>
-38010>>>>>
-38010>>>>>/**Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean    String sValidationLeter    Move "T,R,W,A,G,M,Y,F,P,D,X,B,N,J,Z,S,Q,V,H,L,C,K,E" to sValidationLeter     String[] aValidationLeter        Move (StrSplitToArray (sValidationLeter, ",")) to aValidationLeter    If (aValidationLeter[(Mod(Integer(sNumber), 23 ) )] = sLetter ) Begin        Function_Return True    End    Move "La letra no es coincidene con los numeros" to sMsg    Function_Return False    End_Function**/
-38010>>>>>
-38010>>>>>
 38010>>>>>Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean
 38013>>>>>    String sValidationLeter sTrueLetter
 38013>>>>>    Move "TRWAGMYFPDXBNJZSQVHLCKE" to sValidationLeter
@@ -2552,1866 +2550,1936 @@ Including file: Alumnos.fd    (C:\DataFlex Projects\Centros\DDSrc\Alumnos.fd)
 38079>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
 38080>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
 38081>>>>>
-38081>>>>>        Set Field_Mask_Type Field Centros.CodigoPostal to Mask_Numeric_Window
-38082>>>>>        
-38082>>>>>
-38082>>>>>
-38082>>>>>        Set Field_Mask_Type Field Centros.FechaCreacionRegistro to Mask_DateTime_Window
-38083>>>>>        Set Field_Option Field Centros.FechaCreacionRegistro DD_NOENTER to True
+38081>>>>>        Set Field_Option Field Centros.Id DD_DISPLAYONLY to True
+38082>>>>>        Set Key_Field_State Field Centros.Id to True
+38083>>>>>
+38083>>>>>        Set Field_Mask_Type Field Centros.CodigoPostal to Mask_Numeric_Window
+38084>>>>>        
 38084>>>>>
-38084>>>>>        Set Field_Mask_Type Field Centros.FechaUltimaModificacion to Mask_DateTime_Window
-38085>>>>>        Set Field_Option Field Centros.FechaUltimaModificacion DD_NOENTER to True
-38086>>>>>       
-38086>>>>>         
+38084>>>>>
+38084>>>>>        Set Field_Mask_Type Field Centros.FechaCreacionRegistro to Mask_DateTime_Window
+38085>>>>>        Set Field_Option Field Centros.FechaCreacionRegistro DD_NOENTER to True
 38086>>>>>
-38086>>>>>    End_Procedure
-38087>>>>>
-38087>>>>>    Procedure Field_Defaults
-38089>>>>>         DateTime dtCurrentDateTime
-38089>>>>>         
-38089>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
-38090>>>>>       
-38090>>>>>        Forward Send Field_Defaults
-38092>>>>>        Set Field_Changed_Value Field Centros.FechaCreacionRegistro to  dtCurrentDateTime 
-38093>>>>>        Set Field_Changed_Value Field Centros.FechaUltimaModificacion to  dtCurrentDateTime 
-38094>>>>>        
-38094>>>>>    End_Procedure
-38095>>>>>    
-38095>>>>>     Procedure Update
-38097>>>>>        Forward Send Update
-38099>>>>>        Move  (CurrentDateTime())  to Centros.FechaUltimaModificacion
-38100>>>>>    End_Procedure
-38101>>>>>
-38101>>>>>
-38101>>>>>End_Class
-38102>>>Use cAlumnosDataDictionary.dd
+38086>>>>>        Set Field_Mask_Type Field Centros.FechaUltimaModificacion to Mask_DateTime_Window
+38087>>>>>        Set Field_Option Field Centros.FechaUltimaModificacion DD_NOENTER to True
+38088>>>>>       
+38088>>>>>         
+38088>>>>>
+38088>>>>>    End_Procedure
+38089>>>>>
+38089>>>>>    Procedure Field_Defaults
+38091>>>>>         DateTime dtCurrentDateTime
+38091>>>>>         
+38091>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
+38092>>>>>       
+38092>>>>>        Forward Send Field_Defaults
+38094>>>>>        Set Field_Changed_Value Field Centros.FechaCreacionRegistro to  dtCurrentDateTime 
+38095>>>>>        Set Field_Changed_Value Field Centros.FechaUltimaModificacion to  dtCurrentDateTime 
+38096>>>>>        
+38096>>>>>    End_Procedure
+38097>>>>>    
+38097>>>>>     Procedure Update
+38099>>>>>        Forward Send Update
+38101>>>>>        Move  (CurrentDateTime())  to Centros.FechaUltimaModificacion
+38102>>>>>    End_Procedure
+38103>>>>>
+38103>>>>>
+38103>>>>>End_Class
+38104>>>Use cAlumnosDataDictionary.dd
 Including file: cAlumnosDataDictionary.dd    (C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd)
-38102>>>>>Use DataDict.pkg
-38102>>>>>
-38102>>>>>Use zEmailValidation.pkg
-38102>>>>>Use zDniValidation.pkg
-38102>>>>>Use zTelefonoiValidation.pkg
+38104>>>>>Use DataDict.pkg
+38104>>>>>
+38104>>>>>Use zEmailValidation.pkg
+38104>>>>>Use zDniValidation.pkg
+38104>>>>>Use zTelefonoiValidation.pkg
 Including file: zTelefonoiValidation.pkg    (C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg)
-38102>>>>>>>Use cJsonHttpTransfer.pkg
+38104>>>>>>>Use cJsonHttpTransfer.pkg
 Including file: cJsonHttpTransfer.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cJsonHttpTransfer.pkg)
-38102>>>>>>>>>// DF JSON internet transfer class definitions.
-38102>>>>>>>>>Use cHttpTransfer.pkg
+38104>>>>>>>>>// DF JSON internet transfer class definitions.
+38104>>>>>>>>>Use cHttpTransfer.pkg
 Including file: cHttpTransfer.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cHttpTransfer.pkg)
-38102>>>>>>>>>>>Use VDFBase.pkg
-38102>>>>>>>>>>>Use GlobalFunctionsProcedures.pkg
-38102>>>>>>>>>>>
-38102>>>>>>>>>>>External_Function WinAPI_HttpQueryInfo "HttpQueryInfoW" WinInet.dll ;    Handle hRequest ;    DWord dwInfoLevel ;    Pointer lpBuffer ;    Pointer lpdwBufferLength ;    Pointer lpdwIndex ;    Returns Integer
-38103>>>>>>>>>>>
-38103>>>>>>>>>>>/*BOOL InternetSetOptionW(  [in] HINTERNET hInternet,  [in] DWORD     dwOption,  [in] LPVOID    lpBuffer,  [in] DWORD     dwBufferLength);*/
-38103>>>>>>>>>>>External_Function WinAPI_InternetSetOption "InternetSetOptionW" WinInet.dll ;    Handle hInternet ;    DWord dwOption ;    Pointer lpBuffer ;    DWord dwBufferLength ;    Returns Integer
+38104>>>>>>>>>>>Use VDFBase.pkg
+38104>>>>>>>>>>>Use GlobalFunctionsProcedures.pkg
 38104>>>>>>>>>>>
-38104>>>>>>>>>>>/*BOOL InternetQueryOptionW(  [in]      HINTERNET hInternet,  [in]      DWORD     dwOption,  [out]     LPVOID    lpBuffer,  [in, out] LPDWORD   lpdwBufferLength);*/
-38104>>>>>>>>>>>External_Function WinAPI_InternetQueryOption "InternetQueryOptionW" WinInet.dll ;    Handle hInternet ;    DWord dwOption ;    Pointer lpBuffer ;    Pointer lpdwBufferLength ;    Returns Integer
+38104>>>>>>>>>>>External_Function WinAPI_HttpQueryInfo "HttpQueryInfoW" WinInet.dll ;    Handle hRequest ;    DWord dwInfoLevel ;    Pointer lpBuffer ;    Pointer lpdwBufferLength ;    Pointer lpdwIndex ;    Returns Integer
 38105>>>>>>>>>>>
-38105>>>>>>>>>>>
-38105>>>>>>>>>>>//  Available options for dwInfoLevel of WinAPI_HttpQueryInfo
-38105>>>>>>>>>>>Define HTTP_QUERY_MIME_VERSION                for 0
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_TYPE                for 1
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_TRANSFER_ENCODING   for 2
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_ID                  for 3
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_DESCRIPTION         for 4
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_LENGTH              for 5
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_LANGUAGE            for 6
-38105>>>>>>>>>>>Define HTTP_QUERY_ALLOW                       for 7
-38105>>>>>>>>>>>Define HTTP_QUERY_PUBLIC                      for 8
-38105>>>>>>>>>>>Define HTTP_QUERY_DATE                        for 9
-38105>>>>>>>>>>>Define HTTP_QUERY_EXPIRES                     for 10
-38105>>>>>>>>>>>Define HTTP_QUERY_LAST_MODIFIED               for 11
-38105>>>>>>>>>>>Define HTTP_QUERY_MESSAGE_ID                  for 12
-38105>>>>>>>>>>>Define HTTP_QUERY_URI                         for 13
-38105>>>>>>>>>>>Define HTTP_QUERY_DERIVED_FROM                for 14
-38105>>>>>>>>>>>Define HTTP_QUERY_COST                        for 15
-38105>>>>>>>>>>>Define HTTP_QUERY_LINK                        for 16
-38105>>>>>>>>>>>Define HTTP_QUERY_PRAGMA                      for 17
-38105>>>>>>>>>>>Define HTTP_QUERY_VERSION                     for 18  // special: part of status line
-38105>>>>>>>>>>>Define HTTP_QUERY_STATUS_CODE                 for 19  // special: part of status line
-38105>>>>>>>>>>>Define HTTP_QUERY_STATUS_TEXT                 for 20  // special: part of status line
-38105>>>>>>>>>>>Define HTTP_QUERY_RAW_HEADERS                 for 21  // special: all headers as ASCIIZ
-38105>>>>>>>>>>>Define HTTP_QUERY_RAW_HEADERS_CRLF            for 22  // special: all headers
-38105>>>>>>>>>>>Define HTTP_QUERY_CONNECTION                  for 23
-38105>>>>>>>>>>>Define HTTP_QUERY_ACCEPT                      for 24
-38105>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_CHARSET              for 25
-38105>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_ENCODING             for 26
-38105>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_LANGUAGE             for 27
-38105>>>>>>>>>>>Define HTTP_QUERY_AUTHORIZATION               for 28
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_ENCODING            for 29
-38105>>>>>>>>>>>Define HTTP_QUERY_FORWARDED                   for 30
-38105>>>>>>>>>>>Define HTTP_QUERY_FROM                        for 31
-38105>>>>>>>>>>>Define HTTP_QUERY_IF_MODIFIED_SINCE           for 32
-38105>>>>>>>>>>>Define HTTP_QUERY_LOCATION                    for 33
-38105>>>>>>>>>>>Define HTTP_QUERY_ORIG_URI                    for 34
-38105>>>>>>>>>>>Define HTTP_QUERY_REFERER                     for 35
-38105>>>>>>>>>>>Define HTTP_QUERY_RETRY_AFTER                 for 36
-38105>>>>>>>>>>>Define HTTP_QUERY_SERVER                      for 37
-38105>>>>>>>>>>>Define HTTP_QUERY_TITLE                       for 38
-38105>>>>>>>>>>>Define HTTP_QUERY_USER_AGENT                  for 39
-38105>>>>>>>>>>>Define HTTP_QUERY_WWW_AUTHENTICATE            for 40
-38105>>>>>>>>>>>Define HTTP_QUERY_PROXY_AUTHENTICATE          for 41
-38105>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_RANGES               for 42
-38105>>>>>>>>>>>Define HTTP_QUERY_SET_COOKIE                  for 43
-38105>>>>>>>>>>>Define HTTP_QUERY_COOKIE                      for 44
-38105>>>>>>>>>>>Define HTTP_QUERY_REQUEST_METHOD              for 45  // special: GET/POST etc.
-38105>>>>>>>>>>>Define HTTP_QUERY_REFRESH                     for 46
-38105>>>>>>>>>>>Define HTTP_QUERY_CONTENT_DISPOSITION         for 47
-38105>>>>>>>>>>>
-38105>>>>>>>>>>>
-38105>>>>>>>>>>>Class cHttpTransfer is a cBaseHttpTransfer
-38106>>>>>>>>>>>    
-38106>>>>>>>>>>>    Function HttpPostRequest String sFilePath String sData Integer bDataIsFile Returns Integer
-38108>>>>>>>>>>>        Integer bStat
-38108>>>>>>>>>>>        Get HttpPostAddrRequest sFilePath (AddressOf(sData)) (SizeOfString(sData)) bDataIsfile to bStat
-38109>>>>>>>>>>>        Function_Return bStat
-38110>>>>>>>>>>>    End_Function
-38111>>>>>>>>>>>    
-38111>>>>>>>>>>>    // This event is triggered from the runtime. It now uses UChar arrays as the data might 
-38111>>>>>>>>>>>    // not be a valid string (it can be any binary data). It still calls the original event for 
-38111>>>>>>>>>>>    // backwards compatibility.
-38111>>>>>>>>>>>    Procedure OnDataReceivedUC String sContentType UChar[] ucData
-38113>>>>>>>>>>>        Send OnDataReceived sContentType (UCharArrayToString(ucData))
-38114>>>>>>>>>>>    End_Procedure
-38115>>>>>>>>>>>    
-38115>>>>>>>>>>>    // Only use this event if you know for sure the data is a string and make sure piBufferSize is
-38115>>>>>>>>>>>    // smaller than the argument size.
-38115>>>>>>>>>>>    Procedure OnDataReceived String sContentType String sData
-38117>>>>>>>>>>>        
-38117>>>>>>>>>>>    End_Procedure
-38118>>>>>>>>>>>    
-38118>>>>>>>>>>>    // Called just before the request is sent. Use this message to set options to the RequestHandle if nessecary.
-38118>>>>>>>>>>>    Procedure OnPreSendRequest 
-38120>>>>>>>>>>>        
-38120>>>>>>>>>>>    End_Procedure
-38121>>>>>>>>>>>    
-38121>>>>>>>>>>>    Function HttpPutRequest String sFilePath String sData Integer bDataIsFile Returns Integer
-38123>>>>>>>>>>>        Integer bStat
-38123>>>>>>>>>>>        Get HttpPutAddrRequest sFilePath (AddressOf(sData)) (SizeOfString(sData)) bDataIsfile to bStat
-38124>>>>>>>>>>>        Function_Return bStat
-38125>>>>>>>>>>>    End_Function
-38126>>>>>>>>>>>    
-38126>>>>>>>>>>>    // Retrieve header information associated with the previous request.
-38126>>>>>>>>>>>    Function QueryInfo DWord dwInfoLevel Returns String
-38128>>>>>>>>>>>        Handle hRequestHandle
-38128>>>>>>>>>>>        WString wResult
-38128>>>>>>>>>>>        Integer iBufferSize iRes iVoid
-38128>>>>>>>>>>>
-38128>>>>>>>>>>>        Get RequestHandle to hRequestHandle
-38129>>>>>>>>>>>        
-38129>>>>>>>>>>>        If (hRequestHandle) Begin
-38131>>>>>>>>>>>            Move 200 to iBufferSize
-38132>>>>>>>>>>>            Move (Repeat(" ", iBufferSize)) to wResult
-38133>>>>>>>>>>>            Move (WinAPI_HttpQueryInfo(hRequestHandle, dwInfoLevel, AddressOf(wResult), AddressOf(iBufferSize), 0)) to iRes
-38134>>>>>>>>>>>            
-38134>>>>>>>>>>>            If (not(iRes) and GetLastError() = 122) Begin //  Insufficient buffersize, retry with received iBufferSize value
-38136>>>>>>>>>>>                Increment iBufferSize      
-38137>>>>>>>>>>>                
-38137>>>>>>>>>>>                Move (Repeat(" ", iBufferSize)) to wResult
-38138>>>>>>>>>>>                Move (WinAPI_HttpQueryInfo(hRequestHandle, dwInfoLevel, AddressOf(wResult), AddressOf(iBufferSize), 0)) to iRes  
-38139>>>>>>>>>>>            End
-38139>>>>>>>>>>>>
-38139>>>>>>>>>>>            
-38139>>>>>>>>>>>            If (not(iRes)) Begin
-38141>>>>>>>>>>>                Move (ShowLastError()) to iVoid
-38142>>>>>>>>>>>            End
-38142>>>>>>>>>>>>
-38142>>>>>>>>>>>        End
-38142>>>>>>>>>>>>
-38142>>>>>>>>>>>        
-38142>>>>>>>>>>>        Function_Return (CString(wResult))
-38143>>>>>>>>>>>    End_Function
-38144>>>>>>>>>>>    
-38144>>>>>>>>>>>    // Returns the statustext returned by the previous request.
-38144>>>>>>>>>>>    Function ResponseStatusText Returns String
-38146>>>>>>>>>>>        String sStatus
-38146>>>>>>>>>>>        
-38146>>>>>>>>>>>        Get QueryInfo HTTP_QUERY_STATUS_TEXT to sStatus
-38147>>>>>>>>>>>        
-38147>>>>>>>>>>>        Function_Return sStatus
-38148>>>>>>>>>>>    End_Function
-38149>>>>>>>>>>>    
-38149>>>>>>>>>>>End_Class
-38150>>>>>>>>>Use cJsonObject.pkg
-38150>>>>>>>>>Use GlobalFunctionsProcedures.pkg
-38150>>>>>>>>>
-38150>>>>>>>>>// these define the three characters that define BOM for utf8.
-38150>>>>>>>>>// These serve no purpos and are rarely used. If used they must be removed
-38150>>>>>>>>>Define C_BOM1 for |CI$EF
-38150>>>>>>>>>Define C_BOM2 for |CI$BB
-38150>>>>>>>>>Define C_BOM3 for |CI$BF
-38150>>>>>>>>>
-38150>>>>>>>>>
-38150>>>>>>>>>
-38150>>>>>>>>>// define JSON transfer status codes used by peJsonTransferStatus
-38150>>>>>>>>>Enum_List
-38150>>>>>>>>>    Define jtsOk                 // ok
-38150>>>>>>>>>    Define jtsHttpRequestFailed  // the post/get http request returned an error
-38150>>>>>>>>>    Define jtsInvalidContentType // response content type not JSON
-38150>>>>>>>>>    Define jtsNotJson            // return value not JSON (could not load in object)
-38150>>>>>>>>>    Define jtsError              // unspecified return error
-38150>>>>>>>>>End_Enum_List
-38150>>>>>>>>>
-38150>>>>>>>>>
-38150>>>>>>>>>Class cJsonHttpTransfer is a cHttpTransfer
-38151>>>>>>>>>    
-38151>>>>>>>>>    Procedure Construct_Object
-38153>>>>>>>>>        Forward Send Construct_object
-38155>>>>>>>>>        
-38155>>>>>>>>>        Property String  psContentTypeSent "application/json; charset=utf-8"     // default content type for posted data
-38156>>>>>>>>>        
-38156>>>>>>>>>        Property Boolean pbClearHeaders      True         // should headers always be cleared after a post
+38105>>>>>>>>>>>/*BOOL InternetSetOptionW(  [in] HINTERNET hInternet,  [in] DWORD     dwOption,  [in] LPVOID    lpBuffer,  [in] DWORD     dwBufferLength);*/
+38105>>>>>>>>>>>External_Function WinAPI_InternetSetOption "InternetSetOptionW" WinInet.dll ;    Handle hInternet ;    DWord dwOption ;    Pointer lpBuffer ;    DWord dwBufferLength ;    Returns Integer
+38106>>>>>>>>>>>
+38106>>>>>>>>>>>/*BOOL InternetQueryOptionW(  [in]      HINTERNET hInternet,  [in]      DWORD     dwOption,  [out]     LPVOID    lpBuffer,  [in, out] LPDWORD   lpdwBufferLength);*/
+38106>>>>>>>>>>>External_Function WinAPI_InternetQueryOption "InternetQueryOptionW" WinInet.dll ;    Handle hInternet ;    DWord dwOption ;    Pointer lpBuffer ;    Pointer lpdwBufferLength ;    Returns Integer
+38107>>>>>>>>>>>
+38107>>>>>>>>>>>
+38107>>>>>>>>>>>//  Available options for dwInfoLevel of WinAPI_HttpQueryInfo
+38107>>>>>>>>>>>Define HTTP_QUERY_MIME_VERSION                for 0
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_TYPE                for 1
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_TRANSFER_ENCODING   for 2
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_ID                  for 3
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_DESCRIPTION         for 4
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_LENGTH              for 5
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_LANGUAGE            for 6
+38107>>>>>>>>>>>Define HTTP_QUERY_ALLOW                       for 7
+38107>>>>>>>>>>>Define HTTP_QUERY_PUBLIC                      for 8
+38107>>>>>>>>>>>Define HTTP_QUERY_DATE                        for 9
+38107>>>>>>>>>>>Define HTTP_QUERY_EXPIRES                     for 10
+38107>>>>>>>>>>>Define HTTP_QUERY_LAST_MODIFIED               for 11
+38107>>>>>>>>>>>Define HTTP_QUERY_MESSAGE_ID                  for 12
+38107>>>>>>>>>>>Define HTTP_QUERY_URI                         for 13
+38107>>>>>>>>>>>Define HTTP_QUERY_DERIVED_FROM                for 14
+38107>>>>>>>>>>>Define HTTP_QUERY_COST                        for 15
+38107>>>>>>>>>>>Define HTTP_QUERY_LINK                        for 16
+38107>>>>>>>>>>>Define HTTP_QUERY_PRAGMA                      for 17
+38107>>>>>>>>>>>Define HTTP_QUERY_VERSION                     for 18  // special: part of status line
+38107>>>>>>>>>>>Define HTTP_QUERY_STATUS_CODE                 for 19  // special: part of status line
+38107>>>>>>>>>>>Define HTTP_QUERY_STATUS_TEXT                 for 20  // special: part of status line
+38107>>>>>>>>>>>Define HTTP_QUERY_RAW_HEADERS                 for 21  // special: all headers as ASCIIZ
+38107>>>>>>>>>>>Define HTTP_QUERY_RAW_HEADERS_CRLF            for 22  // special: all headers
+38107>>>>>>>>>>>Define HTTP_QUERY_CONNECTION                  for 23
+38107>>>>>>>>>>>Define HTTP_QUERY_ACCEPT                      for 24
+38107>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_CHARSET              for 25
+38107>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_ENCODING             for 26
+38107>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_LANGUAGE             for 27
+38107>>>>>>>>>>>Define HTTP_QUERY_AUTHORIZATION               for 28
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_ENCODING            for 29
+38107>>>>>>>>>>>Define HTTP_QUERY_FORWARDED                   for 30
+38107>>>>>>>>>>>Define HTTP_QUERY_FROM                        for 31
+38107>>>>>>>>>>>Define HTTP_QUERY_IF_MODIFIED_SINCE           for 32
+38107>>>>>>>>>>>Define HTTP_QUERY_LOCATION                    for 33
+38107>>>>>>>>>>>Define HTTP_QUERY_ORIG_URI                    for 34
+38107>>>>>>>>>>>Define HTTP_QUERY_REFERER                     for 35
+38107>>>>>>>>>>>Define HTTP_QUERY_RETRY_AFTER                 for 36
+38107>>>>>>>>>>>Define HTTP_QUERY_SERVER                      for 37
+38107>>>>>>>>>>>Define HTTP_QUERY_TITLE                       for 38
+38107>>>>>>>>>>>Define HTTP_QUERY_USER_AGENT                  for 39
+38107>>>>>>>>>>>Define HTTP_QUERY_WWW_AUTHENTICATE            for 40
+38107>>>>>>>>>>>Define HTTP_QUERY_PROXY_AUTHENTICATE          for 41
+38107>>>>>>>>>>>Define HTTP_QUERY_ACCEPT_RANGES               for 42
+38107>>>>>>>>>>>Define HTTP_QUERY_SET_COOKIE                  for 43
+38107>>>>>>>>>>>Define HTTP_QUERY_COOKIE                      for 44
+38107>>>>>>>>>>>Define HTTP_QUERY_REQUEST_METHOD              for 45  // special: GET/POST etc.
+38107>>>>>>>>>>>Define HTTP_QUERY_REFRESH                     for 46
+38107>>>>>>>>>>>Define HTTP_QUERY_CONTENT_DISPOSITION         for 47
+38107>>>>>>>>>>>
+38107>>>>>>>>>>>
+38107>>>>>>>>>>>Class cHttpTransfer is a cBaseHttpTransfer
+38108>>>>>>>>>>>    
+38108>>>>>>>>>>>    Function HttpPostRequest String sFilePath String sData Integer bDataIsFile Returns Integer
+38110>>>>>>>>>>>        Integer bStat
+38110>>>>>>>>>>>        Get HttpPostAddrRequest sFilePath (AddressOf(sData)) (SizeOfString(sData)) bDataIsfile to bStat
+38111>>>>>>>>>>>        Function_Return bStat
+38112>>>>>>>>>>>    End_Function
+38113>>>>>>>>>>>    
+38113>>>>>>>>>>>    // This event is triggered from the runtime. It now uses UChar arrays as the data might 
+38113>>>>>>>>>>>    // not be a valid string (it can be any binary data). It still calls the original event for 
+38113>>>>>>>>>>>    // backwards compatibility.
+38113>>>>>>>>>>>    Procedure OnDataReceivedUC String sContentType UChar[] ucData
+38115>>>>>>>>>>>        Send OnDataReceived sContentType (UCharArrayToString(ucData))
+38116>>>>>>>>>>>    End_Procedure
+38117>>>>>>>>>>>    
+38117>>>>>>>>>>>    // Only use this event if you know for sure the data is a string and make sure piBufferSize is
+38117>>>>>>>>>>>    // smaller than the argument size.
+38117>>>>>>>>>>>    Procedure OnDataReceived String sContentType String sData
+38119>>>>>>>>>>>        
+38119>>>>>>>>>>>    End_Procedure
+38120>>>>>>>>>>>    
+38120>>>>>>>>>>>    // Called just before the request is sent. Use this message to set options to the RequestHandle if nessecary.
+38120>>>>>>>>>>>    Procedure OnPreSendRequest 
+38122>>>>>>>>>>>        
+38122>>>>>>>>>>>    End_Procedure
+38123>>>>>>>>>>>    
+38123>>>>>>>>>>>    Function HttpPutRequest String sFilePath String sData Integer bDataIsFile Returns Integer
+38125>>>>>>>>>>>        Integer bStat
+38125>>>>>>>>>>>        Get HttpPutAddrRequest sFilePath (AddressOf(sData)) (SizeOfString(sData)) bDataIsfile to bStat
+38126>>>>>>>>>>>        Function_Return bStat
+38127>>>>>>>>>>>    End_Function
+38128>>>>>>>>>>>    
+38128>>>>>>>>>>>    // Retrieve header information associated with the previous request.
+38128>>>>>>>>>>>    Function QueryInfo DWord dwInfoLevel Returns String
+38130>>>>>>>>>>>        Handle hRequestHandle
+38130>>>>>>>>>>>        WString wResult
+38130>>>>>>>>>>>        Integer iBufferSize iRes iVoid
+38130>>>>>>>>>>>
+38130>>>>>>>>>>>        Get RequestHandle to hRequestHandle
+38131>>>>>>>>>>>        
+38131>>>>>>>>>>>        If (hRequestHandle) Begin
+38133>>>>>>>>>>>            Move 200 to iBufferSize
+38134>>>>>>>>>>>            Move (Repeat(" ", iBufferSize)) to wResult
+38135>>>>>>>>>>>            Move (WinAPI_HttpQueryInfo(hRequestHandle, dwInfoLevel, AddressOf(wResult), AddressOf(iBufferSize), 0)) to iRes
+38136>>>>>>>>>>>            
+38136>>>>>>>>>>>            If (not(iRes) and GetLastError() = 122) Begin //  Insufficient buffersize, retry with received iBufferSize value
+38138>>>>>>>>>>>                Increment iBufferSize      
+38139>>>>>>>>>>>                
+38139>>>>>>>>>>>                Move (Repeat(" ", iBufferSize)) to wResult
+38140>>>>>>>>>>>                Move (WinAPI_HttpQueryInfo(hRequestHandle, dwInfoLevel, AddressOf(wResult), AddressOf(iBufferSize), 0)) to iRes  
+38141>>>>>>>>>>>            End
+38141>>>>>>>>>>>>
+38141>>>>>>>>>>>            
+38141>>>>>>>>>>>            If (not(iRes)) Begin
+38143>>>>>>>>>>>                Move (ShowLastError()) to iVoid
+38144>>>>>>>>>>>            End
+38144>>>>>>>>>>>>
+38144>>>>>>>>>>>        End
+38144>>>>>>>>>>>>
+38144>>>>>>>>>>>        
+38144>>>>>>>>>>>        Function_Return (CString(wResult))
+38145>>>>>>>>>>>    End_Function
+38146>>>>>>>>>>>    
+38146>>>>>>>>>>>    // Returns the statustext returned by the previous request.
+38146>>>>>>>>>>>    Function ResponseStatusText Returns String
+38148>>>>>>>>>>>        String sStatus
+38148>>>>>>>>>>>        
+38148>>>>>>>>>>>        Get QueryInfo HTTP_QUERY_STATUS_TEXT to sStatus
+38149>>>>>>>>>>>        
+38149>>>>>>>>>>>        Function_Return sStatus
+38150>>>>>>>>>>>    End_Function
+38151>>>>>>>>>>>    
+38151>>>>>>>>>>>End_Class
+38152>>>>>>>>>Use cJsonObject.pkg
+38152>>>>>>>>>Use GlobalFunctionsProcedures.pkg
+38152>>>>>>>>>
+38152>>>>>>>>>// these define the three characters that define BOM for utf8.
+38152>>>>>>>>>// These serve no purpos and are rarely used. If used they must be removed
+38152>>>>>>>>>Define C_BOM1 for |CI$EF
+38152>>>>>>>>>Define C_BOM2 for |CI$BB
+38152>>>>>>>>>Define C_BOM3 for |CI$BF
+38152>>>>>>>>>
+38152>>>>>>>>>
+38152>>>>>>>>>
+38152>>>>>>>>>// define JSON transfer status codes used by peJsonTransferStatus
+38152>>>>>>>>>Enum_List
+38152>>>>>>>>>    Define jtsOk                 // ok
+38152>>>>>>>>>    Define jtsHttpRequestFailed  // the post/get http request returned an error
+38152>>>>>>>>>    Define jtsInvalidContentType // response content type not JSON
+38152>>>>>>>>>    Define jtsNotJson            // return value not JSON (could not load in object)
+38152>>>>>>>>>    Define jtsError              // unspecified return error
+38152>>>>>>>>>End_Enum_List
+38152>>>>>>>>>
+38152>>>>>>>>>
+38152>>>>>>>>>Class cJsonHttpTransfer is a cHttpTransfer
+38153>>>>>>>>>    
+38153>>>>>>>>>    Procedure Construct_Object
+38155>>>>>>>>>        Forward Send Construct_object
 38157>>>>>>>>>        
-38157>>>>>>>>>        Property UChar[] pucDataReceived                 // maintained by object
+38157>>>>>>>>>        Property String  psContentTypeSent "application/json; charset=utf-8"     // default content type for posted data
 38158>>>>>>>>>        
-38158>>>>>>>>>        Property String  psContentTypeReceived ''         // content type received
+38158>>>>>>>>>        Property Boolean pbClearHeaders      True         // should headers always be cleared after a post
 38159>>>>>>>>>        
-38159>>>>>>>>>        Property String  psJsonParseError ''              // Set if response JSON can't be parsed
+38159>>>>>>>>>        Property UChar[] pucDataReceived                 // maintained by object
 38160>>>>>>>>>        
-38160>>>>>>>>>        Property String  psContentTypeExpected 'application/json' // content type received - expected value should be contained in here.
+38160>>>>>>>>>        Property String  psContentTypeReceived ''         // content type received
 38161>>>>>>>>>        
-38161>>>>>>>>>        Property Integer peJsonTransferStatus jtsOk
+38161>>>>>>>>>        Property String  psJsonParseError ''              // Set if response JSON can't be parsed
 38162>>>>>>>>>        
-38162>>>>>>>>>        // if true, the http post does not happend and whatever was posted is just returned as a copy.
-38162>>>>>>>>>        // Good for internal Testing
-38162>>>>>>>>>        Property Boolean pbPostLoopTest False
+38162>>>>>>>>>        Property String  psContentTypeExpected 'application/json' // content type received - expected value should be contained in here.
 38163>>>>>>>>>        
-38163>>>>>>>>>        Set piBufferSize to -1  //  No chunking needed
-38164>>>>>>>>>        Set psAcceptTypes to "application/json"
-38165>>>>>>>>>    End_Procedure
-38166>>>>>>>>>    
-38166>>>>>>>>>    // private helper function. Convert data passed by pointer to an JSON document.
-38166>>>>>>>>>    // return 0, if error
-38166>>>>>>>>>    //
-38166>>>>>>>>>    Function UCharDatatoJson UChar[] ucJson Returns Handle
-38168>>>>>>>>>        Integer iVoid bOk
-38168>>>>>>>>>        Handle hoJson
-38168>>>>>>>>>        String sError
-38168>>>>>>>>>        Get Create of Desktop (RefClass(cJsonObject)) to hoJson
-38169>>>>>>>>>        Get ParseUTF8 of hoJson ucJson to bOk
-38170>>>>>>>>>        If not bOk Begin
-38172>>>>>>>>>            // store the JSON parse error info
-38172>>>>>>>>>            Get psParseError of hoJson to sError
-38173>>>>>>>>>            Set psJsonParseError to sError
-38174>>>>>>>>>            Send Destroy of hoJson
-38175>>>>>>>>>            Move 0 to hoJson
-38176>>>>>>>>>        End
-38176>>>>>>>>>>
-38176>>>>>>>>>        Function_Return hoJson
-38177>>>>>>>>>    End_Function
-38178>>>>>>>>>    
-38178>>>>>>>>>    // Clear pucDataReceived
-38178>>>>>>>>>    Procedure ClearDataReceived
-38180>>>>>>>>>        UChar[] ucEmpty
-38181>>>>>>>>>        
-38181>>>>>>>>>        Set pucDataReceived to ucEmpty
-38182>>>>>>>>>        Set psJsonParseError to ''
-38183>>>>>>>>>    End_Procedure
-38184>>>>>>>>>    
-38184>>>>>>>>>    // augment to release any memor
-38184>>>>>>>>>    Procedure Destroy_Object
-38186>>>>>>>>>        Send ClearDataReceived
-38187>>>>>>>>>        Forward Send Destroy_object
-38189>>>>>>>>>    End_Procedure
-38190>>>>>>>>>    
-38190>>>>>>>>>    // called during http transfer. Take passed data and append to pucDataReceived.
-38190>>>>>>>>>    // If new transfer save contenttype.
-38190>>>>>>>>>    Procedure OnDataReceivedUC String sContentType UChar[] ucData
-38192>>>>>>>>>        UChar[] ucBuffer
-38193>>>>>>>>>        Integer iDataLen
-38193>>>>>>>>>        
-38193>>>>>>>>>        Move (SizeOfArray(ucData)) to iDataLen
-38194>>>>>>>>>        
-38194>>>>>>>>>        If (iDataLen > 0) Begin
-38196>>>>>>>>>            Get pucDataReceived to ucBuffer
-38197>>>>>>>>>            If (SizeOfArray(ucBuffer) > 0) Begin
-38199>>>>>>>>>                Set pucDataReceived to (AppendArray(ucBuffer, ucData))
-38200>>>>>>>>>            End
-38200>>>>>>>>>>
-38200>>>>>>>>>            Else Begin
-38201>>>>>>>>>                Set psContentTypeReceived to sContentType
-38202>>>>>>>>>                
-38202>>>>>>>>>                If (iDataLen > 3 and ucData[0]=C_BOM1 and ucData[1]=C_BOM2 and ucData[2]=C_BOM3) Begin
-38204>>>>>>>>>                    Set pucDataReceived to (CopyArray(ucData, 3, iDataLen - 1))
-38205>>>>>>>>>                End
-38205>>>>>>>>>>
-38205>>>>>>>>>                Else Begin
-38206>>>>>>>>>                    Set pucDataReceived to ucData
+38163>>>>>>>>>        Property Integer peJsonTransferStatus jtsOk
+38164>>>>>>>>>        
+38164>>>>>>>>>        // if true, the http post does not happend and whatever was posted is just returned as a copy.
+38164>>>>>>>>>        // Good for internal Testing
+38164>>>>>>>>>        Property Boolean pbPostLoopTest False
+38165>>>>>>>>>        
+38165>>>>>>>>>        Set piBufferSize to -1  //  No chunking needed
+38166>>>>>>>>>        Set psAcceptTypes to "application/json"
+38167>>>>>>>>>    End_Procedure
+38168>>>>>>>>>    
+38168>>>>>>>>>    // private helper function. Convert data passed by pointer to an JSON document.
+38168>>>>>>>>>    // return 0, if error
+38168>>>>>>>>>    //
+38168>>>>>>>>>    Function UCharDatatoJson UChar[] ucJson Returns Handle
+38170>>>>>>>>>        Integer iVoid bOk
+38170>>>>>>>>>        Handle hoJson
+38170>>>>>>>>>        String sError
+38170>>>>>>>>>        Get Create of Desktop (RefClass(cJsonObject)) to hoJson
+38171>>>>>>>>>        Get ParseUTF8 of hoJson ucJson to bOk
+38172>>>>>>>>>        If not bOk Begin
+38174>>>>>>>>>            // store the JSON parse error info
+38174>>>>>>>>>            Get psParseError of hoJson to sError
+38175>>>>>>>>>            Set psJsonParseError to sError
+38176>>>>>>>>>            Send Destroy of hoJson
+38177>>>>>>>>>            Move 0 to hoJson
+38178>>>>>>>>>        End
+38178>>>>>>>>>>
+38178>>>>>>>>>        Function_Return hoJson
+38179>>>>>>>>>    End_Function
+38180>>>>>>>>>    
+38180>>>>>>>>>    // Clear pucDataReceived
+38180>>>>>>>>>    Procedure ClearDataReceived
+38182>>>>>>>>>        UChar[] ucEmpty
+38183>>>>>>>>>        
+38183>>>>>>>>>        Set pucDataReceived to ucEmpty
+38184>>>>>>>>>        Set psJsonParseError to ''
+38185>>>>>>>>>    End_Procedure
+38186>>>>>>>>>    
+38186>>>>>>>>>    // augment to release any memor
+38186>>>>>>>>>    Procedure Destroy_Object
+38188>>>>>>>>>        Send ClearDataReceived
+38189>>>>>>>>>        Forward Send Destroy_object
+38191>>>>>>>>>    End_Procedure
+38192>>>>>>>>>    
+38192>>>>>>>>>    // called during http transfer. Take passed data and append to pucDataReceived.
+38192>>>>>>>>>    // If new transfer save contenttype.
+38192>>>>>>>>>    Procedure OnDataReceivedUC String sContentType UChar[] ucData
+38194>>>>>>>>>        UChar[] ucBuffer
+38195>>>>>>>>>        Integer iDataLen
+38195>>>>>>>>>        
+38195>>>>>>>>>        Move (SizeOfArray(ucData)) to iDataLen
+38196>>>>>>>>>        
+38196>>>>>>>>>        If (iDataLen > 0) Begin
+38198>>>>>>>>>            Get pucDataReceived to ucBuffer
+38199>>>>>>>>>            If (SizeOfArray(ucBuffer) > 0) Begin
+38201>>>>>>>>>                Set pucDataReceived to (AppendArray(ucBuffer, ucData))
+38202>>>>>>>>>            End
+38202>>>>>>>>>>
+38202>>>>>>>>>            Else Begin
+38203>>>>>>>>>                Set psContentTypeReceived to sContentType
+38204>>>>>>>>>                
+38204>>>>>>>>>                If (iDataLen > 3 and ucData[0]=C_BOM1 and ucData[1]=C_BOM2 and ucData[2]=C_BOM3) Begin
+38206>>>>>>>>>                    Set pucDataReceived to (CopyArray(ucData, 3, iDataLen - 1))
 38207>>>>>>>>>                End
 38207>>>>>>>>>>
-38207>>>>>>>>>            End
-38207>>>>>>>>>>
-38207>>>>>>>>>        End
-38207>>>>>>>>>>
-38207>>>>>>>>>    End_Procedure
-38208>>>>>>>>>    
-38208>>>>>>>>>    Function LoopDataBack UChar[] ucData Returns Boolean
-38210>>>>>>>>>        Pointer pInData
-38210>>>>>>>>>        Boolean bOk
-38210>>>>>>>>>        
-38210>>>>>>>>>        Set pucDataReceived to ucData
-38211>>>>>>>>>        Set psContentTypeReceived to (psContentTypeExpected(Self))
+38207>>>>>>>>>                Else Begin
+38208>>>>>>>>>                    Set pucDataReceived to ucData
+38209>>>>>>>>>                End
+38209>>>>>>>>>>
+38209>>>>>>>>>            End
+38209>>>>>>>>>>
+38209>>>>>>>>>        End
+38209>>>>>>>>>>
+38209>>>>>>>>>    End_Procedure
+38210>>>>>>>>>    
+38210>>>>>>>>>    Function LoopDataBack UChar[] ucData Returns Boolean
+38212>>>>>>>>>        Pointer pInData
+38212>>>>>>>>>        Boolean bOk
 38212>>>>>>>>>        
-38212>>>>>>>>>        Function_Return True
-38213>>>>>>>>>    End_Function
-38214>>>>>>>>>    
-38214>>>>>>>>>    
-38214>>>>>>>>>    Function HttpVerbJsonAddrExec String sHost String sFilePath Pointer pJson Integer iLen String sVerb  Returns Boolean
-38216>>>>>>>>>        Boolean bOk
-38216>>>>>>>>>        Integer iError
-38216>>>>>>>>>        String sContentType
-38216>>>>>>>>>        
-38216>>>>>>>>>        Send ClearDataReceived  // this should be zero, just in case it is not
-38217>>>>>>>>>        Set psRemoteHost to sHost
+38212>>>>>>>>>        Set pucDataReceived to ucData
+38213>>>>>>>>>        Set psContentTypeReceived to (psContentTypeExpected(Self))
+38214>>>>>>>>>        
+38214>>>>>>>>>        Function_Return True
+38215>>>>>>>>>    End_Function
+38216>>>>>>>>>    
+38216>>>>>>>>>    
+38216>>>>>>>>>    Function HttpVerbJsonAddrExec String sHost String sFilePath Pointer pJson Integer iLen String sVerb  Returns Boolean
+38218>>>>>>>>>        Boolean bOk
+38218>>>>>>>>>        Integer iError
+38218>>>>>>>>>        String sContentType
 38218>>>>>>>>>        
-38218>>>>>>>>>        Get psContentTypeSent to sContentType
-38219>>>>>>>>>        If (iLen > 0 and sContentType <> "") Begin
-38221>>>>>>>>>            Get AddHeader "Content-Type" sContentType to bok
-38222>>>>>>>>>        End
-38222>>>>>>>>>>
-38222>>>>>>>>>        Get HttpVerbAddrRequest sFilePath pJson iLen False sVerb to bOK
-38223>>>>>>>>>        
-38223>>>>>>>>>        // You need to clear headers between posts. If you need to set custom headers you should
-38223>>>>>>>>>        // set pbClearHeaders to false and then manually send ClearHeaders and AddHeaders in your code
-38223>>>>>>>>>        If (pbClearHeaders(Self)) ;            Send ClearHeaders
-38226>>>>>>>>>        
-38226>>>>>>>>>        
-38226>>>>>>>>>        Function_Return bOk
-38227>>>>>>>>>    End_Function
-38228>>>>>>>>>    
-38228>>>>>>>>>    // We assume but do not verify that the data in ucJson is actually UTF8 JSON
-38228>>>>>>>>>    Function HttpVerbJsonUChar String sHost String sFilePath UChar[] ucJson String sVerb Returns UChar[]
-38230>>>>>>>>>        Integer iLen
-38230>>>>>>>>>        Boolean bOk
-38230>>>>>>>>>        UChar[] ucJsonReceived
-38231>>>>>>>>>        String sContentTypeReceived sContentTypeExpected
-38231>>>>>>>>>        
-38231>>>>>>>>>        Move (SizeOfArray(ucJson)) to iLen
-38232>>>>>>>>>        
-38232>>>>>>>>>        If (pbPostLoopTest(Self)) Begin
-38234>>>>>>>>>            Get LoopDataBack ucJson to bOk
-38235>>>>>>>>>        End
-38235>>>>>>>>>>
-38235>>>>>>>>>        Else Begin
-38236>>>>>>>>>            Get HttpVerbJsonAddrExec sHost sFilePath (AddressOf(ucJson)) iLen sVerb to bOk
+38218>>>>>>>>>        Send ClearDataReceived  // this should be zero, just in case it is not
+38219>>>>>>>>>        Set psRemoteHost to sHost
+38220>>>>>>>>>        
+38220>>>>>>>>>        Get psContentTypeSent to sContentType
+38221>>>>>>>>>        If (iLen > 0 and sContentType <> "") Begin
+38223>>>>>>>>>            Get AddHeader "Content-Type" sContentType to bok
+38224>>>>>>>>>        End
+38224>>>>>>>>>>
+38224>>>>>>>>>        Get HttpVerbAddrRequest sFilePath pJson iLen False sVerb to bOK
+38225>>>>>>>>>        
+38225>>>>>>>>>        // You need to clear headers between posts. If you need to set custom headers you should
+38225>>>>>>>>>        // set pbClearHeaders to false and then manually send ClearHeaders and AddHeaders in your code
+38225>>>>>>>>>        If (pbClearHeaders(Self)) ;            Send ClearHeaders
+38228>>>>>>>>>        
+38228>>>>>>>>>        
+38228>>>>>>>>>        Function_Return bOk
+38229>>>>>>>>>    End_Function
+38230>>>>>>>>>    
+38230>>>>>>>>>    // We assume but do not verify that the data in ucJson is actually UTF8 JSON
+38230>>>>>>>>>    Function HttpVerbJsonUChar String sHost String sFilePath UChar[] ucJson String sVerb Returns UChar[]
+38232>>>>>>>>>        Integer iLen
+38232>>>>>>>>>        Boolean bOk
+38232>>>>>>>>>        UChar[] ucJsonReceived
+38233>>>>>>>>>        String sContentTypeReceived sContentTypeExpected
+38233>>>>>>>>>        
+38233>>>>>>>>>        Move (SizeOfArray(ucJson)) to iLen
+38234>>>>>>>>>        
+38234>>>>>>>>>        If (pbPostLoopTest(Self)) Begin
+38236>>>>>>>>>            Get LoopDataBack ucJson to bOk
 38237>>>>>>>>>        End
 38237>>>>>>>>>>
-38237>>>>>>>>>                
-38237>>>>>>>>>        If bOk Begin
-38239>>>>>>>>>            Set peJsonTransferStatus to jtsOk
-38240>>>>>>>>>            Get pucDataReceived to ucJsonReceived
-38241>>>>>>>>>            
-38241>>>>>>>>>            If (SizeOfArray(ucJsonReceived) > 0) Begin
-38243>>>>>>>>>                // we have data, check that the content type is ok. This is as far
-38243>>>>>>>>>                // as we can go here.
-38243>>>>>>>>>                Get psContentTypeReceived to sContentTypeReceived
-38244>>>>>>>>>                Get psContentTypeExpected to sContentTypeExpected
-38245>>>>>>>>>                // If contentType expected is empty, we allow anything
-38245>>>>>>>>>                If (sContentTypeExpected<>"" and pos(lowercase(sContentTypeExpected),lowercase(sContentTypeReceived))=0) Begin
-38247>>>>>>>>>                    Set peJsonTransferStatus to jtsInvalidContentType
-38248>>>>>>>>>                End
-38248>>>>>>>>>>
-38248>>>>>>>>>            End
-38248>>>>>>>>>>
-38248>>>>>>>>>        End
-38248>>>>>>>>>>
-38248>>>>>>>>>        Else Begin
-38249>>>>>>>>>            Set peJsonTransferStatus to jtsHttpRequestFailed
+38237>>>>>>>>>        Else Begin
+38238>>>>>>>>>            Get HttpVerbJsonAddrExec sHost sFilePath (AddressOf(ucJson)) iLen sVerb to bOk
+38239>>>>>>>>>        End
+38239>>>>>>>>>>
+38239>>>>>>>>>                
+38239>>>>>>>>>        If bOk Begin
+38241>>>>>>>>>            Set peJsonTransferStatus to jtsOk
+38242>>>>>>>>>            Get pucDataReceived to ucJsonReceived
+38243>>>>>>>>>            
+38243>>>>>>>>>            If (SizeOfArray(ucJsonReceived) > 0) Begin
+38245>>>>>>>>>                // we have data, check that the content type is ok. This is as far
+38245>>>>>>>>>                // as we can go here.
+38245>>>>>>>>>                Get psContentTypeReceived to sContentTypeReceived
+38246>>>>>>>>>                Get psContentTypeExpected to sContentTypeExpected
+38247>>>>>>>>>                // If contentType expected is empty, we allow anything
+38247>>>>>>>>>                If (sContentTypeExpected<>"" and pos(lowercase(sContentTypeExpected),lowercase(sContentTypeReceived))=0) Begin
+38249>>>>>>>>>                    Set peJsonTransferStatus to jtsInvalidContentType
+38250>>>>>>>>>                End
+38250>>>>>>>>>>
+38250>>>>>>>>>            End
+38250>>>>>>>>>>
 38250>>>>>>>>>        End
 38250>>>>>>>>>>
-38250>>>>>>>>>                
-38250>>>>>>>>>        Function_Return ucJsonReceived
-38251>>>>>>>>>    End_Function
-38252>>>>>>>>>    
-38252>>>>>>>>>    // Generic HTTP Request - it is passed the Verb. Used by all other http requests
-38252>>>>>>>>>    Function HttpVerbJson  String sHost String sFilePath Handle  hoJsonRequest String sVerb Boolean ByRef bOk Returns Handle
-38254>>>>>>>>>        UChar[] ucJsonRequest ucJsonResponse
-38256>>>>>>>>>        Handle hoJsonResponse
-38256>>>>>>>>>        Integer eStat
-38256>>>>>>>>>        
-38256>>>>>>>>>        If (hoJsonRequest<>0) Begin
-38258>>>>>>>>>            Get StringifyUTF8 of hoJsonRequest to ucJsonRequest
-38259>>>>>>>>>        End
-38259>>>>>>>>>>
-38259>>>>>>>>>        
-38259>>>>>>>>>        Get HttpVerbJsonUChar sHost sFilePath ucJsonRequest sVerb to ucJsonResponse
-38260>>>>>>>>>        
-38260>>>>>>>>>        If (SizeOfArray(ucJsonResponse)) Begin
-38262>>>>>>>>>            Get UCharDatatoJson ucJsonResponse to hoJsonResponse
-38263>>>>>>>>>            If (hoJsonResponse=0) Begin
-38265>>>>>>>>>                // this indicates that data was returned but it could not be loaded as Json
-38265>>>>>>>>>                Set peJsonTransferStatus to jtsNotJson
-38266>>>>>>>>>                // note bad data is still is ppDataReceived (might be useful for debugging)
-38266>>>>>>>>>            End
-38266>>>>>>>>>>
-38266>>>>>>>>>        End
-38266>>>>>>>>>>
-38266>>>>>>>>>        
-38266>>>>>>>>>        // return Ok status by reference
-38266>>>>>>>>>        Get peJsonTransferStatus to eStat
-38267>>>>>>>>>        Move (eStat=jtsOk) to bOk
+38250>>>>>>>>>        Else Begin
+38251>>>>>>>>>            Set peJsonTransferStatus to jtsHttpRequestFailed
+38252>>>>>>>>>        End
+38252>>>>>>>>>>
+38252>>>>>>>>>                
+38252>>>>>>>>>        Function_Return ucJsonReceived
+38253>>>>>>>>>    End_Function
+38254>>>>>>>>>    
+38254>>>>>>>>>    // Generic HTTP Request - it is passed the Verb. Used by all other http requests
+38254>>>>>>>>>    Function HttpVerbJson  String sHost String sFilePath Handle  hoJsonRequest String sVerb Boolean ByRef bOk Returns Handle
+38256>>>>>>>>>        UChar[] ucJsonRequest ucJsonResponse
+38258>>>>>>>>>        Handle hoJsonResponse
+38258>>>>>>>>>        Integer eStat
+38258>>>>>>>>>        
+38258>>>>>>>>>        If (hoJsonRequest<>0) Begin
+38260>>>>>>>>>            Get StringifyUTF8 of hoJsonRequest to ucJsonRequest
+38261>>>>>>>>>        End
+38261>>>>>>>>>>
+38261>>>>>>>>>        
+38261>>>>>>>>>        Get HttpVerbJsonUChar sHost sFilePath ucJsonRequest sVerb to ucJsonResponse
+38262>>>>>>>>>        
+38262>>>>>>>>>        If (SizeOfArray(ucJsonResponse)) Begin
+38264>>>>>>>>>            Get UCharDatatoJson ucJsonResponse to hoJsonResponse
+38265>>>>>>>>>            If (hoJsonResponse=0) Begin
+38267>>>>>>>>>                // this indicates that data was returned but it could not be loaded as Json
+38267>>>>>>>>>                Set peJsonTransferStatus to jtsNotJson
+38268>>>>>>>>>                // note bad data is still is ppDataReceived (might be useful for debugging)
+38268>>>>>>>>>            End
+38268>>>>>>>>>>
+38268>>>>>>>>>        End
+38268>>>>>>>>>>
 38268>>>>>>>>>        
-38268>>>>>>>>>        Function_Return hoJsonResponse
-38269>>>>>>>>>    End_Function
-38270>>>>>>>>>    
-38270>>>>>>>>>    Function HttpPostJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
-38272>>>>>>>>>        Handle hoJson
-38272>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "POST" (&bOk) to hoJson
-38273>>>>>>>>>        Function_Return hoJson
-38274>>>>>>>>>    End_Function
-38275>>>>>>>>>    
-38275>>>>>>>>>    Function HttpGetJson String sHost String sFilePath Boolean ByRef bOk Returns Handle
-38277>>>>>>>>>        Pointer pJson
-38277>>>>>>>>>        Integer iVoid iLen
-38277>>>>>>>>>        Handle hoJson
-38277>>>>>>>>>        Get HttpVerbJson sHost sFilePath 0 "GET" (&bOk) to hoJson
-38278>>>>>>>>>        Function_Return hoJson
-38279>>>>>>>>>    End_Function
-38280>>>>>>>>>    
-38280>>>>>>>>>    Function HttpPutJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
-38282>>>>>>>>>        Handle hoJson
-38282>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "PUT" (&bOk) to hoJson
-38283>>>>>>>>>        Function_Return hoJson
-38284>>>>>>>>>    End_Function
-38285>>>>>>>>>    
-38285>>>>>>>>>    Function HttpDeleteJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
-38287>>>>>>>>>        Handle hoJson
-38287>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "DELETE" (&bOk) to hoJson
-38288>>>>>>>>>        Function_Return hoJson
-38289>>>>>>>>>    End_Function
-38290>>>>>>>>>    
-38290>>>>>>>>>    Function HttpPatchJson  String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
-38292>>>>>>>>>        Handle hoJson
-38292>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "PATCH" (&bOk) to hoJson
-38293>>>>>>>>>        Function_Return hoJson
-38294>>>>>>>>>    End_Function
-38295>>>>>>>>>    
-38295>>>>>>>>>    // After an Json xfer request this message can be sent to display an error message if one occurred.
-38295>>>>>>>>>    // Normally you would first check peJsonTransferStatus to see if it is not jtsOk. If not, send
-38295>>>>>>>>>    // LastError to see the error
-38295>>>>>>>>>    
-38295>>>>>>>>>    // return last JSON transfer error text
-38295>>>>>>>>>    Function TransferErrorDescription Returns String
-38297>>>>>>>>>        String  sError sJsonError
-38297>>>>>>>>>        Integer eJsonTransferStatus
-38297>>>>>>>>>        Get peJsonTransferStatus to eJsonTransferStatus
-38298>>>>>>>>>        Get psJsonParseError to sJsonError
-38299>>>>>>>>>        Case Begin
-38299>>>>>>>>>            Case (eJsonTransferStatus=jtsOk) ;                Move '' to sError
-38302>>>>>>>>>            Case (eJsonTransferStatus=jtsHttpRequestFailed) ;                Move C_$HttpRequestFailed to sError
-38306>>>>>>>>>            Case (eJsonTransferStatus=jtsInvalidContentType) ;                Move (SFormat(C_$InvalidContentTypeReceived,psContentTypeReceived(Self))) to sError
-38310>>>>>>>>>            Case (eJsonTransferStatus=jtsNotJson) ;                Move (C_$ReceivedDataNotInJsonFormat * sJsonError) to sError
-38314>>>>>>>>>            Case Else ;                Move C_$ReceivedDataIsBad to sError
-38316>>>>>>>>>        Case End
-38316>>>>>>>>>        Function_Return sError
-38317>>>>>>>>>    End_Function
-38318>>>>>>>>>    
-38318>>>>>>>>>    // can be send to raise an error.
-38318>>>>>>>>>    Procedure LastError
-38320>>>>>>>>>        Integer eJsonTransferStatus
-38320>>>>>>>>>        String sError
-38320>>>>>>>>>        
-38320>>>>>>>>>        Get peJsonTransferStatus to eJsonTransferStatus
-38321>>>>>>>>>        If (eJsonTransferStatus<>jtsOk) Begin
-38323>>>>>>>>>            Get TransferErrorDescription to sError
-38324>>>>>>>>>            Error DFERR_JSON_HTTP sError
-38325>>>>>>>>>>
-38325>>>>>>>>>        End
-38325>>>>>>>>>>
-38325>>>>>>>>>    End_Procedure
-38326>>>>>>>>>    
-38326>>>>>>>>>    
-38326>>>>>>>>>End_Class
-38327>>>>>>>
-38327>>>>>>>
-38327>>>>>>>Function zTelefonoValidation Boolean bUseApi String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
-38330>>>>>>>    
-38330>>>>>>>     Boolean bRet
-38330>>>>>>>     
-38330>>>>>>>     
-38330>>>>>>>     Get zNumeroCorrecto sTelefono (&sMsg) to bRet
-38331>>>>>>>     If (not(bRet)) Function_Return False 
-38334>>>>>>>     If (bUseApi) Get zValidarConApi sTelefono sPrefijo (&sMsg) to bRet
-38337>>>>>>>     If (not(bRet)) Function_Return False
-38340>>>>>>>    Function_Return True
-38341>>>>>>>End_Function
-38342>>>>>>>
-38342>>>>>>>
-38342>>>>>>>
-38342>>>>>>>Function zNumeroCorrecto String sTelefono String ByRef sMsg Returns Boolean
-38345>>>>>>>    String[] aRet
-38346>>>>>>>    Object oTelefonopattern is a cRegEx
-38348>>>>>>>        Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
-38349>>>>>>>    End_Object
-38350>>>>>>>    Get MatchAll of oTelefonopattern (sTelefono) to aRet
-38351>>>>>>>        If (SizeOfArray(aRet) = 1) Begin
-38353>>>>>>>        Function_Return True
-38354>>>>>>>        End
-38354>>>>>>>>
-38354>>>>>>>    
-38354>>>>>>>    Move "Porfavor Introduzca un formato de Telefono valido" to sMsg
-38355>>>>>>>    Function_Return False    
-38356>>>>>>>End_Function 
-38357>>>>>>>
-38357>>>>>>>Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Returns Boolean
-38360>>>>>>>    
-38360>>>>>>>    Handle hoJsonReceived hoHttp
-38360>>>>>>>    Boolean bOk bIsNull bRet
-38360>>>>>>>    String  sNum sUrl
-38360>>>>>>>     
-38360>>>>>>>    Move (sPrefijo + sTelefono) to sNum
-38361>>>>>>>   
-38361>>>>>>>    Get Create (RefClass(cJsonHttpTransfer)) to hoHttp
-38362>>>>>>>    Move False to bRet
-38363>>>>>>>    
-38363>>>>>>>    Get HttpGetJson of hohttp ("phonevalidation.abstractapi.com") ("/v1/?api_key=713383f7f21e45b1ac4054a472e00971&phone=" + sNum) (&bOk) to hoJsonReceived
-38364>>>>>>>
-38364>>>>>>>
-38364>>>>>>>    If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin
-38366>>>>>>>        
-38366>>>>>>>        If (HasMember(hoJsonReceived,"valid"))  Begin
-38368>>>>>>>            Get IsMemberOfJsonType of hoJsonReceived "valid" jsonTypeNull  to bIsNull
-38369>>>>>>>            If bIsNull  Move False to bRet
-38372>>>>>>>            Else Move (MemberValue(hoJsonReceived,"valid")) to bRet
-38374>>>>>>>        End
-38374>>>>>>>>
-38374>>>>>>>    End
-38374>>>>>>>>
-38374>>>>>>>    Send Destroy of hohttp
-38375>>>>>>>    If (not(bRet)) Move "Fallo validación API" to sMsg
-38378>>>>>>>    Function_Return bRet
-38379>>>>>>>End_Function
-38380>>>>>>>    
-38380>>>>>>>    
-38380>>>>>
-38380>>>>>Open Alumnos
-38382>>>>>Open Centros
-38384>>>>>
-38384>>>>>Register_Function zValidateErr_StudentEmail Integer iField Returns Boolean
-38384>>>>>Register_Function zValidateErr_StudentDni Integer iField Returns Boolean
-38384>>>>>Register_Function zValidateErr_StudentTelefono Integer iField Returns Boolean
-38384>>>>>
-38384>>>>>Object oGender is a DescriptionValidationTable
-38386>>>>>    Procedure Fill_List
-38389>>>>>        Forward Send Fill_List
-38391>>>>>        Send Add_Table_Value "H" "Hombre"
-38392>>>>>        Send Add_Table_Value "M" "Mujer"
-38393>>>>>        Send Add_Table_Value "N" "Prefiero no responder"
-38394>>>>>        Send Add_Table_Value "O" "Otro"
-38395>>>>>    End_Procedure
-38396>>>>>End_Object
-38397>>>>>
-38397>>>>>
-38397>>>>>
-38397>>>>>
-38397>>>>>Class cAlumnosDataDictionary is a DataDictionary
-38398>>>>>    
-38398>>>>>    Procedure Construct_Object
-38400>>>>>        Forward Send Construct_Object
-38402>>>>>        Set Main_File to Alumnos.File_Number
-38403>>>>>
-38403>>>>>        Set Add_Server_File to Centros.File_Number
-38404>>>>>
-38404>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
-38405>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
-38406>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
-38407>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
-38408>>>>>
-38408>>>>>        Set Field_Option Field Alumnos.AlumnosId DD_REQUIRED to True
-38409>>>>>
-38409>>>>>        Set Field_Class_Name Field Alumnos.Sexo to "Combo"
-38410>>>>>        Set Field_Value_Table Field Alumnos.Sexo to oGender
-38411>>>>>
-38411>>>>>        Set Field_Mask_Type Field Alumnos.CodigoPostal to Mask_Numeric_Window
-38412>>>>>        
-38412>>>>>
-38412>>>>>
-38412>>>>>        Set Field_Mask_Type Field Alumnos.FechaCreacionRegistro to Mask_DateTime_Window
-38413>>>>>        Set Field_Option Field Alumnos.FechaCreacionRegistro DD_NOENTER to True
-38414>>>>>
-38414>>>>>        Set Field_Mask_Type Field Alumnos.FechaUltimaModificacion to Mask_DateTime_Window
-38415>>>>>        Set Field_Option Field Alumnos.FechaUltimaModificacion DD_NOENTER to True
+38268>>>>>>>>>        // return Ok status by reference
+38268>>>>>>>>>        Get peJsonTransferStatus to eStat
+38269>>>>>>>>>        Move (eStat=jtsOk) to bOk
+38270>>>>>>>>>        
+38270>>>>>>>>>        Function_Return hoJsonResponse
+38271>>>>>>>>>    End_Function
+38272>>>>>>>>>    
+38272>>>>>>>>>    Function HttpPostJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+38274>>>>>>>>>        Handle hoJson
+38274>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "POST" (&bOk) to hoJson
+38275>>>>>>>>>        Function_Return hoJson
+38276>>>>>>>>>    End_Function
+38277>>>>>>>>>    
+38277>>>>>>>>>    Function HttpGetJson String sHost String sFilePath Boolean ByRef bOk Returns Handle
+38279>>>>>>>>>        Pointer pJson
+38279>>>>>>>>>        Integer iVoid iLen
+38279>>>>>>>>>        Handle hoJson
+38279>>>>>>>>>        Get HttpVerbJson sHost sFilePath 0 "GET" (&bOk) to hoJson
+38280>>>>>>>>>        Function_Return hoJson
+38281>>>>>>>>>    End_Function
+38282>>>>>>>>>    
+38282>>>>>>>>>    Function HttpPutJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+38284>>>>>>>>>        Handle hoJson
+38284>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "PUT" (&bOk) to hoJson
+38285>>>>>>>>>        Function_Return hoJson
+38286>>>>>>>>>    End_Function
+38287>>>>>>>>>    
+38287>>>>>>>>>    Function HttpDeleteJson String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+38289>>>>>>>>>        Handle hoJson
+38289>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "DELETE" (&bOk) to hoJson
+38290>>>>>>>>>        Function_Return hoJson
+38291>>>>>>>>>    End_Function
+38292>>>>>>>>>    
+38292>>>>>>>>>    Function HttpPatchJson  String sHost String sFilePath Handle hoJsonRequest Boolean ByRef bOk Returns Handle
+38294>>>>>>>>>        Handle hoJson
+38294>>>>>>>>>        Get HttpVerbJson sHost sFilePath hoJsonRequest "PATCH" (&bOk) to hoJson
+38295>>>>>>>>>        Function_Return hoJson
+38296>>>>>>>>>    End_Function
+38297>>>>>>>>>    
+38297>>>>>>>>>    // After an Json xfer request this message can be sent to display an error message if one occurred.
+38297>>>>>>>>>    // Normally you would first check peJsonTransferStatus to see if it is not jtsOk. If not, send
+38297>>>>>>>>>    // LastError to see the error
+38297>>>>>>>>>    
+38297>>>>>>>>>    // return last JSON transfer error text
+38297>>>>>>>>>    Function TransferErrorDescription Returns String
+38299>>>>>>>>>        String  sError sJsonError
+38299>>>>>>>>>        Integer eJsonTransferStatus
+38299>>>>>>>>>        Get peJsonTransferStatus to eJsonTransferStatus
+38300>>>>>>>>>        Get psJsonParseError to sJsonError
+38301>>>>>>>>>        Case Begin
+38301>>>>>>>>>            Case (eJsonTransferStatus=jtsOk) ;                Move '' to sError
+38304>>>>>>>>>            Case (eJsonTransferStatus=jtsHttpRequestFailed) ;                Move C_$HttpRequestFailed to sError
+38308>>>>>>>>>            Case (eJsonTransferStatus=jtsInvalidContentType) ;                Move (SFormat(C_$InvalidContentTypeReceived,psContentTypeReceived(Self))) to sError
+38312>>>>>>>>>            Case (eJsonTransferStatus=jtsNotJson) ;                Move (C_$ReceivedDataNotInJsonFormat * sJsonError) to sError
+38316>>>>>>>>>            Case Else ;                Move C_$ReceivedDataIsBad to sError
+38318>>>>>>>>>        Case End
+38318>>>>>>>>>        Function_Return sError
+38319>>>>>>>>>    End_Function
+38320>>>>>>>>>    
+38320>>>>>>>>>    // can be send to raise an error.
+38320>>>>>>>>>    Procedure LastError
+38322>>>>>>>>>        Integer eJsonTransferStatus
+38322>>>>>>>>>        String sError
+38322>>>>>>>>>        
+38322>>>>>>>>>        Get peJsonTransferStatus to eJsonTransferStatus
+38323>>>>>>>>>        If (eJsonTransferStatus<>jtsOk) Begin
+38325>>>>>>>>>            Get TransferErrorDescription to sError
+38326>>>>>>>>>            Error DFERR_JSON_HTTP sError
+38327>>>>>>>>>>
+38327>>>>>>>>>        End
+38327>>>>>>>>>>
+38327>>>>>>>>>    End_Procedure
+38328>>>>>>>>>    
+38328>>>>>>>>>    
+38328>>>>>>>>>End_Class
+38329>>>>>>>
+38329>>>>>>>
+38329>>>>>>>Function zTelefonoValidation Boolean bUseApi String sPrefijo String sTelefono  String ByRef sMsg Returns Boolean
+38332>>>>>>>    
+38332>>>>>>>     Boolean bRet
+38332>>>>>>>     
+38332>>>>>>>     
+38332>>>>>>>     Get zNumeroCorrecto sTelefono (&sMsg) to bRet
+38333>>>>>>>     If (not(bRet)) Function_Return False 
+38336>>>>>>>     If (bUseApi) Get zValidarConApi sTelefono sPrefijo (&sMsg) to bRet
+38339>>>>>>>     If (not(bRet)) Function_Return False
+38342>>>>>>>    Function_Return True
+38343>>>>>>>End_Function
+38344>>>>>>>
+38344>>>>>>>
+38344>>>>>>>
+38344>>>>>>>Function zNumeroCorrecto String sTelefono String ByRef sMsg Returns Boolean
+38347>>>>>>>    String[] aRet
+38348>>>>>>>    Object oTelefonopattern is a cRegEx
+38350>>>>>>>        Set psExpression to "^(?:[-\s])?\d(?:[\d\s-]*\d)?(?:[-\s])?$"
+38351>>>>>>>    End_Object
+38352>>>>>>>    Get MatchAll of oTelefonopattern (sTelefono) to aRet
+38353>>>>>>>        If (SizeOfArray(aRet) = 1) Begin
+38355>>>>>>>        Function_Return True
+38356>>>>>>>        End
+38356>>>>>>>>
+38356>>>>>>>    
+38356>>>>>>>    Move "Porfavor Introduzca un formato de Telefono valido" to sMsg
+38357>>>>>>>    Function_Return False    
+38358>>>>>>>End_Function 
+38359>>>>>>>
+38359>>>>>>>Function zValidarConApi String sTelefono String sPrefijo String ByRef sMsg Returns Boolean
+38362>>>>>>>    
+38362>>>>>>>    Handle hoJsonReceived hoHttp
+38362>>>>>>>    Boolean bOk bIsNull bRet
+38362>>>>>>>    String  sNum sUrl
+38362>>>>>>>     
+38362>>>>>>>    Move (sPrefijo + sTelefono) to sNum
+38363>>>>>>>   
+38363>>>>>>>    Get Create (RefClass(cJsonHttpTransfer)) to hoHttp
+38364>>>>>>>    Move False to bRet
+38365>>>>>>>    
+38365>>>>>>>    Get HttpGetJson of hohttp ("phonevalidation.abstractapi.com") ("/v1/?api_key=713383f7f21e45b1ac4054a472e00971&phone=" + sNum) (&bOk) to hoJsonReceived
+38366>>>>>>>
+38366>>>>>>>
+38366>>>>>>>    If (bOk = True and ResponseStatusCode(hohttp) = 200 and hoJsonReceived <> 0) Begin
+38368>>>>>>>        
+38368>>>>>>>        If (HasMember(hoJsonReceived,"valid"))  Begin
+38370>>>>>>>            Get IsMemberOfJsonType of hoJsonReceived "valid" jsonTypeNull  to bIsNull
+38371>>>>>>>            If bIsNull  Move False to bRet
+38374>>>>>>>            Else Move (MemberValue(hoJsonReceived,"valid")) to bRet
+38376>>>>>>>        End
+38376>>>>>>>>
+38376>>>>>>>    End
+38376>>>>>>>>
+38376>>>>>>>    Send Destroy of hohttp
+38377>>>>>>>    If (not(bRet)) Move "Fallo validación API" to sMsg
+38380>>>>>>>    Function_Return bRet
+38381>>>>>>>End_Function
+38382>>>>>>>    
+38382>>>>>>>    
+38382>>>>>
+38382>>>>>Open Alumnos
+38384>>>>>Open Centros
+38386>>>>>
+38386>>>>>Register_Function zValidateErr_StudentEmail Integer iField String sValue Returns Boolean
+38386>>>>>Register_Function zValidateErr_StudentDni Integer iField Returns Boolean
+38386>>>>>Register_Function zValidateErr_StudentTelefono Integer iField Returns Boolean
+38386>>>>>
+38386>>>>>Object oGender is a DescriptionValidationTable
+38388>>>>>    Procedure Fill_List
+38391>>>>>        Forward Send Fill_List
+38393>>>>>        Send Add_Table_Value "H" "Hombre"
+38394>>>>>        Send Add_Table_Value "M" "Mujer"
+38395>>>>>        Send Add_Table_Value "N" "Prefiero no responder"
+38396>>>>>        Send Add_Table_Value "O" "Otro"
+38397>>>>>    End_Procedure
+38398>>>>>End_Object
+38399>>>>>
+38399>>>>>
+38399>>>>>
+38399>>>>>
+38399>>>>>Class cAlumnosDataDictionary is a DataDictionary
+38400>>>>>    
+38400>>>>>    Procedure Construct_Object
+38402>>>>>        Forward Send Construct_Object
+38404>>>>>        Set Main_File to Alumnos.File_Number
+38405>>>>>
+38405>>>>>        Set Add_Server_File to Centros.File_Number
+38406>>>>>
+38406>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+38407>>>>>        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+38408>>>>>        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+38409>>>>>        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+38410>>>>>
+38410>>>>>        Set Field_Option Field Alumnos.AlumnosId DD_REQUIRED to True
+38411>>>>>        Set Key_Field_State Field Alumnos.AlumnosId to True
+38412>>>>>        Set Field_Option Field Alumnos.AlumnosId DD_DISPLAYONLY to True
+38413>>>>>
+38413>>>>>        Set Field_Class_Name Field Alumnos.Sexo to "Combo"
+38414>>>>>        Set Field_Value_Table Field Alumnos.Sexo to oGender
+38415>>>>>
+38415>>>>>        Set Field_Mask_Type Field Alumnos.CodigoPostal to Mask_Numeric_Window
 38416>>>>>        
-38416>>>>>        Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
-38417>>>>>        Set Field_Validate_msg Field Alumnos.Dni to get_zValidateErr_StudentDni
-38418>>>>>        Set Field_Validate_msg Field Alumnos.NumeroTelefono to get_zValidateErr_StudentTelefono
-38419>>>>>
-38419>>>>>    End_Procedure
-38420>>>>>
-38420>>>>>
-38420>>>>>
-38420>>>>>    Function zValidateErr_StudentDni Integer iField Returns Boolean
-38422>>>>>        Boolean bret
-38422>>>>>        String sDni sMsg
-38422>>>>>        Get Field_Current_Value Field Alumnos.Dni to sDni
-38423>>>>>        Get zDniValidation sDni (&sMsg) to bret
-38424>>>>>        If (not (bret)) Begin
-38426>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
-38427>>>>>        Function_Return True        
-38428>>>>>        End
-38428>>>>>>
-38428>>>>>        Function_Return False
-38429>>>>>    End_Function
-38430>>>>>
-38430>>>>>
-38430>>>>>    Function zValidateErr_StudentEmail Integer iField Returns Boolean
-38432>>>>>        Boolean bret
-38432>>>>>        String sEmail sMsg
-38432>>>>>        Get Field_Current_Value Field Alumnos.Email to sEmail
-38433>>>>>        Get zValidarEmail sEmail (&sMsg) to bret
-38434>>>>>        If (not (bret)) Begin
-38436>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
-38437>>>>>        Function_Return True        
-38438>>>>>        End
-38438>>>>>>
-38438>>>>>        Function_Return False
-38439>>>>>    End_Function
-38440>>>>>                
-38440>>>>>
-38440>>>>>    Function zValidateErr_StudentTelefono Integer iField Returns Boolean
-38442>>>>>        Boolean bret
-38442>>>>>        String sPrefijo sTelefono sMsg
-38442>>>>>        Get Field_Current_Value Field Alumnos.NumeroTelefono to sTelefono
-38443>>>>>        Get Field_Current_Value Field Alumnos.PrefijoTlfn to sPrefijo
-38444>>>>>        Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bret
-38445>>>>>        If (not (bret)) Begin
-38447>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
-38448>>>>>        Function_Return True        
-38449>>>>>        End
-38449>>>>>>
-38449>>>>>        Function_Return False
-38450>>>>>    End_Function            
-38451>>>>>  
-38451>>>>>  
-38451>>>>>    Procedure Field_Defaults
-38453>>>>>         DateTime dtCurrentDateTime
-38453>>>>>         
-38453>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
-38454>>>>>       
-38454>>>>>        Forward Send Field_Defaults
-38456>>>>>        Set Field_Changed_Value Field Alumnos.FechaCreacionRegistro to  dtCurrentDateTime
-38457>>>>>        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime 
-38458>>>>>    End_Procedure
-38459>>>>>
-38459>>>>>      Procedure Update
-38461>>>>>        Forward Send Update
-38463>>>>>        Move  (CurrentDateTime())  to Alumnos.FechaUltimaModificacion
-38464>>>>>    End_Procedure
-38465>>>>>
-38465>>>>>
-38465>>>>>End_Class
-38466>>>Use cWebCombo.pkg
-38466>>>
-38466>>>
-38466>>>Object oZoomAllStudents is a cWebView
-38468>>>    Set piColumnCount to 12
-38469>>>    Set psCaption to "Todos los estudiantes"
-38470>>>    Set peWebViewStyle to wvsDrilldown
-38471>>>    Set peViewType to vtZoom
-38472>>>    Set pbShowCaption to False
-38473>>>    Set Verify_Save_Msg to 0
-38474>>>    Set piMaxWidth to 1024
-38475>>>
-38475>>>    Object oCentros_DD is a cCentrosDataDictionary
-38477>>>    End_Object 
+38416>>>>>
+38416>>>>>
+38416>>>>>        Set Field_Mask_Type Field Alumnos.FechaCreacionRegistro to Mask_DateTime_Window
+38417>>>>>        Set Field_Option Field Alumnos.FechaCreacionRegistro DD_NOENTER to True
+38418>>>>>
+38418>>>>>        Set Field_Mask_Type Field Alumnos.FechaUltimaModificacion to Mask_DateTime_Window
+38419>>>>>        Set Field_Option Field Alumnos.FechaUltimaModificacion DD_NOENTER to True
+38420>>>>>        
+38420>>>>>        Set Field_Validate_msg Field Alumnos.Email to get_zValidateErr_StudentEmail
+38421>>>>>        Set Field_Validate_msg Field Alumnos.Dni to get_zValidateErr_StudentDni
+38422>>>>>        Set Field_Validate_msg Field Alumnos.NumeroTelefono to get_zValidateErr_StudentTelefono
+38423>>>>>
+38423>>>>>    End_Procedure
+38424>>>>>
+38424>>>>>
+38424>>>>>
+38424>>>>>    Function zValidateErr_StudentDni Integer iField Returns Boolean
+38426>>>>>        Boolean bret
+38426>>>>>        String sDni sMsg
+38426>>>>>        Get Field_Current_Value Field Alumnos.Dni to sDni
+38427>>>>>        Get zDniValidation sDni (&sMsg) to bret
+38428>>>>>        If (not (bret)) Begin
+38430>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
+38431>>>>>        Function_Return True        
+38432>>>>>        End
+38432>>>>>>
+38432>>>>>        Function_Return False
+38433>>>>>    End_Function
+38434>>>>>
+38434>>>>>
+38434>>>>>    Function zValidateErr_StudentEmail Integer iField String sValue Returns Boolean
+38436>>>>>        Boolean bret
+38436>>>>>        String  sMsg
+38436>>>>>//        Get Field_Current_Value Field Alumnos.Email to sEmail
+38436>>>>>        Get zValidarEmail sValue (&sMsg) to bret
+38437>>>>>        If (not (bret)) Begin
+38439>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
+38440>>>>>        Function_Return True        
+38441>>>>>        End
+38441>>>>>>
+38441>>>>>        Function_Return False
+38442>>>>>    End_Function
+38443>>>>>                
+38443>>>>>
+38443>>>>>    Function zValidateErr_StudentTelefono Integer iField Returns Boolean
+38445>>>>>        Boolean bret
+38445>>>>>        String sPrefijo sTelefono sMsg
+38445>>>>>        Get Field_Current_Value Field Alumnos.NumeroTelefono to sTelefono
+38446>>>>>        Get Field_Current_Value Field Alumnos.PrefijoTlfn to sPrefijo
+38447>>>>>        Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bret
+38448>>>>>        If (not (bret)) Begin
+38450>>>>>                Send Data_set_error iField DFERR_OPERATOR sMsg
+38451>>>>>        Function_Return True        
+38452>>>>>        End
+38452>>>>>>
+38452>>>>>        Function_Return False
+38453>>>>>    End_Function            
+38454>>>>>  
+38454>>>>>  
+38454>>>>>    Procedure Field_Defaults
+38456>>>>>         DateTime dtCurrentDateTime
+38456>>>>>         
+38456>>>>>         Move (CurrentDateTime()) to dtCurrentDateTime
+38457>>>>>       
+38457>>>>>        Forward Send Field_Defaults
+38459>>>>>        Set Field_Changed_Value Field Alumnos.FechaCreacionRegistro to  dtCurrentDateTime
+38460>>>>>        Set Field_Changed_Value Field Alumnos.FechaUltimaModificacion to  dtCurrentDateTime 
+38461>>>>>    End_Procedure
+38462>>>>>
+38462>>>>>      Procedure Update
+38464>>>>>        Forward Send Update
+38466>>>>>        Move  (CurrentDateTime())  to Alumnos.FechaUltimaModificacion
+38467>>>>>    End_Procedure
+38468>>>>>
+38468>>>>>
+38468>>>>>End_Class
+38469>>>Use cWebCombo.pkg
+38469>>>
+38469>>>
+38469>>>Object oZoomAllStudents is a cWebView
+38471>>>    Set piColumnCount to 12
+38472>>>    Set psCaption to "Todos los estudiantes"
+38473>>>    Set peWebViewStyle to wvsDrilldown
+38474>>>    Set peViewType to vtZoom
+38475>>>    Set pbShowCaption to False
+38476>>>    Set Verify_Save_Msg to 0
+38477>>>    Set piMaxWidth to 1024
 38478>>>
-38478>>>    Object oAlumnos_DD is a cAlumnosDataDictionary
-38480>>>        Set DDO_Server To oCentros_DD
-38481>>>    End_Object 
-38482>>>
-38482>>>    Set Main_DD To oAlumnos_DD
-38483>>>    Set Server  To oAlumnos_DD
-38484>>>
-38484>>>
-38484>>>    Object oWebMainPanel is a cWebPanel
-38486>>>        Set piColumnCount to 12
-38487>>>        WebSetResponsive piColumnCount rmMobile to 4
-38488>>>
-38488>>>        Object oAlumnosNombre is a cWebForm
-38490>>>            Entry_Item Alumnos.Nombre
-38491>>>            Set piColumnSpan to 6
-38492>>>            Set piColumnIndex to 0
-38493>>>            Set peLabelPosition to lpTop
-38494>>>            Set psLabel to "Nombre"
-38495>>>        End_Object 
-38496>>>
-38496>>>        Object oAlumnosApellidos is a cWebForm
-38498>>>            Entry_Item Alumnos.Apellidos
-38499>>>            Set piColumnSpan to 6
-38500>>>            Set piColumnIndex to 6
-38501>>>            Set peLabelPosition to lpTop
-38502>>>            Set psLabel to "Apellidos"
-38503>>>        End_Object 
-38504>>>
-38504>>>        Object oWebTabContainer is a cWebTabContainer
-38506>>>            Set pbFillHeight to True
-38507>>>            Set piColumnSpan to 12
-38508>>>            Set pbShowLabel to False
-38509>>>
-38509>>>            Object oPage1 is a cWebTabPage
-38511>>>                Set piColumnCount to 12
-38512>>>                Set psCaption to "información Personal"
-38513>>>
-38513>>>                Object oAlumnoPrefijoTlfn is a cWebCombo
-38515>>>                    Entry_Item Alumnos.PrefijoTlfn
-38516>>>                    Set psLabel to "Prefijo"
-38517>>>                    Set piColumnIndex to 0
-38518>>>                    
-38518>>>                    
-38518>>>                    Set pbServerOnChange to True
-38519>>>                    Set peLabelPosition to lpTop
-38520>>>                    Set piColumnSpan to 2
+38478>>>    Object oCentros_DD is a cCentrosDataDictionary
+38480>>>    End_Object 
+38481>>>
+38481>>>    Object oAlumnos_DD is a cAlumnosDataDictionary
+38483>>>        Set DDO_Server To oCentros_DD
+38484>>>    End_Object 
+38485>>>
+38485>>>    Set Main_DD To oAlumnos_DD
+38486>>>    Set Server  To oAlumnos_DD
+38487>>>
+38487>>>
+38487>>>    Object oWebMainPanel is a cWebPanel
+38489>>>        Set piColumnCount to 12
+38490>>>        WebSetResponsive piColumnCount rmMobile to 4
+38491>>>
+38491>>>        Object oAlumnosNombre is a cWebForm
+38493>>>            Entry_Item Alumnos.Nombre
+38494>>>            Set piColumnSpan to 6
+38495>>>            Set piColumnIndex to 0
+38496>>>            Set peLabelPosition to lpTop
+38497>>>            Set psLabel to "Nombre"
+38498>>>        End_Object 
+38499>>>
+38499>>>        Object oAlumnosApellidos is a cWebForm
+38501>>>            Entry_Item Alumnos.Apellidos
+38502>>>            Set piColumnSpan to 6
+38503>>>            Set piColumnIndex to 6
+38504>>>            Set peLabelPosition to lpTop
+38505>>>            Set psLabel to "Apellidos"
+38506>>>        End_Object 
+38507>>>
+38507>>>        Object oWebTabContainer is a cWebTabContainer
+38509>>>            Set pbFillHeight to True
+38510>>>            Set piColumnSpan to 12
+38511>>>            Set pbShowLabel to False
+38512>>>
+38512>>>            Object oPage1 is a cWebTabPage
+38514>>>                Set piColumnCount to 12
+38515>>>                Set psCaption to "información Personal"
+38516>>>
+38516>>>                Object oAlumnoPrefijoTlfn is a cWebCombo
+38518>>>                    Entry_Item Alumnos.PrefijoTlfn
+38519>>>                    Set psLabel to "Prefijo"
+38520>>>                    Set piColumnIndex to 0
 38521>>>                    
-38521>>>                    String[][] aResultsPrefijosPaises
-38521>>>
-38521>>>                    Procedure OnFill
-38524>>>                    Integer inumPaises i
-38524>>>                        Forward Send OnFill
-38526>>>                        
-38526>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT PrefijoTlfn, ISO3                            FROM Centros.dbo.Country;" to aResultsPrefijosPaises
-38527>>>                            
-38527>>>                        Move (SizeOfArray(aResultsPrefijosPaises)) to inumPaises    
-38528>>>                        If (not(Err)) Begin
-38530>>>                             For i from 0 to (inumPaises - 1)
-38536>>>>
-38536>>>                                Send AddComboItem aResultsPrefijosPaises[i][0] (aResultsPrefijosPaises[i][1] + "(" + aResultsPrefijosPaises[i][0] + ")")
-38537>>>                             Loop
-38538>>>>
-38538>>>                        End
-38538>>>>
-38538>>>                        
-38538>>>                    End_Procedure 
-38539>>>                End_Object
-38540>>>                WebSetResponsive piColumnCount rmMobile to 4
-38541>>>
-38541>>>                Object oAlumnosNumeroTelefono is a cWebForm
-38543>>>                    Entry_Item Alumnos.NumeroTelefono
-38544>>>                    Set piColumnSpan to 3
-38545>>>                    Set piColumnIndex to 2
-38546>>>                    Set peLabelPosition to lpTop
-38547>>>                    Set psLabel to "Numero Telefono"
-38548>>>                End_Object 
-38549>>>
-38549>>>                Object oAlumnosDni is a cWebForm
-38551>>>                    Entry_Item Alumnos.Dni
-38552>>>                    Set piColumnSpan to 2
-38553>>>                    Set piColumnIndex to 5
-38554>>>                    Set peLabelPosition to lpTop
-38555>>>                    Set psLabel to "Dni"
-38556>>>                End_Object 
-38557>>>
-38557>>>                Object oAlumnosSexo is a cWebCombo
-38559>>>                    Entry_Item Alumnos.Sexo
-38560>>>                    Set piColumnSpan to 3
-38561>>>                    Set piColumnIndex to 8
-38562>>>                    Set psCaption to "Sexo"
-38563>>>                    Set pbShowLabel to True
-38564>>>                    Set peLabelPosition to lpTop
-38565>>>                    Set psLabel to "Género"
-38566>>>                End_Object 
-38567>>>
-38567>>>                Object oAlumnosEmail is a cWebForm
-38569>>>             
-38569>>>                    Entry_Item Alumnos.Email
-38570>>>                    Set piColumnSpan to 12
-38571>>>                    Set piColumnIndex to 0
-38572>>>                    Set peLabelPosition to lpTop
-38573>>>                    Set psLabel to "Email"
-38574>>>                End_Object 
-38575>>>            End_Object 
-38576>>>
-38576>>>            Object oPage2 is a cWebTabPage
-38578>>>                Set piColumnCount to 12
-38579>>>                Set psCaption to "Ubicación"
-38580>>>                WebSetResponsive piColumnCount rmMobile to 4
-38581>>>
-38581>>>                Object oAlumnosPais is a cWebCombo
-38583>>>                    Entry_Item Alumnos.Pais
-38584>>>                    Set piColumnSpan to 3
-38585>>>                    Set piColumnIndex to 0
-38586>>>                    Set peLabelPosition to lpTop
-38587>>>                    Set psLabel to "Pais"
-38588>>>                    
-38588>>>                    Set pbServerOnChange to True
-38589>>>                    
-38589>>>                    String[][] aResultsPaises
-38589>>>
-38589>>>                    Procedure OnFill
-38592>>>                    Integer inumPaises i
-38592>>>                        Forward Send OnFill
-38594>>>                        
-38594>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre                            FROM Centros.dbo.Country;" to aResultsPaises
-38595>>>                            
-38595>>>                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
-38596>>>                        If (not(Err)) Begin
-38598>>>                             For i from 0 to (inumPaises - 1)
-38604>>>>
-38604>>>                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
-38605>>>                             Loop
-38606>>>>
-38606>>>                        End
-38606>>>>
-38606>>>                     
-38606>>>                        
-38606>>>                        
-38606>>>                    End_Procedure
-38607>>>
-38607>>>                    Procedure OnChange String sNewValue String sOldValue
-38610>>>                        Forward Send OnChange sNewValue sOldValue
-38612>>>                        WebSet psValue of oAlumnosComunidadAutonoma to ""
-38613>>>                        WebSet psValue of oAlumnosLocalidad to ""
-38614>>>                       Send Refill of oAlumnosComunidadAutonoma 
-38615>>>                    End_Procedure
-38616>>>
-38616>>>                    
-38616>>>                    
-38616>>>
-38616>>>
-38616>>>                End_Object 
-38617>>>
-38617>>>                Object oAlumnosComunidadAutonoma is a cWebCombo
-38619>>>                    Entry_Item Alumnos.ComunidadAutonoma
-38620>>>                    Set piColumnSpan to 3
-38621>>>                    Set piColumnIndex to 4
-38622>>>                    Set peLabelPosition to lpTop
-38623>>>                    Set psLabel to "Comunidad Autonoma"
-38624>>>                    Set pbServerOnChange to True
-38625>>>                    
-38625>>>                    
-38625>>>                    Procedure OnFill
-38628>>>                        Forward Send OnFill
-38630>>>                        String  sPaisElegido sSQL
-38630>>>                        Integer  inumComunidadAutonoma  i
-38630>>>                        String[][]  aResults
-38631>>>                 
-38631>>>                        WebGet psValue of oAlumnosPais to sPaisElegido                   
-38632>>>                        If (sPaisElegido = "") Procedure_Return
-38635>>>                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
-38636>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
-38637>>>                                                
-38637>>>                        If (not(Err)) Begin
-38639>>>                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
-38640>>>                            For i from 0 to (inumComunidadAutonoma - 1)
-38646>>>>
-38646>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
-38647>>>                            Loop
-38648>>>>
-38648>>>                        End                        
-38648>>>>
-38648>>>                    End_Procedure
-38649>>>                    
-38649>>>                    Procedure OnChange String sNewValue String sOldValue
-38652>>>                        Forward Send OnChange sNewValue sOldValue
-38654>>>                        Send Refill of oAlumnosLocalidad 
-38655>>>                        WebSet psValue of oAlumnosLocalidad to ""
-38656>>>                    End_Procedure    
-38657>>>                    
-38657>>>                End_Object 
-38658>>>
-38658>>>                Object oAlumnosLocalidad is a cWebCombo
-38660>>>                    Entry_Item Alumnos.Localidad
-38661>>>                    Set piColumnSpan to 4
-38662>>>                    Set piColumnIndex to 8
-38663>>>                    Set peLabelPosition to lpTop
-38664>>>                    Set psLabel to "Localidad"
-38665>>>                    
-38665>>>                    Procedure OnFill
-38668>>>                        Forward Send OnFill
-38670>>>                        String  sComunidadAutonomaElegida sSQL
-38670>>>                        Integer  inumProvincia  i
-38670>>>                        String[][]  aResults
-38671>>>                 
-38671>>>                        WebGet psValue of oAlumnosComunidadAutonoma to sComunidadAutonomaElegida                   
-38672>>>                        If (sComunidadAutonomaElegida = "") Procedure_Return
-38675>>>                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
-38676>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
-38677>>>                                                
-38677>>>                        If (not(Err)) Begin
-38679>>>                            Move (SizeOfArray(aResults)) to inumProvincia    
-38680>>>                            For i from 0 to (inumProvincia - 1)
-38686>>>>
-38686>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
-38687>>>                            Loop
-38688>>>>
-38688>>>                        End                        
-38688>>>>
-38688>>>                    End_Procedure
-38689>>>                    
-38689>>>                    
-38689>>>                End_Object 
-38690>>>
-38690>>>                Object oAlumnosDirreccion is a cWebForm
-38692>>>                    Entry_Item Alumnos.Dirreccion
-38693>>>                    Set piColumnSpan to 7
-38694>>>                    Set piColumnIndex to 0
-38695>>>                    Set peLabelPosition to lpTop
-38696>>>                    Set psLabel to "Dirreccion"
-38697>>>                End_Object 
-38698>>>
-38698>>>                Object oAlumnosCodigoPostal is a cWebForm
-38700>>>                    Entry_Item Alumnos.CodigoPostal
-38701>>>                    Set piColumnSpan to 2
-38702>>>                    Set piColumnIndex to 8
-38703>>>                    Set peLabelPosition to lpTop
-38704>>>                    Set psLabel to "Codigo Postal"
-38705>>>                End_Object 
-38706>>>
-38706>>>                Object oCentrosId is a cWebForm
-38708>>>                    Entry_Item Centros.Id
-38709>>>                    Set piColumnSpan to 2
-38710>>>                    Set piColumnIndex to 10
-38711>>>                    Set peLabelPosition to lpTop
-38712>>>                    Set psLabel to "id del Centro "
-38713>>>                    Set pbPromptButton to True
-38714>>>
-38714>>>// ToDo: Fill in the from-child parent Select view object name for navigate forward
-38714>>>                    WebRegisterPath ntNavigateForward oSelectCentro
-38720>>>
-38720>>>                    Procedure OnPrompt
-38723>>>                        Send NavigatePath
-38724>>>                        
-38724>>>                        
-38724>>>                        
-38724>>>                    End_Procedure
-38725>>>                End_Object 
-38726>>>            End_Object 
-38727>>>
-38727>>>            Object oPage3 is a cWebTabPage
-38729>>>                Set piColumnCount to 12
-38730>>>                Set psCaption to "Registros"
-38731>>>                WebSetResponsive piColumnCount rmMobile to 4
-38732>>>
-38732>>>                Object oAlumnosFechaCreacionRegistro is a cWebForm
-38734>>>                    Entry_Item Alumnos.FechaCreacionRegistro
-38735>>>                    Set piColumnSpan to 3
-38736>>>                    Set piColumnIndex to 0
-38737>>>                    Set peLabelPosition to lpTop
-38738>>>                    Set psLabel to "Fecha de creacion del registro"
-38739>>>                End_Object 
-38740>>>
-38740>>>                Object oAlumnosFechaUltimaModificacion is a cWebForm
-38742>>>                    Entry_Item Alumnos.FechaUltimaModificacion
-38743>>>                    Set piColumnSpan to 3
-38744>>>                    Set piColumnIndex to 3
-38745>>>                    Set peLabelPosition to lpTop
-38746>>>                    Set psLabel to "Fecha ultima modificacion"
-38747>>>                End_Object 
-38748>>>            End_Object 
-38749>>>        End_Object 
-38750>>>    End_Object 
-38751>>>
-38751>>>    Object oActionGroup is a cWebMenuGroup
-38753>>>
-38753>>>        Object oSaveBtn is a cWebMenuItem
-38755>>>            Set psCSSClass to "WebSaveMenuItem"
-38756>>>            Set psCaption to "Save"
-38757>>>
-38757>>>            Procedure OnClick
-38760>>>                Send Request_Save
-38761>>>            End_Procedure
-38762>>>
-38762>>>        End_Object 
-38763>>>
-38763>>>        Object oEditBtn is a cWebMenuItem
-38765>>>            Set psCSSClass to "WebEditMenuItem"
-38766>>>            Set psCaption to "Edit"
-38767>>>            Procedure OnClick
-38770>>>                Send ChangeEditMode True
-38771>>>                Send SetActionButtons
-38772>>>            End_Procedure
-38773>>>
-38773>>>        End_Object 
-38774>>>
-38774>>>        Object oDeleteBtn is a cWebMenuItem
-38776>>>            Set psCSSClass to "WebDeleteMenuItem"
-38777>>>            Set psCaption to "Delete"
-38778>>>            Set peActionDisplay to adMenu
-38779>>>
-38779>>>            Procedure OnClick
-38782>>>                Send Request_Delete
-38783>>>            End_Procedure
-38784>>>
-38784>>>        End_Object 
-38785>>>
-38785>>>        Object oCancelChangesBtn is a cWebMenuItem
-38787>>>            Set psCSSClass to "WebIcon_Refresh"
-38788>>>            Set psCaption to "Clear Changes"
-38789>>>            Set peActionDisplay to adMenu
-38790>>>            Procedure OnClick
-38793>>>                Send RefreshRecord
-38794>>>            End_Procedure
-38795>>>
-38795>>>        End_Object 
-38796>>>    End_Object 
-38797>>>
-38797>>>    Procedure SetActionButtons
-38800>>>        tWebNavigateData NavigateData
-38800>>>        tWebNavigateData NavigateData
-38800>>>        Boolean bHasRecord
-38800>>>        Handle hoDD
+38521>>>                    
+38521>>>                    Set pbServerOnChange to True
+38522>>>                    Set peLabelPosition to lpTop
+38523>>>                    Set piColumnSpan to 2
+38524>>>                    
+38524>>>                    String[][] aResultsPrefijosPaises
+38524>>>
+38524>>>                    Procedure OnFill
+38527>>>                    Integer inumPaises i
+38527>>>                        Forward Send OnFill
+38529>>>                        
+38529>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT PrefijoTlfn, ISO3                            FROM Centros.dbo.Country;" to aResultsPrefijosPaises
+38530>>>                            
+38530>>>                        Move (SizeOfArray(aResultsPrefijosPaises)) to inumPaises    
+38531>>>                        If (not(Err)) Begin
+38533>>>                             For i from 0 to (inumPaises - 1)
+38539>>>>
+38539>>>                                Send AddComboItem aResultsPrefijosPaises[i][0] (aResultsPrefijosPaises[i][1] + "(" + aResultsPrefijosPaises[i][0] + ")")
+38540>>>                             Loop
+38541>>>>
+38541>>>                        End
+38541>>>>
+38541>>>                        
+38541>>>                    End_Procedure 
+38542>>>                End_Object
+38543>>>                WebSetResponsive piColumnCount rmMobile to 4
+38544>>>
+38544>>>                Object oAlumnosNumeroTelefono is a cWebForm
+38546>>>                    Entry_Item Alumnos.NumeroTelefono
+38547>>>                    Set piColumnSpan to 3
+38548>>>                    Set piColumnIndex to 2
+38549>>>                    Set peLabelPosition to lpTop
+38550>>>                    Set psLabel to "Numero Telefono"
+38551>>>                End_Object 
+38552>>>
+38552>>>                Object oAlumnosDni is a cWebForm
+38554>>>                    Entry_Item Alumnos.Dni
+38555>>>                    Set piColumnSpan to 2
+38556>>>                    Set piColumnIndex to 5
+38557>>>                    Set peLabelPosition to lpTop
+38558>>>                    Set psLabel to "Dni"
+38559>>>                End_Object 
+38560>>>
+38560>>>                Object oAlumnosSexo is a cWebCombo
+38562>>>                    Entry_Item Alumnos.Sexo
+38563>>>                    Set piColumnSpan to 3
+38564>>>                    Set piColumnIndex to 8
+38565>>>                    Set psCaption to "Sexo"
+38566>>>                    Set pbShowLabel to True
+38567>>>                    Set peLabelPosition to lpTop
+38568>>>                    Set psLabel to "Género"
+38569>>>                End_Object 
+38570>>>
+38570>>>                Object oAlumnosEmail is a cWebForm
+38572>>>             
+38572>>>                    Entry_Item Alumnos.Email
+38573>>>                    Set piColumnSpan to 12
+38574>>>                    Set piColumnIndex to 0
+38575>>>                    Set peLabelPosition to lpTop
+38576>>>                    Set psLabel to "Email"
+38577>>>                End_Object 
+38578>>>            End_Object 
+38579>>>
+38579>>>            Object oPage2 is a cWebTabPage
+38581>>>                Set piColumnCount to 12
+38582>>>                Set psCaption to "Ubicación"
+38583>>>                WebSetResponsive piColumnCount rmMobile to 4
+38584>>>
+38584>>>                Object oAlumnosPais is a cWebCombo
+38586>>>                    Entry_Item Alumnos.Pais
+38587>>>                    Set piColumnSpan to 3
+38588>>>                    Set piColumnIndex to 0
+38589>>>                    Set peLabelPosition to lpTop
+38590>>>                    Set psLabel to "Pais"
+38591>>>                    
+38591>>>                    Set pbServerOnChange to True
+38592>>>                    
+38592>>>                    String[][] aResultsPaises
+38592>>>
+38592>>>                    Procedure OnFill
+38595>>>                    Integer inumPaises i
+38595>>>                        Forward Send OnFill
+38597>>>                        
+38597>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre                            FROM Centros.dbo.Country;" to aResultsPaises
+38598>>>                            
+38598>>>                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+38599>>>                        If (not(Err)) Begin
+38601>>>                             For i from 0 to (inumPaises - 1)
+38607>>>>
+38607>>>                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+38608>>>                             Loop
+38609>>>>
+38609>>>                        End
+38609>>>>
+38609>>>                     
+38609>>>                        
+38609>>>                        
+38609>>>                    End_Procedure
+38610>>>
+38610>>>                    Procedure OnChange String sNewValue String sOldValue
+38613>>>                        Forward Send OnChange sNewValue sOldValue
+38615>>>                        WebSet psValue of oAlumnosComunidadAutonoma to ""
+38616>>>                        WebSet psValue of oAlumnosLocalidad to ""
+38617>>>                       Send Refill of oAlumnosComunidadAutonoma 
+38618>>>                    End_Procedure
+38619>>>
+38619>>>                    
+38619>>>                    
+38619>>>
+38619>>>
+38619>>>                End_Object 
+38620>>>
+38620>>>                Object oAlumnosComunidadAutonoma is a cWebCombo
+38622>>>                    Entry_Item Alumnos.ComunidadAutonoma
+38623>>>                    Set piColumnSpan to 3
+38624>>>                    Set piColumnIndex to 4
+38625>>>                    Set peLabelPosition to lpTop
+38626>>>                    Set psLabel to "Comunidad Autonoma"
+38627>>>                    Set pbServerOnChange to True
+38628>>>                    
+38628>>>                    
+38628>>>                    Procedure OnFill
+38631>>>                        Forward Send OnFill
+38633>>>                        String  sPaisElegido sSQL
+38633>>>                        Integer  inumComunidadAutonoma  i
+38633>>>                        String[][]  aResults
+38634>>>                 
+38634>>>                        WebGet psValue of oAlumnosPais to sPaisElegido                   
+38635>>>                        If (sPaisElegido = "") Procedure_Return
+38638>>>                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
+38639>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+38640>>>                                                
+38640>>>                        If (not(Err)) Begin
+38642>>>                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
+38643>>>                            For i from 0 to (inumComunidadAutonoma - 1)
+38649>>>>
+38649>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+38650>>>                            Loop
+38651>>>>
+38651>>>                        End                        
+38651>>>>
+38651>>>                    End_Procedure
+38652>>>                    
+38652>>>                    Procedure OnChange String sNewValue String sOldValue
+38655>>>                        Forward Send OnChange sNewValue sOldValue
+38657>>>                        Send Refill of oAlumnosLocalidad 
+38658>>>                        WebSet psValue of oAlumnosLocalidad to ""
+38659>>>                    End_Procedure    
+38660>>>                    
+38660>>>                End_Object 
+38661>>>
+38661>>>                Object oAlumnosLocalidad is a cWebCombo
+38663>>>                    Entry_Item Alumnos.Localidad
+38664>>>                    Set piColumnSpan to 4
+38665>>>                    Set piColumnIndex to 8
+38666>>>                    Set peLabelPosition to lpTop
+38667>>>                    Set psLabel to "Localidad"
+38668>>>                    
+38668>>>                    Procedure OnFill
+38671>>>                        Forward Send OnFill
+38673>>>                        String  sComunidadAutonomaElegida sSQL
+38673>>>                        Integer  inumProvincia  i
+38673>>>                        String[][]  aResults
+38674>>>                 
+38674>>>                        WebGet psValue of oAlumnosComunidadAutonoma to sComunidadAutonomaElegida                   
+38675>>>                        If (sComunidadAutonomaElegida = "") Procedure_Return
+38678>>>                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
+38679>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+38680>>>                                                
+38680>>>                        If (not(Err)) Begin
+38682>>>                            Move (SizeOfArray(aResults)) to inumProvincia    
+38683>>>                            For i from 0 to (inumProvincia - 1)
+38689>>>>
+38689>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+38690>>>                            Loop
+38691>>>>
+38691>>>                        End                        
+38691>>>>
+38691>>>                    End_Procedure
+38692>>>                    
+38692>>>                    
+38692>>>                End_Object 
+38693>>>
+38693>>>                Object oAlumnosDirreccion is a cWebForm
+38695>>>                    Entry_Item Alumnos.Dirreccion
+38696>>>                    Set piColumnSpan to 7
+38697>>>                    Set piColumnIndex to 0
+38698>>>                    Set peLabelPosition to lpTop
+38699>>>                    Set psLabel to "Dirreccion"
+38700>>>                End_Object 
+38701>>>
+38701>>>                Object oAlumnosCodigoPostal is a cWebForm
+38703>>>                    Entry_Item Alumnos.CodigoPostal
+38704>>>                    Set piColumnSpan to 2
+38705>>>                    Set piColumnIndex to 8
+38706>>>                    Set peLabelPosition to lpTop
+38707>>>                    Set psLabel to "Codigo Postal"
+38708>>>                End_Object 
+38709>>>
+38709>>>                Object oCentrosId is a cWebForm
+38711>>>                    Entry_Item Centros.Id
+38712>>>                    Set piColumnSpan to 2
+38713>>>                    Set piColumnIndex to 10
+38714>>>                    Set peLabelPosition to lpTop
+38715>>>                    Set psLabel to "id del Centro "
+38716>>>                    Set pbPromptButton to True
+38717>>>
+38717>>>// ToDo: Fill in the from-child parent Select view object name for navigate forward
+38717>>>                    WebRegisterPath ntNavigateForward oSelectCentro
+38723>>>
+38723>>>                    Procedure OnPrompt
+38726>>>                        Send NavigatePath                       
+38727>>>                    End_Procedure
+38728>>>                End_Object 
+38729>>>            End_Object 
+38730>>>
+38730>>>            Object oPage3 is a cWebTabPage
+38732>>>                Set piColumnCount to 12
+38733>>>                Set psCaption to "Registros"
+38734>>>                WebSetResponsive piColumnCount rmMobile to 4
+38735>>>
+38735>>>                Object oAlumnosFechaCreacionRegistro is a cWebForm
+38737>>>                    Entry_Item Alumnos.FechaCreacionRegistro
+38738>>>                    Set piColumnSpan to 3
+38739>>>                    Set piColumnIndex to 0
+38740>>>                    Set peLabelPosition to lpTop
+38741>>>                    Set psLabel to "Fecha de creacion del registro"
+38742>>>                End_Object 
+38743>>>
+38743>>>                Object oAlumnosFechaUltimaModificacion is a cWebForm
+38745>>>                    Entry_Item Alumnos.FechaUltimaModificacion
+38746>>>                    Set piColumnSpan to 3
+38747>>>                    Set piColumnIndex to 3
+38748>>>                    Set peLabelPosition to lpTop
+38749>>>                    Set psLabel to "Fecha ultima modificacion"
+38750>>>                End_Object 
+38751>>>            End_Object 
+38752>>>        End_Object 
+38753>>>    End_Object 
+38754>>>
+38754>>>    Object oActionGroup is a cWebMenuGroup
+38756>>>
+38756>>>        Object oSaveBtn is a cWebMenuItem
+38758>>>            Set psCSSClass to "WebSaveMenuItem"
+38759>>>            Set psCaption to "Save"
+38760>>>
+38760>>>            Procedure OnClick
+38763>>>                Send Request_Save
+38764>>>            End_Procedure
+38765>>>
+38765>>>        End_Object 
+38766>>>
+38766>>>        Object oEditBtn is a cWebMenuItem
+38768>>>            Set psCSSClass to "WebEditMenuItem"
+38769>>>            Set psCaption to "Edit"
+38770>>>            Procedure OnClick
+38773>>>                Send ChangeEditMode True
+38774>>>                Send SetActionButtons
+38775>>>            End_Procedure
+38776>>>
+38776>>>        End_Object 
+38777>>>
+38777>>>        Object oDeleteBtn is a cWebMenuItem
+38779>>>            Set psCSSClass to "WebDeleteMenuItem"
+38780>>>            Set psCaption to "Delete"
+38781>>>            Set peActionDisplay to adMenu
+38782>>>
+38782>>>            Procedure OnClick
+38785>>>                Send Request_Delete
+38786>>>            End_Procedure
+38787>>>
+38787>>>        End_Object 
+38788>>>
+38788>>>        Object oCancelChangesBtn is a cWebMenuItem
+38790>>>            Set psCSSClass to "WebIcon_Refresh"
+38791>>>            Set psCaption to "Clear Changes"
+38792>>>            Set peActionDisplay to adMenu
+38793>>>            Procedure OnClick
+38796>>>                Send RefreshRecord
+38797>>>            End_Procedure
+38798>>>
+38798>>>        End_Object 
+38799>>>    End_Object 
 38800>>>
-38800>>>        Get Server to hoDD
-38801>>>        Get GetNavigateData to NavigateData
-38802>>>        Get HasRecord of hoDD to bHasRecord
+38800>>>    Procedure SetActionButtons
+38803>>>        tWebNavigateData NavigateData
+38803>>>        tWebNavigateData NavigateData
+38803>>>        Boolean bHasRecord
+38803>>>        Handle hoDD
 38803>>>
-38803>>>        // let's hide all buttons and then Show the ones we want
-38803>>>        WebSet pbRender of oEditBtn to False
-38804>>>        WebSet pbRender of oSaveBtn to False
-38805>>>        WebSet pbRender of oCancelChangesBtn to False
-38806>>>        WebSet pbRender of oDeleteBtn to False
-38807>>>
-38807>>>        If (NavigateData.bReadOnly) Begin
-38809>>>            WebSet pbRender of oEditBtn to True
-38810>>>        End
-38810>>>>
-38810>>>        Else Begin
-38811>>>            WebSet pbRender of oSaveBtn to True
-38812>>>            WebSet pbRender of oCancelChangesBtn to True
-38813>>>            WebSet pbRender of oDeleteBtn to bHasRecord
-38814>>>        End
-38814>>>>
-38814>>>    End_Procedure
-38815>>>
-38815>>>    Procedure OnViewSaved Handle hoServer Boolean bChanged
-38818>>>        // Close after save
-38818>>>        Send NavigateClose Self
-38819>>>    End_Procedure
-38820>>>
-38820>>>    // this will close the view after a delete
-38820>>>    Procedure OnViewDeleted Handle hoDDO
-38823>>>        Send NavigateClose Self
-38824>>>    End_Procedure
-38825>>>
-38825>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
-38828>>>        Case Begin
-38828>>>            Case (NavigateData.eNavigateType = nfFromMain)
-38830>>>                // If from main, this is a propbably a main file Select to Zoom.
-38830>>>                Case Break
-38831>>>
-38831>>>            Case (NavigateData.eNavigateType = nfFromParent)
-38834>>>                // If from parent, this is a constrained drill down.
-38834>>>                Case Break
-38835>>>
-38835>>>            Case (NavigateData.eNavigateType = nfFromChild)
-38838>>>                // If from child, this is a probably a parent Zoom from a Zoom.
-38838>>>                Case Break
-38839>>>
-38839>>>            Case Else // must be nfUndefined
-38839>>>
-38839>>>        Case End
-38839>>>
-38839>>>        Send SetActionButtons
-38840>>>
-38840>>>    End_Procedure
-38841>>>
-38841>>>End_Object 
-38842>    Use SelectStudents.wo
+38803>>>        Get Server to hoDD
+38804>>>        Get GetNavigateData to NavigateData
+38805>>>        Get HasRecord of hoDD to bHasRecord
+38806>>>
+38806>>>        // let's hide all buttons and then Show the ones we want
+38806>>>        WebSet pbRender of oEditBtn to False
+38807>>>        WebSet pbRender of oSaveBtn to False
+38808>>>        WebSet pbRender of oCancelChangesBtn to False
+38809>>>        WebSet pbRender of oDeleteBtn to False
+38810>>>
+38810>>>        If (NavigateData.bReadOnly) Begin
+38812>>>            WebSet pbRender of oEditBtn to True
+38813>>>        End
+38813>>>>
+38813>>>        Else Begin
+38814>>>            WebSet pbRender of oSaveBtn to True
+38815>>>            WebSet pbRender of oCancelChangesBtn to True
+38816>>>            WebSet pbRender of oDeleteBtn to bHasRecord
+38817>>>        End
+38817>>>>
+38817>>>    End_Procedure
+38818>>>
+38818>>>    Procedure OnViewSaved Handle hoServer Boolean bChanged
+38821>>>        // Close after save
+38821>>>        Send NavigateClose Self
+38822>>>    End_Procedure
+38823>>>
+38823>>>    // this will close the view after a delete
+38823>>>    Procedure OnViewDeleted Handle hoDDO
+38826>>>        Send NavigateClose Self
+38827>>>    End_Procedure
+38828>>>
+38828>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+38831>>>        Case Begin
+38831>>>            Case (NavigateData.eNavigateType = nfFromMain)
+38833>>>                // If from main, this is a propbably a main file Select to Zoom.
+38833>>>                Case Break
+38834>>>
+38834>>>            Case (NavigateData.eNavigateType = nfFromParent)
+38837>>>                // If from parent, this is a constrained drill down.
+38837>>>                Case Break
+38838>>>
+38838>>>            Case (NavigateData.eNavigateType = nfFromChild)
+38841>>>                // If from child, this is a probably a parent Zoom from a Zoom.
+38841>>>                Case Break
+38842>>>
+38842>>>            Case Else // must be nfUndefined
+38842>>>
+38842>>>        Case End
+38842>>>
+38842>>>        Send SetActionButtons
+38843>>>
+38843>>>    End_Procedure
+38844>>>
+38844>>>End_Object 
+38845>    Use SelectStudents.wo
 Including file: SelectStudents.wo    (C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo)
-38842>>>// C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo
-38842>>>// Students
-38842>>>//
-38842>>>
-38842>>>Use cWebView.pkg
-38842>>>Use cWebList.pkg
-38842>>>Use cWebMenuGroup.pkg
-38842>>>Use cWebMenuItem.pkg
-38842>>>Use cWebColumnButton.pkg
-38842>>>Use cWebColumn.pkg
-38842>>>Use ZoomAllStudents.wo
-38842>>>
-38842>>>Use cCentrosDataDictionary.dd
-38842>>>Use cAlumnosDataDictionary.dd
-38842>>>
-38842>>>Object oSelectStudents is a cWebView
-38844>>>    Set psCaption to "Students"
-38845>>>    Set peWebViewStyle to wvsDrilldown
-38846>>>    Set peViewType to vtSelect
-38847>>>    Set piColumnCount to 12
-38848>>>    Set pbShowCaption to False
-38849>>>    Set piMaxWidth to 1024
-38850>>>
-38850>>>    Object oCentros_DD is a cCentrosDataDictionary
-38852>>>    End_Object 
+38845>>>// C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo
+38845>>>// Students
+38845>>>//
+38845>>>
+38845>>>Use cWebView.pkg
+38845>>>Use cWebList.pkg
+38845>>>Use cWebMenuGroup.pkg
+38845>>>Use cWebMenuItem.pkg
+38845>>>Use cWebColumnButton.pkg
+38845>>>Use cWebColumn.pkg
+38845>>>Use ZoomAllStudents.wo
+38845>>>
+38845>>>Use cCentrosDataDictionary.dd
+38845>>>Use cAlumnosDataDictionary.dd
+38845>>>
+38845>>>Object oSelectStudents is a cWebView
+38847>>>    Set psCaption to "Students"
+38848>>>    Set peWebViewStyle to wvsDrilldown
+38849>>>    Set peViewType to vtSelect
+38850>>>    Set piColumnCount to 12
+38851>>>    Set pbShowCaption to False
+38852>>>    Set piMaxWidth to 1024
 38853>>>
-38853>>>    Object oAlumnos_DD is a cAlumnosDataDictionary
-38855>>>        Set DDO_Server To oCentros_DD
-38856>>>    End_Object 
-38857>>>
-38857>>>    Set Main_DD To oAlumnos_DD
-38858>>>    Set Server  To oAlumnos_DD
-38859>>>
-38859>>>
-38859>>>    Object oList is a cWebList
-38861>>>        Set piColumnSpan to 0
-38862>>>        Set psCSSClass to "MobileList"
-38863>>>        Set pbServerOnRowClick to True
-38864>>>        Set pbFillHeight to True
-38865>>>        Set pbShowHeader to False
-38866>>>        Set piSortColumn to 0
-38867>>>
-38867>>>        Object oAlumnosNombre is a cWebColumn
-38869>>>            Entry_Item Alumnos.Nombre
-38870>>>            Set psCaption to "Alumnos.Nombre"
-38871>>>            Set piWidth to 1000
-38872>>>        End_Object 
-38873>>>
-38873>>>        Object oAlumnosApellidos is a cWebColumn
-38875>>>            Entry_Item Alumnos.Apellidos
-38876>>>            Set psCaption to "Alumnos.Apellidos"
-38877>>>            Set piWidth to 1000
-38878>>>        End_Object 
-38879>>>
-38879>>>        Object oDetailButton is a cWebColumnButton
-38881>>>            Set psCaption to "btn"
-38882>>>            Set piWidth to 45
-38883>>>            Set pbFixedWidth to True
-38884>>>            Set pbResizable to False
-38885>>>            Set piListRowSpan to 2
-38886>>>            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
-38887>>>            Set peAlign to alignRight
-38888>>>
-38888>>>            WebRegisterPath ntNavigateForward oZoomAllStudents
-38894>>>
-38894>>>            Procedure OnClick
-38897>>>                Send NavigatePath
-38898>>>            End_Procedure
-38899>>>
-38899>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-38902>>>                Move True to NavigateData.bReadOnly
-38903>>>            End_Procedure
-38904>>>
-38904>>>        End_Object 
-38905>>>
-38905>>>        Object oAlumnosDni is a cWebColumn
-38907>>>            Entry_Item Alumnos.Dni
-38908>>>            Set psCaption to "Alumnos.Dni"
-38909>>>            Set piWidth to 100
-38910>>>            Set pbNewLine to True
-38911>>>            Set psCSSClass to "RowDetail"
-38912>>>        End_Object 
-38913>>>
-38913>>>        Object oCentrosId is a cWebColumn
-38915>>>            Entry_Item Centros.Id
-38916>>>            Set psCaption to "Alumnos.CentrosId"
-38917>>>            Set piWidth to 100
-38918>>>            Set psCSSClass to "RowDetail"
-38919>>>        End_Object 
-38920>>>
-38920>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
-38920>>>//        WebRegisterPath ntNavigateForward oSelectView
-38920>>>
-38920>>>        Procedure OnRowClick String sRowId
-38923>>>            tWebNavigateData NavigateData
-38923>>>            tWebNavigateData NavigateData
-38923>>>            Get GetNavigateData to NavigateData
-38924>>>
-38924>>>            Case Begin
-38924>>>                Case (NavigateData.eNavigateType = nfFromParent)
-38926>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
-38926>>>Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-38927>>>>
-38927>>>//                    Send NavigateForward of oSelectView Self
-38927>>>                    Case Break
-38928>>>
-38928>>>                Case (NavigateData.eNavigateType = nfFromChild)
-38931>>>                    Send NavigateClose Self
-38932>>>                    Case Break
-38933>>>
-38933>>>                Case (NavigateData.eNavigateType = nfFromMain)
-38936>>>                    Send NavigateClose Self
-38937>>>                    Case Break
-38938>>>
-38938>>>                Case Else // must be nfUndefined
-38938>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
-38938>>>Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-38939>>>>
-38939>>>//                    Send NavigateForward of oSelectView Self
-38939>>>
-38939>>>            Case End
-38939>>>        End_Procedure
-38940>>>
-38940>>>        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-38943>>>            Move True to NavigateData.bReadOnly
-38944>>>        End_Procedure
-38945>>>
-38945>>>    End_Object 
-38946>>>
-38946>>>    Object oActionGroup is a cWebMenuGroup
+38853>>>    Object oCentros_DD is a cCentrosDataDictionary
+38855>>>    End_Object 
+38856>>>
+38856>>>    Object oAlumnos_DD is a cAlumnosDataDictionary
+38858>>>        Set DDO_Server To oCentros_DD
+38859>>>    End_Object 
+38860>>>
+38860>>>    Set Main_DD To oAlumnos_DD
+38861>>>    Set Server  To oAlumnos_DD
+38862>>>
+38862>>>
+38862>>>    Object oList is a cWebList
+38864>>>        Set piColumnSpan to 0
+38865>>>        Set psCSSClass to "MobileList"
+38866>>>        Set pbServerOnRowClick to True
+38867>>>        Set pbFillHeight to True
+38868>>>        Set pbShowHeader to False
+38869>>>        Set piSortColumn to 0
+38870>>>
+38870>>>        Object oAlumnosNombre is a cWebColumn
+38872>>>            Entry_Item Alumnos.Nombre
+38873>>>            Set psCaption to "Alumnos.Nombre"
+38874>>>            Set piWidth to 1000
+38875>>>        End_Object 
+38876>>>
+38876>>>        Object oAlumnosApellidos is a cWebColumn
+38878>>>            Entry_Item Alumnos.Apellidos
+38879>>>            Set psCaption to "Alumnos.Apellidos"
+38880>>>            Set piWidth to 1000
+38881>>>        End_Object 
+38882>>>
+38882>>>        Object oDetailButton is a cWebColumnButton
+38884>>>            Set psCaption to "btn"
+38885>>>            Set piWidth to 45
+38886>>>            Set pbFixedWidth to True
+38887>>>            Set pbResizable to False
+38888>>>            Set piListRowSpan to 2
+38889>>>            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
+38890>>>            Set peAlign to alignRight
+38891>>>
+38891>>>            WebRegisterPath ntNavigateForward oZoomAllStudents
+38897>>>
+38897>>>            Procedure OnClick
+38900>>>                Send NavigatePath
+38901>>>            End_Procedure
+38902>>>
+38902>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38905>>>                Move True to NavigateData.bReadOnly
+38906>>>            End_Procedure
+38907>>>
+38907>>>        End_Object 
+38908>>>
+38908>>>        Object oAlumnosDni is a cWebColumn
+38910>>>            Entry_Item Alumnos.Dni
+38911>>>            Set psCaption to "Alumnos.Dni"
+38912>>>            Set piWidth to 100
+38913>>>            Set pbNewLine to True
+38914>>>            Set psCSSClass to "RowDetail"
+38915>>>        End_Object 
+38916>>>
+38916>>>        Object oCentrosId is a cWebColumn
+38918>>>            Entry_Item Centros.Id
+38919>>>            Set psCaption to "Alumnos.CentrosId"
+38920>>>            Set piWidth to 100
+38921>>>            Set psCSSClass to "RowDetail"
+38922>>>        End_Object 
+38923>>>
+38923>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+38923>>>//        WebRegisterPath ntNavigateForward oSelectView
+38923>>>
+38923>>>        Procedure OnRowClick String sRowId
+38926>>>            tWebNavigateData NavigateData
+38926>>>            tWebNavigateData NavigateData
+38926>>>            Get GetNavigateData to NavigateData
+38927>>>
+38927>>>            Case Begin
+38927>>>                Case (NavigateData.eNavigateType = nfFromParent)
+38929>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+38929>>>Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+38930>>>>
+38930>>>//                    Send NavigateForward of oSelectView Self
+38930>>>                    Case Break
+38931>>>
+38931>>>                Case (NavigateData.eNavigateType = nfFromChild)
+38934>>>                    Send NavigateClose Self
+38935>>>                    Case Break
+38936>>>
+38936>>>                Case (NavigateData.eNavigateType = nfFromMain)
+38939>>>                    Send NavigateClose Self
+38940>>>                    Case Break
+38941>>>
+38941>>>                Case Else // must be nfUndefined
+38941>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+38941>>>Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+38942>>>>
+38942>>>//                    Send NavigateForward of oSelectView Self
+38942>>>
+38942>>>            Case End
+38942>>>        End_Procedure
+38943>>>
+38943>>>        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38946>>>            Move True to NavigateData.bReadOnly
+38947>>>        End_Procedure
 38948>>>
-38948>>>        Object oSearch is a cWebMenuItem
-38950>>>            Set psCSSClass to "WebPromptMenuItem"
-38951>>>            Set psCaption to "Search"
-38952>>>
-38952>>>            Procedure OnClick
-38955>>>                Send Search of oList
-38956>>>            End_Procedure
-38957>>>
-38957>>>        End_Object 
-38958>>>
-38958>>>        Object oNewButton is a cWebMenuItem
-38960>>>            Set psCSSClass to "WebClearMenuItem"
-38961>>>            Set psCaption to "New"
-38962>>>
-38962>>>            WebRegisterPath ntNavigateForward oZoomAllStudents
-38968>>>
-38968>>>            Procedure OnClick
-38971>>>                Send NavigatePath
-38972>>>            End_Procedure
-38973>>>
-38973>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-38976>>>                Move True to NavigateData.bNewRecord
-38977>>>            End_Procedure
-38978>>>
-38978>>>        End_Object 
-38979>>>    End_Object 
-38980>>>
-38980>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
-38983>>>        WebSet pbRender of oNewButton to True
-38984>>>        WebSet pbRender of oDetailButton to True
-38985>>>
-38985>>>        Case Begin
-38985>>>            Case (NavigateData.eNavigateType = nfFromParent)
-38987>>>                // If from parent, this is a constrained drill down
-38987>>>                Case Break
+38948>>>    End_Object 
+38949>>>
+38949>>>    Object oActionGroup is a cWebMenuGroup
+38951>>>
+38951>>>        Object oSearch is a cWebMenuItem
+38953>>>            Set psCSSClass to "WebPromptMenuItem"
+38954>>>            Set psCaption to "Search"
+38955>>>
+38955>>>            Procedure OnClick
+38958>>>                Send Search of oList
+38959>>>            End_Procedure
+38960>>>
+38960>>>        End_Object 
+38961>>>
+38961>>>        Object oNewButton is a cWebMenuItem
+38963>>>            Set psCSSClass to "WebClearMenuItem"
+38964>>>            Set psCaption to "New"
+38965>>>
+38965>>>            WebRegisterPath ntNavigateForward oZoomAllStudents
+38971>>>
+38971>>>            Procedure OnClick
+38974>>>                Send NavigatePath
+38975>>>            End_Procedure
+38976>>>
+38976>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+38979>>>                Move True to NavigateData.bNewRecord
+38980>>>            End_Procedure
+38981>>>
+38981>>>        End_Object 
+38982>>>    End_Object 
+38983>>>
+38983>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+38986>>>        WebSet pbRender of oNewButton to True
+38987>>>        WebSet pbRender of oDetailButton to True
 38988>>>
-38988>>>            Case (NavigateData.eNavigateType = nfFromChild)
-38991>>>                // If from child, this is a probably a parent lookup from a Zoom
-38991>>>                Case Break
-38992>>>
-38992>>>            Case (NavigateData.eNavigateType = nfFromMain)
-38995>>>                // If from main, this is a probably a main-file lookup from a Zoom
-38995>>>                WebSet pbRender of oDetailButton to False
-38996>>>                Case Break
-38997>>>
-38997>>>            Case Else // must be nfUndefined
-38997>>>                // This may be the start of a drilldown query or this may be used for some kind of custom query.
-38997>>>
-38997>>>        Case End
-38997>>>
-38997>>>    End_Procedure
-38998>>>
-38998>>>
-38998>>>End_Object 
-38999>    Use ZoomCentros.wo
+38988>>>        Case Begin
+38988>>>            Case (NavigateData.eNavigateType = nfFromParent)
+38990>>>                // If from parent, this is a constrained drill down
+38990>>>                Case Break
+38991>>>
+38991>>>            Case (NavigateData.eNavigateType = nfFromChild)
+38994>>>                // If from child, this is a probably a parent lookup from a Zoom
+38994>>>                Case Break
+38995>>>
+38995>>>            Case (NavigateData.eNavigateType = nfFromMain)
+38998>>>                // If from main, this is a probably a main-file lookup from a Zoom
+38998>>>                WebSet pbRender of oDetailButton to False
+38999>>>                Case Break
+39000>>>
+39000>>>            Case Else // must be nfUndefined
+39000>>>                // This may be the start of a drilldown query or this may be used for some kind of custom query.
+39000>>>
+39000>>>        Case End
+39000>>>
+39000>>>    End_Procedure
+39001>>>
+39001>>>
+39001>>>End_Object 
+39002>    Use ZoomCentros.wo
 Including file: ZoomCentros.wo    (C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo)
-38999>>>// C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo
-38999>>>// Centros
-38999>>>//
-38999>>>
-38999>>>Use cWebView.pkg
-38999>>>Use cWebPanel.pkg
-38999>>>Use cWebMenuGroup.pkg
-38999>>>Use cWebMenuItem.pkg
-38999>>>Use cWebForm.pkg
-38999>>>Use cWebTabContainer.pkg
-38999>>>Use cWebTabPage.pkg
-38999>>>
-38999>>>Use cCentrosDataDictionary.dd
-38999>>>
-38999>>>Object oZoomCentros is a cWebView
-39001>>>    Set piColumnCount to 12
-39002>>>    Set psCaption to "Centros"
-39003>>>    Set peWebViewStyle to wvsDrilldown
-39004>>>    Set peViewType to vtZoom
-39005>>>    Set pbShowCaption to False
-39006>>>    Set Verify_Save_Msg to 0
-39007>>>    Set piMaxWidth to 1024
-39008>>>
-39008>>>    Object oCentros_DD is a cCentrosDataDictionary
-39010>>>    End_Object 
+39002>>>// C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo
+39002>>>// Centros
+39002>>>//
+39002>>>
+39002>>>Use cWebView.pkg
+39002>>>Use cWebPanel.pkg
+39002>>>Use cWebMenuGroup.pkg
+39002>>>Use cWebMenuItem.pkg
+39002>>>Use cWebForm.pkg
+39002>>>Use cWebTabContainer.pkg
+39002>>>Use cWebTabPage.pkg
+39002>>>
+39002>>>Use cCentrosDataDictionary.dd
+39002>>>
+39002>>>Object oZoomCentros is a cWebView
+39004>>>    Set piColumnCount to 12
+39005>>>    Set psCaption to "Centros"
+39006>>>    Set peWebViewStyle to wvsDrilldown
+39007>>>    Set peViewType to vtZoom
+39008>>>    Set pbShowCaption to False
+39009>>>    Set Verify_Save_Msg to 0
+39010>>>    Set piMaxWidth to 1024
 39011>>>
-39011>>>    Set Main_DD To oCentros_DD
-39012>>>    Set Server  To oCentros_DD
-39013>>>
-39013>>>
-39013>>>    Object oWebMainPanel is a cWebPanel
-39015>>>        Set piColumnCount to 12
-39016>>>        WebSetResponsive piColumnCount rmMobile to 4
-39017>>>
-39017>>>        Object oCentrosNombre is a cWebForm
-39019>>>            Entry_Item Centros.Nombre
-39020>>>            Set piColumnSpan to 6
-39021>>>            Set piColumnIndex to 0
-39022>>>            Set peLabelPosition to lpTop
-39023>>>            Set psLabel to "Nombre"
-39024>>>        End_Object 
-39025>>>
-39025>>>        Object oCentrosPsNombre is a cWebForm
-39027>>>            Entry_Item Centros.PsNombre
-39028>>>            Set piColumnSpan to 6
-39029>>>            Set piColumnIndex to 6
-39030>>>            Set peLabelPosition to lpTop
-39031>>>            Set psLabel to "PsNombre"
-39032>>>        End_Object 
-39033>>>
-39033>>>        Object oCentrosEmpresa is a cWebForm
-39035>>>            Entry_Item Centros.Empresa
-39036>>>            Set piColumnSpan to 8
-39037>>>            Set piColumnIndex to 0
-39038>>>            Set peLabelPosition to lpTop
-39039>>>            Set psLabel to "Empresa"
-39040>>>        End_Object 
-39041>>>
-39041>>>        Object oWebTabContainer is a cWebTabContainer
-39043>>>            Set pbFillHeight to True
-39044>>>            Set piColumnSpan to 12
-39045>>>            Set pbShowLabel to False
-39046>>>
-39046>>>            Object oPage1 is a cWebTabPage
-39048>>>                Set piColumnCount to 12
-39049>>>                Set psCaption to "Ubicación"
-39050>>>                WebSetResponsive piColumnCount rmMobile to 4
-39051>>>
-39051>>>                Object oCentrosPais is a cWebCombo
-39053>>>                    Entry_Item Centros.Pais
-39054>>>                    Set piColumnSpan to 4
-39055>>>                    Set piColumnIndex to 0
-39056>>>                    Set peLabelPosition to lpTop
-39057>>>                    Set psLabel to "Pais"
-39058>>>                    Set pbServerOnChange to True
-39059>>>//                    
-39059>>>//                    String[][] aResultsPaises
-39059>>>
-39059>>>                    Procedure OnFill
-39062>>>                    Integer inumPaises i
-39062>>>                        Forward Send OnFill
-39064>>>                        
-39064>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre                            from Centros.dbo.Country;" to aResultsPaises
-39065>>>                            
-39065>>>                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
-39066>>>                        If (not(Err)) Begin
-39068>>>                             For i from 0 to (inumPaises - 1)
-39074>>>>
-39074>>>                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
-39075>>>                             Loop
-39076>>>>
-39076>>>                        End
-39076>>>>
-39076>>>                     
-39076>>>                        
-39076>>>                        
-39076>>>                    End_Procedure
-39077>>>
-39077>>>                    Procedure OnChange String sNewValue String sOldValue
-39080>>>                        Forward Send OnChange sNewValue sOldValue
-39082>>>                        WebSet psValue of oCentrosComunidadAutonoma to ""
-39083>>>                        WebSet psValue of oCentrosLocalidad to ""
-39084>>>                       Send Refill of oCentrosComunidadAutonoma 
-39085>>>                    End_Procedure
-39086>>>
-39086>>>                    
-39086>>>                    
-39086>>>                End_Object 
-39087>>>
-39087>>>                Object oCentrosComunidadAutonoma is a cWebCombo
-39089>>>                    Entry_Item Centros.ComunidadAutonoma                   
-39090>>>                    Set piColumnSpan to 4
-39091>>>                    Set piColumnIndex to 4
-39092>>>                    Set peLabelPosition to lpTop
-39093>>>                    Set psLabel to "Comunidad Autonoma"
-39094>>>                    Set pbServerOnChange to True
-39095>>>                    
-39095>>>                    
-39095>>>                    Procedure OnFill
-39098>>>                        Forward Send OnFill
-39100>>>                        String  sPaisElegido sSQL
-39100>>>                        Integer  inumComunidadAutonoma  i
-39100>>>                        String[][]  aResults
-39101>>>                 
-39101>>>                        WebGet psValue of oCentrosPais to sPaisElegido                   
-39102>>>                        If (sPaisElegido = "") Procedure_Return
-39105>>>                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
-39106>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
-39107>>>                                                
-39107>>>                        If (not(Err)) Begin
-39109>>>                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
-39110>>>                            For i from 0 to (inumComunidadAutonoma - 1)
-39116>>>>
-39116>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
-39117>>>                            Loop
-39118>>>>
-39118>>>                        End                        
-39118>>>>
-39118>>>                    End_Procedure
-39119>>>                    
-39119>>>                    Procedure OnChange String sNewValue String sOldValue
-39122>>>                        Forward Send OnChange sNewValue sOldValue
-39124>>>                        Send Refill of oCentrosLocalidad 
-39125>>>                        WebSet psValue of oCentrosLocalidad to ""
-39126>>>                    End_Procedure    
-39127>>>                    
-39127>>>                    
-39127>>>                End_Object 
-39128>>>
-39128>>>                Object oCentrosLocalidad is a cWebCombo
-39130>>>                    Entry_Item Centros.Localidad
-39131>>>                    Set piColumnSpan to 4
-39132>>>                    Set piColumnIndex to 8
-39133>>>                    Set peLabelPosition to lpTop
-39134>>>                    Set psLabel to "Provincia"
-39135>>>                    Set pbServerOnChange to True
-39136>>>                    
-39136>>>                    
-39136>>>                    Procedure OnFill
-39139>>>                        Forward Send OnFill
-39141>>>                        String  sComunidadAutonomaElegida sSQL
-39141>>>                        Integer  inumProvincia  i
-39141>>>                        String[][]  aResults
-39142>>>                 
-39142>>>                        WebGet psValue of oCentrosComunidadAutonoma to sComunidadAutonomaElegida                   
-39143>>>                        If (sComunidadAutonomaElegida = "") Procedure_Return
-39146>>>                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
-39147>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
-39148>>>                                                
-39148>>>                        If (not(Err)) Begin
-39150>>>                            Move (SizeOfArray(aResults)) to inumProvincia    
-39151>>>                            For i from 0 to (inumProvincia - 1)
-39157>>>>
-39157>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
-39158>>>                            Loop
-39159>>>>
-39159>>>                        End                        
-39159>>>>
-39159>>>                    End_Procedure
-39160>>>            
-39160>>>                End_Object 
-39161>>>
-39161>>>                Object oCentrosDireccion is a cWebForm
-39163>>>                    Entry_Item Centros.Direccion
-39164>>>                    Set piColumnSpan to 9
-39165>>>                    Set piColumnIndex to 0
-39166>>>                    Set peLabelPosition to lpTop
-39167>>>                    Set psLabel to "Direccion"
-39168>>>                End_Object 
-39169>>>
-39169>>>                Object oCentrosCodigoPostal is a cWebForm
-39171>>>                    Entry_Item Centros.CodigoPostal
-39172>>>                    Set piColumnSpan to 2
-39173>>>                    Set piColumnIndex to 9
-39174>>>                    Set peLabelPosition to lpTop
-39175>>>                    Set psLabel to "Codigo Postal"
-39176>>>                End_Object 
-39177>>>            End_Object 
-39178>>>
-39178>>>            Object oPage2 is a cWebTabPage
-39180>>>                Set piColumnCount to 12
-39181>>>                Set psCaption to "Datos de Registro"
-39182>>>                WebSetResponsive piColumnCount rmMobile to 4
-39183>>>
-39183>>>                Object oCentrosFechaCreacionRegistro is a cWebForm
-39185>>>                    Entry_Item Centros.FechaCreacionRegistro
-39186>>>                    Set piColumnSpan to 3
-39187>>>                    Set piColumnIndex to 0
-39188>>>                    Set peLabelPosition to lpTop
-39189>>>                    Set psLabel to "Fecha de creacion del registro"
-39190>>>                End_Object 
-39191>>>
-39191>>>                Object oCentrosFechaUltimaModificacion is a cWebForm
-39193>>>                    Entry_Item Centros.FechaUltimaModificacion
-39194>>>                    Set piColumnSpan to 3
-39195>>>                    Set piColumnIndex to 3
-39196>>>                    Set peLabelPosition to lpTop
-39197>>>                    Set psLabel to "Fecha ultima de la modificacion"
-39198>>>                End_Object 
-39199>>>            End_Object 
-39200>>>        End_Object 
-39201>>>    End_Object 
-39202>>>
-39202>>>    Object oActionGroup is a cWebMenuGroup
-39204>>>
-39204>>>        Object oSaveBtn is a cWebMenuItem
-39206>>>            Set psCSSClass to "WebSaveMenuItem"
-39207>>>            Set psCaption to "Save"
-39208>>>
-39208>>>            Procedure OnClick
-39211>>>                Send Request_Save
-39212>>>            End_Procedure
-39213>>>
-39213>>>        End_Object 
-39214>>>
-39214>>>        Object oEditBtn is a cWebMenuItem
-39216>>>            Set psCSSClass to "WebEditMenuItem"
-39217>>>            Set psCaption to "Edit"
-39218>>>            Procedure OnClick
-39221>>>                Send ChangeEditMode True
-39222>>>                Send SetActionButtons
-39223>>>            End_Procedure
-39224>>>
-39224>>>        End_Object 
-39225>>>
-39225>>>        Object oDeleteBtn is a cWebMenuItem
-39227>>>            Set psCSSClass to "WebDeleteMenuItem"
-39228>>>            Set psCaption to "Delete"
-39229>>>            Set peActionDisplay to adMenu
-39230>>>
-39230>>>            Procedure OnClick
-39233>>>                Send Request_Delete
-39234>>>            End_Procedure
-39235>>>
-39235>>>        End_Object 
-39236>>>
-39236>>>        Object oCancelChangesBtn is a cWebMenuItem
-39238>>>            Set psCSSClass to "WebIcon_Refresh"
-39239>>>            Set psCaption to "Clear Changes"
-39240>>>            Set peActionDisplay to adMenu
-39241>>>            Procedure OnClick
-39244>>>                Send RefreshRecord
-39245>>>            End_Procedure
-39246>>>
-39246>>>        End_Object 
-39247>>>    End_Object 
-39248>>>
-39248>>>    Procedure SetActionButtons
-39251>>>        tWebNavigateData NavigateData
-39251>>>        tWebNavigateData NavigateData
-39251>>>        Boolean bHasRecord
-39251>>>        Handle hoDD
+39011>>>    Object oCentros_DD is a cCentrosDataDictionary
+39013>>>    End_Object 
+39014>>>
+39014>>>    Set Main_DD To oCentros_DD
+39015>>>    Set Server  To oCentros_DD
+39016>>>
+39016>>>
+39016>>>    Object oWebMainPanel is a cWebPanel
+39018>>>        Set piColumnCount to 12
+39019>>>        WebSetResponsive piColumnCount rmMobile to 4
+39020>>>
+39020>>>        Object oCentrosNombre is a cWebForm
+39022>>>            Entry_Item Centros.Nombre
+39023>>>            Set piColumnSpan to 6
+39024>>>            Set piColumnIndex to 0
+39025>>>            Set peLabelPosition to lpTop
+39026>>>            Set psLabel to "Nombre"
+39027>>>        End_Object 
+39028>>>
+39028>>>        Object oCentrosPsNombre is a cWebForm
+39030>>>            Entry_Item Centros.PsNombre
+39031>>>            Set piColumnSpan to 6
+39032>>>            Set piColumnIndex to 6
+39033>>>            Set peLabelPosition to lpTop
+39034>>>            Set psLabel to "PsNombre"
+39035>>>        End_Object 
+39036>>>
+39036>>>        Object oCentrosEmpresa is a cWebForm
+39038>>>            Entry_Item Centros.Empresa
+39039>>>            Set piColumnSpan to 8
+39040>>>            Set piColumnIndex to 0
+39041>>>            Set peLabelPosition to lpTop
+39042>>>            Set psLabel to "Empresa"
+39043>>>        End_Object 
+39044>>>
+39044>>>        Object oWebTabContainer is a cWebTabContainer
+39046>>>            Set pbFillHeight to True
+39047>>>            Set piColumnSpan to 12
+39048>>>            Set pbShowLabel to False
+39049>>>
+39049>>>            Object oPage1 is a cWebTabPage
+39051>>>                Set piColumnCount to 12
+39052>>>                Set psCaption to "Ubicación"
+39053>>>                WebSetResponsive piColumnCount rmMobile to 4
+39054>>>
+39054>>>                Object oCentrosPais is a cWebCombo
+39056>>>                    Entry_Item Centros.Pais
+39057>>>                    Set piColumnSpan to 4
+39058>>>                    Set piColumnIndex to 0
+39059>>>                    Set peLabelPosition to lpTop
+39060>>>                    Set psLabel to "Pais"
+39061>>>                    Set pbServerOnChange to True
+39062>>>//                    
+39062>>>//                    String[][] aResultsPaises
+39062>>>
+39062>>>                    Procedure OnFill
+39065>>>                    Integer inumPaises i
+39065>>>                        Forward Send OnFill
+39067>>>                        
+39067>>>                        Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT id, Nombre                            from Centros.dbo.Country;" to aResultsPaises
+39068>>>                            
+39068>>>                        Move (SizeOfArray(aResultsPaises[0])) to inumPaises    
+39069>>>                        If (not(Err)) Begin
+39071>>>                             For i from 0 to (inumPaises - 1)
+39077>>>>
+39077>>>                                Send AddComboItem aResultsPaises[i][0] aResultsPaises[i][1] 
+39078>>>                             Loop
+39079>>>>
+39079>>>                        End
+39079>>>>
+39079>>>                     
+39079>>>                        
+39079>>>                        
+39079>>>                    End_Procedure
+39080>>>
+39080>>>                    Procedure OnChange String sNewValue String sOldValue
+39083>>>                        Forward Send OnChange sNewValue sOldValue
+39085>>>                        WebSet psValue of oCentrosComunidadAutonoma to ""
+39086>>>                        WebSet psValue of oCentrosLocalidad to ""
+39087>>>                       Send Refill of oCentrosComunidadAutonoma 
+39088>>>                    End_Procedure
+39089>>>
+39089>>>                    
+39089>>>                    
+39089>>>                End_Object 
+39090>>>
+39090>>>                Object oCentrosComunidadAutonoma is a cWebCombo
+39092>>>                    Entry_Item Centros.ComunidadAutonoma                   
+39093>>>                    Set piColumnSpan to 4
+39094>>>                    Set piColumnIndex to 4
+39095>>>                    Set peLabelPosition to lpTop
+39096>>>                    Set psLabel to "Comunidad Autonoma"
+39097>>>                    Set pbServerOnChange to True
+39098>>>                    
+39098>>>                    
+39098>>>                    Procedure OnFill
+39101>>>                        Forward Send OnFill
+39103>>>                        String  sPaisElegido sSQL
+39103>>>                        Integer  inumComunidadAutonoma  i
+39103>>>                        String[][]  aResults
+39104>>>                 
+39104>>>                        WebGet psValue of oCentrosPais to sPaisElegido                   
+39105>>>                        If (sPaisElegido = "") Procedure_Return
+39108>>>                        Move ("SELECT S.id AS ComunidadAutonomaId, S.Nombre AS ComunidadAutonoma FROM Centros.dbo.State S WHERE S.CountryId = '" + sPaisElegido + "';") to sSQL 
+39109>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+39110>>>                                                
+39110>>>                        If (not(Err)) Begin
+39112>>>                            Move (SizeOfArray(aResults)) to inumComunidadAutonoma    
+39113>>>                            For i from 0 to (inumComunidadAutonoma - 1)
+39119>>>>
+39119>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+39120>>>                            Loop
+39121>>>>
+39121>>>                        End                        
+39121>>>>
+39121>>>                    End_Procedure
+39122>>>                    
+39122>>>                    Procedure OnChange String sNewValue String sOldValue
+39125>>>                        Forward Send OnChange sNewValue sOldValue
+39127>>>                        Send Refill of oCentrosLocalidad 
+39128>>>                        WebSet psValue of oCentrosLocalidad to ""
+39129>>>                    End_Procedure    
+39130>>>                    
+39130>>>                    
+39130>>>                End_Object 
+39131>>>
+39131>>>                Object oCentrosLocalidad is a cWebCombo
+39133>>>                    Entry_Item Centros.Localidad
+39134>>>                    Set piColumnSpan to 4
+39135>>>                    Set piColumnIndex to 8
+39136>>>                    Set peLabelPosition to lpTop
+39137>>>                    Set psLabel to "Provincia"
+39138>>>                    Set pbServerOnChange to True
+39139>>>                    
+39139>>>                    
+39139>>>                    Procedure OnFill
+39142>>>                        Forward Send OnFill
+39144>>>                        String  sComunidadAutonomaElegida sSQL
+39144>>>                        Integer  inumProvincia  i
+39144>>>                        String[][]  aResults
+39145>>>                 
+39145>>>                        WebGet psValue of oCentrosComunidadAutonoma to sComunidadAutonomaElegida                   
+39146>>>                        If (sComunidadAutonomaElegida = "") Procedure_Return
+39149>>>                        Move ("SELECT P.id AS ProvinciaId, P.Nombre AS Provincia FROM Centros.dbo.Province P WHERE P.StateId = '" + sComunidadAutonomaElegida + "';") to sSQL 
+39150>>>                        Get SQLExecDirect of ghoSQLExecutor sSQL to aResults
+39151>>>                                                
+39151>>>                        If (not(Err)) Begin
+39153>>>                            Move (SizeOfArray(aResults)) to inumProvincia    
+39154>>>                            For i from 0 to (inumProvincia - 1)
+39160>>>>
+39160>>>                                Send AddComboItem (aResults[i][0]) (aResults[i][1])
+39161>>>                            Loop
+39162>>>>
+39162>>>                        End                        
+39162>>>>
+39162>>>                    End_Procedure
+39163>>>            
+39163>>>                End_Object 
+39164>>>
+39164>>>                Object oCentrosDireccion is a cWebForm
+39166>>>                    Entry_Item Centros.Direccion
+39167>>>                    Set piColumnSpan to 9
+39168>>>                    Set piColumnIndex to 0
+39169>>>                    Set peLabelPosition to lpTop
+39170>>>                    Set psLabel to "Direccion"
+39171>>>                End_Object 
+39172>>>
+39172>>>                Object oCentrosCodigoPostal is a cWebForm
+39174>>>                    Entry_Item Centros.CodigoPostal
+39175>>>                    Set piColumnSpan to 2
+39176>>>                    Set piColumnIndex to 9
+39177>>>                    Set peLabelPosition to lpTop
+39178>>>                    Set psLabel to "Codigo Postal"
+39179>>>                End_Object 
+39180>>>            End_Object 
+39181>>>
+39181>>>            Object oPage2 is a cWebTabPage
+39183>>>                Set piColumnCount to 12
+39184>>>                Set psCaption to "Datos de Registro"
+39185>>>                WebSetResponsive piColumnCount rmMobile to 4
+39186>>>
+39186>>>                Object oCentrosFechaCreacionRegistro is a cWebForm
+39188>>>                    Entry_Item Centros.FechaCreacionRegistro
+39189>>>                    Set piColumnSpan to 3
+39190>>>                    Set piColumnIndex to 0
+39191>>>                    Set peLabelPosition to lpTop
+39192>>>                    Set psLabel to "Fecha de creacion del registro"
+39193>>>                End_Object 
+39194>>>
+39194>>>                Object oCentrosFechaUltimaModificacion is a cWebForm
+39196>>>                    Entry_Item Centros.FechaUltimaModificacion
+39197>>>                    Set piColumnSpan to 3
+39198>>>                    Set piColumnIndex to 3
+39199>>>                    Set peLabelPosition to lpTop
+39200>>>                    Set psLabel to "Fecha ultima de la modificacion"
+39201>>>                End_Object 
+39202>>>            End_Object 
+39203>>>        End_Object 
+39204>>>    End_Object 
+39205>>>
+39205>>>    Object oActionGroup is a cWebMenuGroup
+39207>>>
+39207>>>        Object oSaveBtn is a cWebMenuItem
+39209>>>            Set psCSSClass to "WebSaveMenuItem"
+39210>>>            Set psCaption to "Save"
+39211>>>
+39211>>>            Procedure OnClick
+39214>>>                Send Request_Save
+39215>>>            End_Procedure
+39216>>>
+39216>>>        End_Object 
+39217>>>
+39217>>>        Object oEditBtn is a cWebMenuItem
+39219>>>            Set psCSSClass to "WebEditMenuItem"
+39220>>>            Set psCaption to "Edit"
+39221>>>            Procedure OnClick
+39224>>>                Send ChangeEditMode True
+39225>>>                Send SetActionButtons
+39226>>>            End_Procedure
+39227>>>
+39227>>>        End_Object 
+39228>>>
+39228>>>        Object oDeleteBtn is a cWebMenuItem
+39230>>>            Set psCSSClass to "WebDeleteMenuItem"
+39231>>>            Set psCaption to "Delete"
+39232>>>            Set peActionDisplay to adMenu
+39233>>>
+39233>>>            Procedure OnClick
+39236>>>                Send Request_Delete
+39237>>>            End_Procedure
+39238>>>
+39238>>>        End_Object 
+39239>>>
+39239>>>        Object oCancelChangesBtn is a cWebMenuItem
+39241>>>            Set psCSSClass to "WebIcon_Refresh"
+39242>>>            Set psCaption to "Clear Changes"
+39243>>>            Set peActionDisplay to adMenu
+39244>>>            Procedure OnClick
+39247>>>                Send RefreshRecord
+39248>>>            End_Procedure
+39249>>>
+39249>>>        End_Object 
+39250>>>    End_Object 
 39251>>>
-39251>>>        Get Server to hoDD
-39252>>>        Get GetNavigateData to NavigateData
-39253>>>        Get HasRecord of hoDD to bHasRecord
+39251>>>    Procedure SetActionButtons
+39254>>>        tWebNavigateData NavigateData
+39254>>>        tWebNavigateData NavigateData
+39254>>>        Boolean bHasRecord
+39254>>>        Handle hoDD
 39254>>>
-39254>>>        // let's hide all buttons and then Show the ones we want
-39254>>>        WebSet pbRender of oEditBtn to False
-39255>>>        WebSet pbRender of oSaveBtn to False
-39256>>>        WebSet pbRender of oCancelChangesBtn to False
-39257>>>        WebSet pbRender of oDeleteBtn to False
-39258>>>
-39258>>>        If (NavigateData.bReadOnly) Begin
-39260>>>            WebSet pbRender of oEditBtn to True
-39261>>>        End
-39261>>>>
-39261>>>        Else Begin
-39262>>>            WebSet pbRender of oSaveBtn to True
-39263>>>            WebSet pbRender of oCancelChangesBtn to True
-39264>>>            WebSet pbRender of oDeleteBtn to bHasRecord
-39265>>>        End
-39265>>>>
-39265>>>    End_Procedure
-39266>>>
-39266>>>    Procedure OnViewSaved Handle hoServer Boolean bChanged
-39269>>>        // Close after save
-39269>>>        Send NavigateClose Self
-39270>>>    End_Procedure
-39271>>>
-39271>>>    // this will close the view after a delete
-39271>>>    Procedure OnViewDeleted Handle hoDDO
-39274>>>        Send NavigateClose Self
-39275>>>    End_Procedure
-39276>>>
-39276>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
-39279>>>        Case Begin
-39279>>>            Case (NavigateData.eNavigateType = nfFromMain)
-39281>>>                // If from main, this is a propbably a main file Select to Zoom.
-39281>>>                Case Break
-39282>>>
-39282>>>            Case (NavigateData.eNavigateType = nfFromParent)
-39285>>>                // If from parent, this is a constrained drill down.
-39285>>>                Case Break
-39286>>>
-39286>>>            Case (NavigateData.eNavigateType = nfFromChild)
-39289>>>                // If from child, this is a probably a parent Zoom from a Zoom.
-39289>>>                Case Break
-39290>>>
-39290>>>            Case Else // must be nfUndefined
-39290>>>
-39290>>>        Case End
-39290>>>
-39290>>>        Send SetActionButtons
-39291>>>
-39291>>>    End_Procedure
-39292>>>
-39292>>>    Procedure OnBeforeShow
-39295>>>        Forward Send OnBeforeShow
-39297>>>        Send Refill of oCentrosComunidadAutonoma
-39298>>>        Send Refill of oCentrosLocalidad
-39299>>>    End_Procedure
-39300>>>
-39300>>>End_Object 
-39301>    Use SelectCentro.wo
+39254>>>        Get Server to hoDD
+39255>>>        Get GetNavigateData to NavigateData
+39256>>>        Get HasRecord of hoDD to bHasRecord
+39257>>>
+39257>>>        // let's hide all buttons and then Show the ones we want
+39257>>>        WebSet pbRender of oEditBtn to False
+39258>>>        WebSet pbRender of oSaveBtn to False
+39259>>>        WebSet pbRender of oCancelChangesBtn to False
+39260>>>        WebSet pbRender of oDeleteBtn to False
+39261>>>
+39261>>>        If (NavigateData.bReadOnly) Begin
+39263>>>            WebSet pbRender of oEditBtn to True
+39264>>>        End
+39264>>>>
+39264>>>        Else Begin
+39265>>>            WebSet pbRender of oSaveBtn to True
+39266>>>            WebSet pbRender of oCancelChangesBtn to True
+39267>>>            WebSet pbRender of oDeleteBtn to bHasRecord
+39268>>>        End
+39268>>>>
+39268>>>    End_Procedure
+39269>>>
+39269>>>    Procedure OnViewSaved Handle hoServer Boolean bChanged
+39272>>>        // Close after save
+39272>>>        Send NavigateClose Self
+39273>>>    End_Procedure
+39274>>>
+39274>>>    // this will close the view after a delete
+39274>>>    Procedure OnViewDeleted Handle hoDDO
+39277>>>        Send NavigateClose Self
+39278>>>    End_Procedure
+39279>>>
+39279>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+39282>>>        Case Begin
+39282>>>            Case (NavigateData.eNavigateType = nfFromMain)
+39284>>>                // If from main, this is a propbably a main file Select to Zoom.
+39284>>>                Case Break
+39285>>>
+39285>>>            Case (NavigateData.eNavigateType = nfFromParent)
+39288>>>                // If from parent, this is a constrained drill down.
+39288>>>                Case Break
+39289>>>
+39289>>>            Case (NavigateData.eNavigateType = nfFromChild)
+39292>>>                // If from child, this is a probably a parent Zoom from a Zoom.
+39292>>>                Case Break
+39293>>>
+39293>>>            Case Else // must be nfUndefined
+39293>>>
+39293>>>        Case End
+39293>>>
+39293>>>        Send SetActionButtons
+39294>>>
+39294>>>    End_Procedure
+39295>>>
+39295>>>    Procedure OnBeforeShow
+39298>>>        Forward Send OnBeforeShow
+39300>>>        Send Refill of oCentrosComunidadAutonoma
+39301>>>        Send Refill of oCentrosLocalidad
+39302>>>    End_Procedure
+39303>>>
+39303>>>End_Object 
+39304>    Use SelectCentro.wo
 Including file: SelectCentro.wo    (C:\DataFlex Projects\Centros\AppSrc\SelectCentro.wo)
-39301>>>// C:\DataFlex Projects\Centros\AppSrc\SelectCentro.wo
-39301>>>// Centro
-39301>>>//
-39301>>>
-39301>>>Use cWebView.pkg
-39301>>>Use cWebList.pkg
-39301>>>Use cWebMenuGroup.pkg
-39301>>>Use cWebMenuItem.pkg
-39301>>>Use cWebColumnButton.pkg
-39301>>>Use cWebColumn.pkg
-39301>>>Use ZoomCentros.wo
-39301>>>
-39301>>>Use cCentrosDataDictionary.dd
-39301>>>Use cWebLabel.pkg
-39301>>>
-39301>>>Object oSelectCentro is a cWebView
-39303>>>    Set psCaption to "Centro"
-39304>>>    Set peWebViewStyle to wvsDrilldown
-39305>>>    Set peViewType to vtSelect
-39306>>>    Set piColumnCount to 12
-39307>>>    Set pbShowCaption to False
-39308>>>    Set piMaxWidth to 1024
-39309>>>
-39309>>>    Object oCentros_DD is a cCentrosDataDictionary
-39311>>>    End_Object 
+39304>>>// C:\DataFlex Projects\Centros\AppSrc\SelectCentro.wo
+39304>>>// Centro
+39304>>>//
+39304>>>
+39304>>>Use cWebView.pkg
+39304>>>Use cWebList.pkg
+39304>>>Use cWebMenuGroup.pkg
+39304>>>Use cWebMenuItem.pkg
+39304>>>Use cWebColumnButton.pkg
+39304>>>Use cWebColumn.pkg
+39304>>>Use ZoomCentros.wo
+39304>>>
+39304>>>Use cCentrosDataDictionary.dd
+39304>>>Use cWebLabel.pkg
+39304>>>
+39304>>>Object oSelectCentro is a cWebView
+39306>>>    Set psCaption to "Centro"
+39307>>>    Set peWebViewStyle to wvsDrilldown
+39308>>>    Set peViewType to vtSelect
+39309>>>    Set piColumnCount to 12
+39310>>>    Set pbShowCaption to False
+39311>>>    Set piMaxWidth to 1024
 39312>>>
-39312>>>    Set Main_DD To oCentros_DD
-39313>>>    Set Server  To oCentros_DD
-39314>>>
-39314>>>
-39314>>>    Object oList is a cWebList
-39316>>>        Set piColumnSpan to 0
-39317>>>        Set psCSSClass to "MobileList"
-39318>>>        Set pbServerOnRowClick to True
-39319>>>        Set pbFillHeight to True
-39320>>>        Set pbShowHeader to False
-39321>>>        Set piSortColumn to 0
-39322>>>
-39322>>> 
-39322>>>        
-39322>>>        Object oCentrosPsNombre is a cWebColumn
-39324>>>            Entry_Item Centros.PsNombre
-39325>>>            Set psCaption to "Centros.PsNombre"
-39326>>>            Set psCSSClass to "RowCapion"
-39327>>>            Set piWidth to 750
-39328>>>        End_Object 
-39329>>>    
-39329>>>        Object oCentrosEmpresa is a cWebColumn
-39331>>>            Entry_Item Centros.Empresa
-39332>>>            Set psCaption to "Centros.Empresa"
-39333>>>            Set piWidth to 188
-39334>>>        End_Object 
-39335>>>
-39335>>>        Object oDetailButton is a cWebColumnButton
-39337>>>            Set psCaption to "btn"
-39338>>>            Set piWidth to 126
-39339>>>            Set pbFixedWidth to True
-39340>>>            Set pbResizable to False
-39341>>>            Set piListRowSpan to 2
-39342>>>            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
-39343>>>            Set peAlign to alignRight
-39344>>>            
-39344>>>
-39344>>>            WebRegisterPath ntNavigateForward oZoomCentros
-39350>>>
-39350>>>            Procedure OnClick
-39353>>>                Send NavigatePath
-39354>>>            End_Procedure
-39355>>>
-39355>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-39358>>>                Move True to NavigateData.bReadOnly
-39359>>>            End_Procedure
-39360>>>
-39360>>>        End_Object 
-39361>>>
-39361>>>        
-39361>>>        Object oCentrosNombre is a cWebColumn
-39363>>>            Entry_Item Centros.Nombre
-39364>>>            Set psCaption to "Centros.Nombre"
-39365>>>            Set piWidth to 750
-39366>>>            Set psCSSClass to "RowDetail"
-39367>>>            Set pbNewLine to True
-39368>>>        End_Object
-39369>>>
-39369>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
-39369>>>       WebRegisterPath ntNavigateForward oZoomCentros
-39375>>>
-39375>>>        Procedure OnRowClick String sRowId
-39378>>>            tWebNavigateData NavigateData
-39378>>>            tWebNavigateData NavigateData
-39378>>>            Get GetNavigateData to NavigateData
-39379>>>
-39379>>>            Case Begin
-39379>>>                Case (NavigateData.eNavigateType = nfFromParent)
-39381>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
-39381>>>//Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-39381>>>//                    Send NavigateForward of oSelectView Self
-39381>>>                    Case Break
+39312>>>    Object oCentros_DD is a cCentrosDataDictionary
+39314>>>    End_Object 
+39315>>>
+39315>>>    Set Main_DD To oCentros_DD
+39316>>>    Set Server  To oCentros_DD
+39317>>>
+39317>>>
+39317>>>    Object oList is a cWebList
+39319>>>        Set piColumnSpan to 0
+39320>>>        Set psCSSClass to "MobileList"
+39321>>>        Set pbServerOnRowClick to True
+39322>>>        Set pbFillHeight to True
+39323>>>        Set pbShowHeader to False
+39324>>>        Set piSortColumn to 0
+39325>>>
+39325>>> 
+39325>>>        
+39325>>>        Object oCentrosPsNombre is a cWebColumn
+39327>>>            Entry_Item Centros.PsNombre
+39328>>>            Set psCaption to "Centros.PsNombre"
+39329>>>            Set psCSSClass to "RowCapion"
+39330>>>            Set piWidth to 750
+39331>>>        End_Object 
+39332>>>    
+39332>>>        Object oCentrosEmpresa is a cWebColumn
+39334>>>            Entry_Item Centros.Empresa
+39335>>>            Set psCaption to "Centros.Empresa"
+39336>>>            Set piWidth to 188
+39337>>>        End_Object 
+39338>>>
+39338>>>        Object oDetailButton is a cWebColumnButton
+39340>>>            Set psCaption to "btn"
+39341>>>            Set piWidth to 126
+39342>>>            Set pbFixedWidth to True
+39343>>>            Set pbResizable to False
+39344>>>            Set piListRowSpan to 2
+39345>>>            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
+39346>>>            Set peAlign to alignRight
+39347>>>            
+39347>>>
+39347>>>            WebRegisterPath ntNavigateForward oZoomCentros
+39353>>>
+39353>>>            Procedure OnClick
+39356>>>                Send NavigatePath
+39357>>>            End_Procedure
+39358>>>
+39358>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+39361>>>                Move True to NavigateData.bReadOnly
+39362>>>            End_Procedure
+39363>>>
+39363>>>        End_Object 
+39364>>>
+39364>>>        
+39364>>>        Object oCentrosNombre is a cWebColumn
+39366>>>            Entry_Item Centros.Nombre
+39367>>>            Set psCaption to "Centros.Nombre"
+39368>>>            Set piWidth to 750
+39369>>>            Set psCSSClass to "RowDetail"
+39370>>>            Set pbNewLine to True
+39371>>>        End_Object
+39372>>>
+39372>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+39372>>>       WebRegisterPath ntNavigateForward oZoomCentros
+39378>>>
+39378>>>        Procedure OnRowClick String sRowId
+39381>>>            tWebNavigateData NavigateData
+39381>>>            tWebNavigateData NavigateData
+39381>>>            Get GetNavigateData to NavigateData
 39382>>>
-39382>>>                Case (NavigateData.eNavigateType = nfFromChild)
-39385>>>                    Send NavigateClose Self
-39386>>>                    Case Break
-39387>>>
-39387>>>                Case (NavigateData.eNavigateType = nfFromMain)
-39390>>>                    Send NavigateClose Self
-39391>>>                    Case Break
-39392>>>
-39392>>>                Case Else // must be nfUndefined
-39392>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
-39392>>>//Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
-39392>>>//                    Send NavigateForward of oSelectCentro Self
-39392>>>
-39392>>>            Case End
-39392>>>        End_Procedure
-39393>>>
-39393>>>        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-39396>>>            Move True to NavigateData.bReadOnly
-39397>>>        End_Procedure
-39398>>>
-39398>>>    End_Object 
-39399>>>
-39399>>>    Object oActionGroup is a cWebMenuGroup
+39382>>>            Case Begin
+39382>>>                Case (NavigateData.eNavigateType = nfFromParent)
+39384>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+39384>>>//Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+39384>>>//                    Send NavigateForward of oSelectView Self
+39384>>>                    Case Break
+39385>>>
+39385>>>                Case (NavigateData.eNavigateType = nfFromChild)
+39388>>>                    Send NavigateClose Self
+39389>>>                    Case Break
+39390>>>
+39390>>>                Case (NavigateData.eNavigateType = nfFromMain)
+39393>>>                    Send NavigateClose Self
+39394>>>                    Case Break
+39395>>>
+39395>>>                Case Else // must be nfUndefined
+39395>>>// ToDo: Fill in the from-parent child Select view object name for navigate forward
+39395>>>//Error DFERR_PROGRAM "NavigateForward to this from-parent child Select view not yet defined"
+39395>>>//                    Send NavigateForward of oSelectCentro Self
+39395>>>
+39395>>>            Case End
+39395>>>        End_Procedure
+39396>>>
+39396>>>        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+39399>>>            Move True to NavigateData.bReadOnly
+39400>>>        End_Procedure
 39401>>>
-39401>>>        Object oSearch is a cWebMenuItem
-39403>>>            Set psCSSClass to "WebPromptMenuItem"
-39404>>>            Set psCaption to "Search"
-39405>>>
-39405>>>            Procedure OnClick
-39408>>>                Send Search of oList
-39409>>>            End_Procedure
-39410>>>
-39410>>>        End_Object 
-39411>>>
-39411>>>        Object oNewButton is a cWebMenuItem
-39413>>>            Set psCSSClass to "WebClearMenuItem"
-39414>>>            Set psCaption to "New"
-39415>>>
-39415>>>            WebRegisterPath ntNavigateForward oZoomCentros
-39421>>>
-39421>>>            Procedure OnClick
-39424>>>                Send NavigatePath
-39425>>>            End_Procedure
-39426>>>
-39426>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
-39429>>>                Move True to NavigateData.bNewRecord
-39430>>>            End_Procedure
-39431>>>
-39431>>>        End_Object 
-39432>>>    End_Object 
-39433>>>
-39433>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
-39436>>>        WebSet pbRender of oNewButton to True
-39437>>>        WebSet pbRender of oDetailButton to True
-39438>>>
-39438>>>        Case Begin
-39438>>>            Case (NavigateData.eNavigateType = nfFromParent)
-39440>>>                // If from parent, this is a constrained drill down
-39440>>>                Case Break
+39401>>>    End_Object 
+39402>>>
+39402>>>    Object oActionGroup is a cWebMenuGroup
+39404>>>
+39404>>>        Object oSearch is a cWebMenuItem
+39406>>>            Set psCSSClass to "WebPromptMenuItem"
+39407>>>            Set psCaption to "Search"
+39408>>>
+39408>>>            Procedure OnClick
+39411>>>                Send Search of oList
+39412>>>            End_Procedure
+39413>>>
+39413>>>        End_Object 
+39414>>>
+39414>>>        Object oNewButton is a cWebMenuItem
+39416>>>            Set psCSSClass to "WebClearMenuItem"
+39417>>>            Set psCaption to "New"
+39418>>>
+39418>>>            WebRegisterPath ntNavigateForward oZoomCentros
+39424>>>
+39424>>>            Procedure OnClick
+39427>>>                Send NavigatePath
+39428>>>            End_Procedure
+39429>>>
+39429>>>            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+39432>>>                Move True to NavigateData.bNewRecord
+39433>>>            End_Procedure
+39434>>>
+39434>>>        End_Object 
+39435>>>    End_Object 
+39436>>>
+39436>>>    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+39439>>>        WebSet pbRender of oNewButton to True
+39440>>>        WebSet pbRender of oDetailButton to True
 39441>>>
-39441>>>            Case (NavigateData.eNavigateType = nfFromChild)
-39444>>>                // If from child, this is a probably a parent lookup from a Zoom
-39444>>>                Case Break
-39445>>>
-39445>>>            Case (NavigateData.eNavigateType = nfFromMain)
-39448>>>                // If from main, this is a probably a main-file lookup from a Zoom
-39448>>>                WebSet pbRender of oDetailButton to False
-39449>>>                Case Break
-39450>>>
-39450>>>            Case Else // must be nfUndefined
-39450>>>                // This may be the start of a drilldown query or this may be used for some kind of custom query.
-39450>>>
-39450>>>        Case End
-39450>>>
-39450>>>    End_Procedure
-39451>>>
-39451>>>
-39451>>>End_Object 
-39452>    Use DummieTelefono.wo
-Including file: DummieTelefono.wo    (C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo)
-39452>>>Use cWebView.pkg
-39452>>>Use cWebPanel.pkg
-39452>>>Use cWebForm.pkg 
-39452>>>Use cWebGroup.pkg
-39452>>>Use cWebMenuGroup.pkg 
-39452>>>Use cWebMenuItem.pkg
-39452>>>
-39452>>>Use zTelefonoiValidation.pkg
-39452>>>
-39452>>>Object oDummieTelefono is a cWebView
+39441>>>        Case Begin
+39441>>>            Case (NavigateData.eNavigateType = nfFromParent)
+39443>>>                // If from parent, this is a constrained drill down
+39443>>>                Case Break
+39444>>>
+39444>>>            Case (NavigateData.eNavigateType = nfFromChild)
+39447>>>                // If from child, this is a probably a parent lookup from a Zoom
+39447>>>                Case Break
+39448>>>
+39448>>>            Case (NavigateData.eNavigateType = nfFromMain)
+39451>>>                // If from main, this is a probably a main-file lookup from a Zoom
+39451>>>                WebSet pbRender of oDetailButton to False
+39452>>>                Case Break
+39453>>>
+39453>>>            Case Else // must be nfUndefined
+39453>>>                // This may be the start of a drilldown query or this may be used for some kind of custom query.
+39453>>>
+39453>>>        Case End
+39453>>>
+39453>>>    End_Procedure
 39454>>>
-39454>>>    // Your DDO structure will go here
-39454>>>    Set piWidth to 700
-39455>>>    Set psCaption to "DummieDni"
-39456>>>
-39456>>>    // Your DDO structure will go here
-39456>>>
-39456>>>    Object oWebMainPanel is a cWebPanel
-39458>>>        Set piColumnCount to 12
+39454>>>
+39454>>>End_Object 
+39455>    Use DummieTelefono.wo
+Including file: DummieTelefono.wo    (C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo)
+39455>>>Use cWebView.pkg
+39455>>>Use cWebPanel.pkg
+39455>>>Use cWebForm.pkg 
+39455>>>Use cWebGroup.pkg
+39455>>>Use cWebMenuGroup.pkg 
+39455>>>Use cWebMenuItem.pkg
+39455>>>
+39455>>>Use zTelefonoiValidation.pkg
+39455>>>
+39455>>>Object oDummieTelefono is a cWebView
+39457>>>
+39457>>>    // Your DDO structure will go here
+39457>>>    Set piWidth to 700
+39458>>>    Set psCaption to "DummieDni"
 39459>>>
-39459>>>        Object oForm_Prefijo is a cWebForm
-39461>>>            Set piColumnSpan to 3
-39462>>>            Set psLabel to "Prefijo telefonico"
-39463>>>            Set peLabelPosition to lpTop
-39464>>>        End_Object
-39465>>>        
-39465>>>        // place controls here
-39465>>>        // Your view will grow as controls are added
-39465>>>        
-39465>>>        Object oForm_telefono is a cWebForm
-39467>>>            Set piColumnSpan to 9
-39468>>>            Set psLabel to "Introduzca el telefono"
-39469>>>            Set piColumnIndex to 3
-39470>>>            Set peLabelPosition to lpTop
-39471>>>        End_Object
-39472>>>
-39472>>>        Object oWebLabel_sMsg_Err is a cWebLabel
-39474>>>            Set psCaption to ""
-39475>>>            Set piColumnIndex to 0
-39476>>>            Set piColumnSpan to 12
-39477>>>        End_Object
-39478>>>
-39478>>>        Object oWebSpacer1 is a cWebSpacer
-39480>>>            Set piColumnSpan to 12
-39481>>>        End_Object
-39482>>>
-39482>>>        Object oValidationButton is a cWebButton
-39484>>>            Set piColumnSpan to 6
-39485>>>            Set psCaption to "Validar"
-39486>>>            Set piColumnIndex to 3
-39487>>>        
-39487>>>            Procedure OnClick
-39490>>>                Boolean bRet
-39490>>>                String sTelefono sPrefijo sMsg
-39490>>>                WebGet psValue of oForm_telefono to sTelefono
-39491>>>                WebGet psValue of oForm_Prefijo to sPrefijo
-39492>>>                Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
-39493>>>                
-39493>>>                WebSet psBackgroundColor of oForm_telefono to "#ffffff"
-39494>>>                WebSet psBackgroundColor of oForm_Prefijo to "#ffffff"
-39495>>>                WebSet psCaption of oWebLabel_sMsg_Err to ""
+39459>>>    // Your DDO structure will go here
+39459>>>
+39459>>>    Object oWebMainPanel is a cWebPanel
+39461>>>        Set piColumnCount to 12
+39462>>>
+39462>>>        Object oForm_Prefijo is a cWebForm
+39464>>>            Set piColumnSpan to 3
+39465>>>            Set psLabel to "Prefijo telefonico"
+39466>>>            Set peLabelPosition to lpTop
+39467>>>        End_Object
+39468>>>        
+39468>>>        // place controls here
+39468>>>        // Your view will grow as controls are added
+39468>>>        
+39468>>>        Object oForm_telefono is a cWebForm
+39470>>>            Set piColumnSpan to 9
+39471>>>            Set psLabel to "Introduzca el telefono"
+39472>>>            Set piColumnIndex to 3
+39473>>>            Set peLabelPosition to lpTop
+39474>>>        End_Object
+39475>>>
+39475>>>        Object oWebLabel_sMsg_Err is a cWebLabel
+39477>>>            Set psCaption to ""
+39478>>>            Set piColumnIndex to 0
+39479>>>            Set piColumnSpan to 12
+39480>>>        End_Object
+39481>>>
+39481>>>        Object oWebSpacer1 is a cWebSpacer
+39483>>>            Set piColumnSpan to 12
+39484>>>        End_Object
+39485>>>
+39485>>>        Object oValidationButton is a cWebButton
+39487>>>            Set piColumnSpan to 6
+39488>>>            Set psCaption to "Validar"
+39489>>>            Set piColumnIndex to 3
+39490>>>        
+39490>>>            Procedure OnClick
+39493>>>                Boolean bRet
+39493>>>                String sTelefono sPrefijo sMsg
+39493>>>                WebGet psValue of oForm_telefono to sTelefono
+39494>>>                WebGet psValue of oForm_Prefijo to sPrefijo
+39495>>>                Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
 39496>>>                
-39496>>>                If (bRet) Begin
-39498>>>                    WebSet psBackgroundColor of oForm_telefono to "green"
-39499>>>                    WebSet psBackgroundColor of oForm_Prefijo to "green"
-39500>>>                    
-39500>>>                End
-39500>>>>
-39500>>>                If (not (bRet)) Begin
-39502>>>                    WebSet psBackgroundColor of oForm_Prefijo to "red"
-39503>>>                    WebSet psBackgroundColor of oForm_telefono to "red"
-39504>>>                    WebSet psCaption of oWebLabel_sMsg_Err to sMsg
-39505>>>                End
-39505>>>>
-39505>>>                
-39505>>>                
-39505>>>            End_Procedure
-39506>>>        End_Object
-39507>>>        
-39507>>>    End_Object
-39508>>>
-39508>>>    Procedure OnBeforeShow
-39511>>>        Forward Send OnBeforeShow
-39513>>>        WebSet psValue of oForm_Prefijo to "+34"
-39514>>>    End_Procedure
-39515>>>
-39515>>>End_Object
-39516>    Set phoDefaultView to oDashboard
-39517>
-39517>End_Object
-39518>
-39518>Send StartWebApp of oWebApp
-39519>
+39496>>>                WebSet psBackgroundColor of oForm_telefono to "#ffffff"
+39497>>>                WebSet psBackgroundColor of oForm_Prefijo to "#ffffff"
+39498>>>                WebSet psCaption of oWebLabel_sMsg_Err to ""
+39499>>>                
+39499>>>                If (bRet) Begin
+39501>>>                    WebSet psBackgroundColor of oForm_telefono to "green"
+39502>>>                    WebSet psBackgroundColor of oForm_Prefijo to "green"
+39503>>>                    
+39503>>>                End
+39503>>>>
+39503>>>                If (not (bRet)) Begin
+39505>>>                    WebSet psBackgroundColor of oForm_Prefijo to "red"
+39506>>>                    WebSet psBackgroundColor of oForm_telefono to "red"
+39507>>>                    WebSet psCaption of oWebLabel_sMsg_Err to sMsg
+39508>>>                End
+39508>>>>
+39508>>>                
+39508>>>                
+39508>>>            End_Procedure
+39509>>>        End_Object
+39510>>>        
+39510>>>    End_Object
+39511>>>
+39511>>>    Procedure OnBeforeShow
+39514>>>        Forward Send OnBeforeShow
+39516>>>        WebSet psValue of oForm_Prefijo to "+34"
+39517>>>    End_Procedure
+39518>>>
+39518>>>End_Object
+39519>    Use StatusAPI.wo
+Including file: StatusAPI.wo    (C:\DataFlex Projects\Centros\AppSrc\StatusAPI.wo)
+39519>>>Use cWebHttpHandler.pkg
+39519>>>
+39519>>>Object oSimpleHTTPHandler is a cWebHttpHandler
+39521>>>    Set psPath to "Status"
+39522>>>    Set psVerbs to "GET"
+39523>>>
+39523>>>    Procedure OnHttpGet String sPath String sAcceptType
+39526>>>        String sCode 
+39526>>>        Integer iStatusActual
+39526>>>        Get UrlParameter "Code" to sCode
+39527>>>  
+39527>>>        Case Begin
+39527>>>            Case (sCode = "100")
+39529>>>                Send SetResponseStatus 100 "Continue" 0          
+39530>>>            Case Break
+39531>>>        
+39531>>>            Case (sCode = "102")
+39534>>>                Send SetResponseStatus 102 "Processing" 0
+39535>>>            Case Break
+39536>>>            
+39536>>>            Case (sCode = "200")
+39539>>>                Send SetResponseStatus 200 "OK" 0
+39540>>>            Case Break
+39541>>>            
+39541>>>            Case (sCode = "202")
+39544>>>                Send SetResponseStatus 202 "Accepted" 0
+39545>>>            Case Break
+39546>>>            
+39546>>>            Case (sCode = "302")
+39549>>>                Send SetResponseStatus 302 "Found" 0
+39550>>>            Case Break
+39551>>>            
+39551>>>            Case (sCode = "307")
+39554>>>                Send SetResponseStatus 307 "Temporary Redirect" 0
+39555>>>            Case Break
+39556>>>            
+39556>>>            Case (sCode = "404")
+39559>>>                Send SetResponseStatus 404 "Not found" 0
+39560>>>            Case Break
+39561>>>            
+39561>>>            Case (sCode = "406")
+39564>>>                Send SetResponseStatus 406 "Not Acceptable" 0
+39565>>>            Case Break
+39566>>>            
+39566>>>            Case (sCode = "500")
+39569>>>                Send SetResponseStatus 500 "Internal Servel Error" 0
+39570>>>            Case Break
+39571>>>            
+39571>>>            Case (sCode = "508")
+39574>>>                Send SetResponseStatus 508 "Loop detected" 0
+39575>>>            Case Break
+39576>>>        
+39576>>>        
+39576>>>        Case End   
+39576>>>        
+39576>>>    //----
+39576>>>        Send AddHttpResponseHeader "Content-Type" "text/html"
+39577>>>        Send OutputString '<html>'
+39578>>>        Send OutputString '<head><title>Status</title></head>'
+39579>>>        Send OutputString (SFormat('<body><h1>Status =  %1!</h1></body>', sCode))
+39580>>>        Send OutputString '</html>'
+39581>>>        
+39581>>>        
+39581>>>                
+39581>>>    End_Procedure
+39582>>>End_Object
+39583>    Set phoDefaultView to oDashboard
+39584>
+39584>End_Object
+39585>
+39585>Send StartWebApp of oWebApp
+39586>
 Summary
-Memory Available: 8665796608
+Memory Available: 9371930624
 Total Warnings : 0
 Total Errors   : 0
-Total Symbols  : 26024
+Total Symbols  : 26032
 Total Resources: 0
-Total Commands : 39518
+Total Commands : 39585
 Total Windows  : 0
 Total Pages    : 0
-Static Data    : 494457
-Message area   : 264469
-Total Blocks   : 17589
+Static Data    : 495217
+Message area   : 264961
+Total Blocks   : 17609

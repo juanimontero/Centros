@@ -271,10 +271,7 @@ Object oZoomAllStudents is a cWebView
                     WebRegisterPath ntNavigateForward oSelectCentro
 
                     Procedure OnPrompt
-                        Send NavigatePath
-                        
-                        
-                        
+                        Send NavigatePath                       
                     End_Procedure
                 End_Object 
             End_Object 

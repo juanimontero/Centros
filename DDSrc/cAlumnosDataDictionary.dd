@@ -7,7 +7,7 @@ Use zTelefonoiValidation.pkg
 Open Alumnos
 Open Centros
 
-Register_Function zValidateErr_StudentEmail Integer iField Returns Boolean
+Register_Function zValidateErr_StudentEmail Integer iField String sValue Returns Boolean
 Register_Function zValidateErr_StudentDni Integer iField Returns Boolean
 Register_Function zValidateErr_StudentTelefono Integer iField Returns Boolean
 
@@ -38,6 +38,8 @@ Class cAlumnosDataDictionary is a DataDictionary
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
 
         Set Field_Option Field Alumnos.AlumnosId DD_REQUIRED to True
+        Set Key_Field_State Field Alumnos.AlumnosId to True
+        Set Field_Option Field Alumnos.AlumnosId DD_DISPLAYONLY to True
 
         Set Field_Class_Name Field Alumnos.Sexo to "Combo"
         Set Field_Value_Table Field Alumnos.Sexo to oGender
@@ -73,11 +75,11 @@ Class cAlumnosDataDictionary is a DataDictionary
     End_Function
 
 
-    Function zValidateErr_StudentEmail Integer iField Returns Boolean
+    Function zValidateErr_StudentEmail Integer iField String sValue Returns Boolean
         Boolean bret
-        String sEmail sMsg
-        Get Field_Current_Value Field Alumnos.Email to sEmail
-        Get zValidarEmail sEmail (&sMsg) to bret
+        String  sMsg
+//        Get Field_Current_Value Field Alumnos.Email to sEmail
+        Get zValidarEmail sValue (&sMsg) to bret
         If (not (bret)) Begin
                 Send Data_set_error iField DFERR_OPERATOR sMsg
         Function_Return True        
