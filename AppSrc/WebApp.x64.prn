@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 9654276096
+Memory Available: 9092591616
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -4411,75 +4411,160 @@ Including file: StatusAPI.wo    (C:\DataFlex Projects\Centros\AppSrc\StatusAPI.w
 39526>>>        Get UrlParameter "Code" to sCode
 39527>>>  
 39527>>>        Case Begin
-39527>>>            Case (sCode = "100")
-39529>>>                Send SetResponseStatus 100 "Continue" 0          
+39527>>>            Case (sCode = "200")
+39529>>>                Send SetResponseStatus 200 "OK" 0
 39530>>>            Case Break
-39531>>>        
-39531>>>            Case (sCode = "102")
-39534>>>                Send SetResponseStatus 102 "Processing" 0
+39531>>>            
+39531>>>            Case (sCode = "202")
+39534>>>                Send SetResponseStatus 202 "Accepted" 0
 39535>>>            Case Break
 39536>>>            
-39536>>>            Case (sCode = "200")
-39539>>>                Send SetResponseStatus 200 "OK" 0
+39536>>>            Case (sCode = "302")
+39539>>>                Send SetResponseStatus 302 "Found" 0
 39540>>>            Case Break
 39541>>>            
-39541>>>            Case (sCode = "202")
-39544>>>                Send SetResponseStatus 202 "Accepted" 0
+39541>>>            Case (sCode = "307")
+39544>>>                Send SetResponseStatus 307 "Temporary Redirect" 0
 39545>>>            Case Break
 39546>>>            
-39546>>>            Case (sCode = "302")
-39549>>>                Send SetResponseStatus 302 "Found" 0
+39546>>>            Case (sCode = "404")
+39549>>>                Send SetResponseStatus 404 "Not found" 0
 39550>>>            Case Break
 39551>>>            
-39551>>>            Case (sCode = "307")
-39554>>>                Send SetResponseStatus 307 "Temporary Redirect" 0
+39551>>>            Case (sCode = "406")
+39554>>>                Send SetResponseStatus 406 "Not Acceptable" 0
 39555>>>            Case Break
 39556>>>            
-39556>>>            Case (sCode = "404")
-39559>>>                Send SetResponseStatus 404 "Not found" 0
+39556>>>            Case (sCode = "500")
+39559>>>                Send SetResponseStatus 500 "Internal Servel Error" 0
 39560>>>            Case Break
 39561>>>            
-39561>>>            Case (sCode = "406")
-39564>>>                Send SetResponseStatus 406 "Not Acceptable" 0
+39561>>>            Case (sCode = "508")
+39564>>>                Send SetResponseStatus 508 "Loop detected" 0
 39565>>>            Case Break
-39566>>>            
-39566>>>            Case (sCode = "500")
-39569>>>                Send SetResponseStatus 500 "Internal Servel Error" 0
-39570>>>            Case Break
-39571>>>            
-39571>>>            Case (sCode = "508")
-39574>>>                Send SetResponseStatus 508 "Loop detected" 0
-39575>>>            Case Break
-39576>>>        
-39576>>>        
-39576>>>        Case End   
-39576>>>        
-39576>>>    //----
-39576>>>        Send AddHttpResponseHeader "Content-Type" "text/html"
-39577>>>        Send OutputString '<html>'
-39578>>>        Send OutputString '<head><title>Status</title></head>'
-39579>>>        Send OutputString (SFormat('<body><h1>Status =  %1!</h1></body>', sCode))
-39580>>>        Send OutputString '</html>'
-39581>>>        
-39581>>>        
-39581>>>                
-39581>>>    End_Procedure
-39582>>>End_Object
-39583>    Set phoDefaultView to oDashboard
-39584>
-39584>End_Object
-39585>
-39585>Send StartWebApp of oWebApp
-39586>
+39566>>>        
+39566>>>        
+39566>>>        Case End   
+39566>>>        
+39566>>>    //----
+39566>>>        Send AddHttpResponseHeader "Content-Type" "text/html"
+39567>>>        Send OutputString '<html>'
+39568>>>        Send OutputString '<head><title>Status</title></head>'
+39569>>>        Send OutputString (SFormat('<body><h1>Status =  %1!</h1></body>', sCode))
+39570>>>        Send OutputString '</html>'
+39571>>>        
+39571>>>        
+39571>>>                
+39571>>>    End_Procedure
+39572>>>End_Object
+39573>    Use CentrosApi.wo
+Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo)
+39573>>>//Use cWebHttpHandler.pkg
+39573>>>//Use cJsonObject.pkg
+39573>>>//
+39573>>>//
+39573>>>//Object oSampleRestService is a cWebHttpHandler
+39573>>>//    Set psPath to "/APi/Centros"
+39573>>>//    Set psVerbs to "GET"
+39573>>>//    
+39573>>>//    Procedure OnHttpGet String sPath String sAcceptType
+39573>>>//        String[] aParts
+39573>>>//        Handle hoJson
+39573>>>//        UChar[] ucData
+39573>>>//
+39573>>>//        Get StrSplitToArray sPath "/" to aParts
+39573>>>//
+39573>>>//        If (SizeOfArray(aParts) > 3) Begin
+39573>>>//            If (Lowercase(aParts[1]) = "centros1" and Lowercase(aParts[2]) = "api" and Lowercase(aParts[3]) = "centros" ) Begin
+39573>>>//                
+39573>>>//                Get SqlToJson "SELECT * FROM Centros.dbo.Centros" to hoJson
+39573>>>//
+39573>>>//                Get StringifyUtf8 of hoJson to ucData
+39573>>>//                Send Destroy of hoJson
+39573>>>//
+39573>>>//                Send AddHttpResponseHeader "Content-Type" "application/json"
+39573>>>//                Send OutputUChar ucData
+39573>>>//            End
+39573>>>//            Else Begin
+39573>>>//                Send SetResponseStatus 404 "Entity not known" 0
+39573>>>//            End
+39573>>>//        End
+39573>>>//        Else Begin
+39573>>>//            Send SetResponseStatus 404 "Not found" 0
+39573>>>//        End
+39573>>>//    End_Procedure
+39573>>>//
+39573>>>//End_Object
+39573>>>//
+39573>>>//
+39573>>>//Function SqlToJson String sSql Returns Handle
+39573>>>//    Handle hoJson hoArray hoItem hoSQL
+39573>>>//    Integer iCols iResult iCol
+39573>>>//    String sColName
+39573>>>//    Variant vValue
+39573>>>//
+39573>>>//    // Crear objeto JSON general y array para las filas
+39573>>>//    Get Create (RefClass(cJsonObject)) to hoJson
+39573>>>//    Get Create (RefClass(cJsonObject)) to hoArray
+39573>>>//    Set pvJsonType of hoArray to jsonTypeArray
+39573>>>//
+39573>>>//    // Crear y conectar SQLExecutor
+39573>>>//    Get Create (RefClass(cSQLExecutor)) to hoSQL
+39573>>>//    Send SQLConnect of hoSQL "" "" "" // Conexión según tu configuración
+39573>>>//
+39573>>>//    // Ejecutar consulta
+39573>>>//    Send SQLExecDirect of hoSQL sSql
+39573>>>//
+39573>>>//    // Obtener número de columnas
+39573>>>//    Get SQLColumnCount of hoSQL to iCols
+39573>>>//
+39573>>>//    // Recorrer filas
+39573>>>//    Repeat
+39573>>>//        Get SQLFetch of hoSQL to iResult
+39573>>>//        If (iResult <> 0) Break
+39573>>>//
+39573>>>//        // Crear objeto para cada fila
+39573>>>//        Get Create (RefClass(cJsonObject)) to hoItem
+39573>>>//
+39573>>>//        // Recorrer columnas de la fila
+39573>>>//        For iCol 0 to (iCols - 1)
+39573>>>//            Get SQLColumnName of hoSQL iCol to sColName
+39573>>>//            Get SQLColumnValue of hoSQL iCol to vValue
+39573>>>//
+39573>>>//            // Convertir valor a string para JSON (puedes adaptar según tipos)
+39573>>>//            Set psJsonValue of hoItem sColName to (String(vValue))
+39573>>>//        Loop
+39573>>>//
+39573>>>//        // Añadir fila al array JSON
+39573>>>//        Send AddElementToJsonArray of hoArray hoItem
+39573>>>//        Send Destroy of hoItem
+39573>>>//    Until False
+39573>>>//
+39573>>>//    // Asociar array al objeto JSON raíz
+39573>>>//    Set pvJsonObject of hoJson to hoArray
+39573>>>//
+39573>>>//    // Limpieza
+39573>>>//    Send SQLDisconnect of hoSQL
+39573>>>//    Send Destroy of hoSQL
+39573>>>//    Send Destroy of hoArray
+39573>>>//
+39573>>>//    Function_Return hoJson
+39573>>>//End_Function
+39573>    Set phoDefaultView to oDashboard
+39574>
+39574>End_Object
+39575>
+39575>Send StartWebApp of oWebApp
+39576>
 Summary
-Memory Available: 9371930624
+Memory Available: 9080950784
 Total Warnings : 0
 Total Errors   : 0
-Total Symbols  : 26032
+Total Symbols  : 26033
 Total Resources: 0
-Total Commands : 39585
+Total Commands : 39575
 Total Windows  : 0
 Total Pages    : 0
-Static Data    : 495217
-Message area   : 264961
-Total Blocks   : 17609
+Static Data    : 495121
+Message area   : 264911
+Total Blocks   : 17608

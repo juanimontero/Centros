@@ -1,0 +1,91 @@
+﻿//Use cWebHttpHandler.pkg
+//Use cJsonObject.pkg
+//
+//
+//Object oSampleRestService is a cWebHttpHandler
+//    Set psPath to "/APi/Centros"
+//    Set psVerbs to "GET"
+//    
+//    Procedure OnHttpGet String sPath String sAcceptType
+//        String[] aParts
+//        Handle hoJson
+//        UChar[] ucData
+//
+//        Get StrSplitToArray sPath "/" to aParts
+//
+//        If (SizeOfArray(aParts) > 3) Begin
+//            If (Lowercase(aParts[1]) = "centros1" and Lowercase(aParts[2]) = "api" and Lowercase(aParts[3]) = "centros" ) Begin
+//                
+//                Get SqlToJson "SELECT * FROM Centros.dbo.Centros" to hoJson
+//
+//                Get StringifyUtf8 of hoJson to ucData
+//                Send Destroy of hoJson
+//
+//                Send AddHttpResponseHeader "Content-Type" "application/json"
+//                Send OutputUChar ucData
+//            End
+//            Else Begin
+//                Send SetResponseStatus 404 "Entity not known" 0
+//            End
+//        End
+//        Else Begin
+//            Send SetResponseStatus 404 "Not found" 0
+//        End
+//    End_Procedure
+//
+//End_Object
+//
+//
+//Function SqlToJson String sSql Returns Handle
+//    Handle hoJson hoArray hoItem hoSQL
+//    Integer iCols iResult iCol
+//    String sColName
+//    Variant vValue
+//
+//    // Crear objeto JSON general y array para las filas
+//    Get Create (RefClass(cJsonObject)) to hoJson
+//    Get Create (RefClass(cJsonObject)) to hoArray
+//    Set pvJsonType of hoArray to jsonTypeArray
+//
+//    // Crear y conectar SQLExecutor
+//    Get Create (RefClass(cSQLExecutor)) to hoSQL
+//    Send SQLConnect of hoSQL "" "" "" // Conexión según tu configuración
+//
+//    // Ejecutar consulta
+//    Send SQLExecDirect of hoSQL sSql
+//
+//    // Obtener número de columnas
+//    Get SQLColumnCount of hoSQL to iCols
+//
+//    // Recorrer filas
+//    Repeat
+//        Get SQLFetch of hoSQL to iResult
+//        If (iResult <> 0) Break
+//
+//        // Crear objeto para cada fila
+//        Get Create (RefClass(cJsonObject)) to hoItem
+//
+//        // Recorrer columnas de la fila
+//        For iCol 0 to (iCols - 1)
+//            Get SQLColumnName of hoSQL iCol to sColName
+//            Get SQLColumnValue of hoSQL iCol to vValue
+//
+//            // Convertir valor a string para JSON (puedes adaptar según tipos)
+//            Set psJsonValue of hoItem sColName to (String(vValue))
+//        Loop
+//
+//        // Añadir fila al array JSON
+//        Send AddElementToJsonArray of hoArray hoItem
+//        Send Destroy of hoItem
+//    Until False
+//
+//    // Asociar array al objeto JSON raíz
+//    Set pvJsonObject of hoJson to hoArray
+//
+//    // Limpieza
+//    Send SQLDisconnect of hoSQL
+//    Send Destroy of hoSQL
+//    Send Destroy of hoArray
+//
+//    Function_Return hoJson
+//End_Function

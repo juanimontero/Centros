@@ -1,13 +1,13 @@
 [Workspace]
 CurrentProject=WebApp.src
 Location=C:\DataFlex Projects\Centros\IdeSrc\JuanIdelfonsoMontero_Studio.dsk
-CreateNew=3
+CreateNew=-1
 [TabWindows]
 GroupCount=1
-HorizontalGroups=0
+HorizontalGroups=1
 [TabGroup0]
 GroupSize=40
-SelectedTab=0
+SelectedTab=2
 [Window0]
 Filename=C:\DataFlex Projects\Centros\AppSrc\StatusAPI.wo
 ViewType=1
@@ -18,4 +18,26 @@ Right=1332
 CursorLine=11
 CursorColumn=18
 TabIndex=0
+TabGroup=0
+[Window1]
+Filename=C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=90
+CursorColumn=12
+TabIndex=1
+TabGroup=0
+[Window2]
+Filename=C:\DataFlex Projects\Centros\AppSrc\oLogginDataBase.src
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=14
+CursorColumn=39
+TabIndex=2
 TabGroup=0
