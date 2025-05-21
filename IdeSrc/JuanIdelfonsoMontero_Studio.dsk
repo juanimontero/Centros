@@ -7,17 +7,17 @@ GroupCount=1
 HorizontalGroups=1
 [TabGroup0]
 GroupSize=40
-SelectedTab=2
+SelectedTab=0
 [Window0]
-Filename=C:\DataFlex Projects\Centros\AppSrc\StatusAPI.wo
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebHttpHandler.pkg
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=11
-CursorColumn=18
-TabIndex=0
+CursorLine=103
+CursorColumn=0
+TabIndex=1
 TabGroup=0
 [Window1]
 Filename=C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo
@@ -26,18 +26,7 @@ Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=90
-CursorColumn=12
-TabIndex=1
-TabGroup=0
-[Window2]
-Filename=C:\DataFlex Projects\Centros\AppSrc\oLogginDataBase.src
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=14
-CursorColumn=39
-TabIndex=2
+CursorLine=325
+CursorColumn=72
+TabIndex=0
 TabGroup=0

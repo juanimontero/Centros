@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 9092591616
+Memory Available: 6616141824
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -4459,112 +4459,403 @@ Including file: StatusAPI.wo    (C:\DataFlex Projects\Centros\AppSrc\StatusAPI.w
 39572>>>End_Object
 39573>    Use CentrosApi.wo
 Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo)
-39573>>>//Use cWebHttpHandler.pkg
-39573>>>//Use cJsonObject.pkg
-39573>>>//
-39573>>>//
-39573>>>//Object oSampleRestService is a cWebHttpHandler
-39573>>>//    Set psPath to "/APi/Centros"
-39573>>>//    Set psVerbs to "GET"
-39573>>>//    
-39573>>>//    Procedure OnHttpGet String sPath String sAcceptType
-39573>>>//        String[] aParts
-39573>>>//        Handle hoJson
-39573>>>//        UChar[] ucData
-39573>>>//
-39573>>>//        Get StrSplitToArray sPath "/" to aParts
-39573>>>//
-39573>>>//        If (SizeOfArray(aParts) > 3) Begin
-39573>>>//            If (Lowercase(aParts[1]) = "centros1" and Lowercase(aParts[2]) = "api" and Lowercase(aParts[3]) = "centros" ) Begin
-39573>>>//                
-39573>>>//                Get SqlToJson "SELECT * FROM Centros.dbo.Centros" to hoJson
-39573>>>//
-39573>>>//                Get StringifyUtf8 of hoJson to ucData
-39573>>>//                Send Destroy of hoJson
-39573>>>//
-39573>>>//                Send AddHttpResponseHeader "Content-Type" "application/json"
-39573>>>//                Send OutputUChar ucData
-39573>>>//            End
-39573>>>//            Else Begin
-39573>>>//                Send SetResponseStatus 404 "Entity not known" 0
-39573>>>//            End
-39573>>>//        End
-39573>>>//        Else Begin
-39573>>>//            Send SetResponseStatus 404 "Not found" 0
-39573>>>//        End
-39573>>>//    End_Procedure
-39573>>>//
-39573>>>//End_Object
-39573>>>//
-39573>>>//
-39573>>>//Function SqlToJson String sSql Returns Handle
-39573>>>//    Handle hoJson hoArray hoItem hoSQL
-39573>>>//    Integer iCols iResult iCol
-39573>>>//    String sColName
-39573>>>//    Variant vValue
-39573>>>//
-39573>>>//    // Crear objeto JSON general y array para las filas
-39573>>>//    Get Create (RefClass(cJsonObject)) to hoJson
-39573>>>//    Get Create (RefClass(cJsonObject)) to hoArray
-39573>>>//    Set pvJsonType of hoArray to jsonTypeArray
-39573>>>//
-39573>>>//    // Crear y conectar SQLExecutor
-39573>>>//    Get Create (RefClass(cSQLExecutor)) to hoSQL
-39573>>>//    Send SQLConnect of hoSQL "" "" "" // Conexión según tu configuración
-39573>>>//
-39573>>>//    // Ejecutar consulta
-39573>>>//    Send SQLExecDirect of hoSQL sSql
-39573>>>//
-39573>>>//    // Obtener número de columnas
-39573>>>//    Get SQLColumnCount of hoSQL to iCols
-39573>>>//
-39573>>>//    // Recorrer filas
-39573>>>//    Repeat
-39573>>>//        Get SQLFetch of hoSQL to iResult
-39573>>>//        If (iResult <> 0) Break
-39573>>>//
-39573>>>//        // Crear objeto para cada fila
-39573>>>//        Get Create (RefClass(cJsonObject)) to hoItem
-39573>>>//
-39573>>>//        // Recorrer columnas de la fila
-39573>>>//        For iCol 0 to (iCols - 1)
-39573>>>//            Get SQLColumnName of hoSQL iCol to sColName
-39573>>>//            Get SQLColumnValue of hoSQL iCol to vValue
-39573>>>//
-39573>>>//            // Convertir valor a string para JSON (puedes adaptar según tipos)
-39573>>>//            Set psJsonValue of hoItem sColName to (String(vValue))
-39573>>>//        Loop
-39573>>>//
-39573>>>//        // Añadir fila al array JSON
-39573>>>//        Send AddElementToJsonArray of hoArray hoItem
-39573>>>//        Send Destroy of hoItem
-39573>>>//    Until False
-39573>>>//
-39573>>>//    // Asociar array al objeto JSON raíz
-39573>>>//    Set pvJsonObject of hoJson to hoArray
-39573>>>//
-39573>>>//    // Limpieza
-39573>>>//    Send SQLDisconnect of hoSQL
-39573>>>//    Send Destroy of hoSQL
-39573>>>//    Send Destroy of hoArray
-39573>>>//
-39573>>>//    Function_Return hoJson
-39573>>>//End_Function
-39573>    Set phoDefaultView to oDashboard
-39574>
-39574>End_Object
-39575>
-39575>Send StartWebApp of oWebApp
-39576>
+39573>>>Use cWebHttpHandler.pkg
+39573>>>Use cCentrosDataDictionary.dd
+39573>>>
+39573>>>
+39573>>>Object oCentrosRestService is a cWebHttpHandler
+39575>>> 
+39575>>>    Object oCentros_DD is a cCentrosDataDictionary
+39577>>>    End_Object
+39578>>>    Set Main_DD to oCentros_DD
+39579>>>
+39579>>>    Set psPath to "Api/Centros"
+39580>>>    Set psVerbs to "GET,POST,PATCH,DELETE"
+39581>>>
+39581>>>    Procedure OnHttpGet String sPath String sAcceptType
+39584>>>        String[] aPath
+39585>>>        
+39585>>>        //  Split the path into parts
+39585>>>        Get StrSplitToArray sPath "/" to aPath
+39586>>>        If (SizeOfArray(aPath) = 0) Begin
+39588>>>               Send ListaCentros
+39589>>>            Procedure_Return
+39590>>>        End
+39590>>>>
+39590>>>        
+39590>>>        //  Redirect to a specific operation based on the path
+39590>>>        If (Lowercase(aPath[1]) <> "" and SizeOfArray(aPath) > 0 and Lowercase(aPath[1]) <> "centros") Begin
+39592>>>            If (SizeOfArray(aPath) > 1) Begin
+39594>>>                Send listarporid aPath[1]
+39595>>>            End
+39595>>>>
+39595>>>        End
+39595>>>>
+39595>>>        
+39595>>>            Else Begin
+39596>>>            Send SetResponseStatus 404 "Unknown resource" 
+39597>>>            End
+39597>>>>
+39597>>>            
+39597>>>           
+39597>>>    End_Procedure
+39598>>>    
+39598>>>    
+39598>>>    Procedure OnHttpPost String sPath String sContentType String sAcceptType Integer iSize
+39601>>>      String[] aPath
+39602>>>        
+39602>>>        //  Split the path into parts
+39602>>>        Get StrSplitToArray sPath "/" to aPath
+39603>>>        If (SizeOfArray(aPath) < 2) Begin
+39605>>>            Send SetResponseStatus 404 "Invalid resource" 
+39606>>>            Procedure_Return
+39607>>>        End
+39607>>>>
+39607>>>        
+39607>>>        //  Redirect to a specific operation based on the path
+39607>>>        If (Lowercase(aPath[1]) = "centros") Begin
+39609>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+39611>>>                Send SetResponseStatus 400 "Only use POST for creating new resources"
+39612>>>            End
+39612>>>>
+39612>>>            Else Begin
+39613>>>                Send CrearCentro True ""
+39614>>>            End
+39614>>>>
+39614>>>        End
+39614>>>>
+39614>>>        Else Begin
+39615>>>            Send SetResponseStatus 404 "Unknown resource"
+39616>>>        End
+39616>>>>
+39616>>>    
+39616>>>    End_Procedure
+39617>>>    
+39617>>>    
+39617>>>    Procedure OnHttpPatch String sPath String sContentType Integer iSize
+39620>>>        String[] aPath
+39621>>>        
+39621>>>        //  Split the path into parts
+39621>>>        Get StrSplitToArray sPath "/" to aPath
+39622>>>        If (SizeOfArray(aPath) < 2) Begin
+39624>>>            Send SetResponseStatus 404 "Invalid resource" 
+39625>>>            Procedure_Return
+39626>>>        End
+39626>>>>
+39626>>>        
+39626>>>        //  Redirect to a specific operation based on the path
+39626>>>        If (Lowercase(aPath[1]) = "centros") Begin
+39628>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+39630>>>                Send CrearCentro False aPath[2]
+39631>>>            End
+39631>>>>
+39631>>>            Else Begin                
+39632>>>                Send SetResponseStatus 400 "Only use PATCH for updating existing  resources"
+39633>>>            End
+39633>>>>
+39633>>>        End
+39633>>>>
+39633>>>        Else Begin
+39634>>>            Send SetResponseStatus 404 "Unknown resource"
+39635>>>        End
+39635>>>>
+39635>>>    End_Procedure
+39636>>>    
+39636>>>    
+39636>>>    Procedure OnHttpDelete String sPath
+39639>>>        String[] aPath
+39640>>>        
+39640>>>        Get StrSplitToArray sPath "/" to aPath
+39641>>>        If (SizeOfArray(aPath) < 2) Begin
+39643>>>            Send SetResponseStatus 404 "Invalid resource" 
+39644>>>            Procedure_Return
+39645>>>        End
+39645>>>>
+39645>>>        
+39645>>>        If (Lowercase(aPath[1]) = "centros") Begin
+39647>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+39649>>>                Send Deletecentros aPath[2]
+39650>>>            End
+39650>>>>
+39650>>>            Else Begin                
+39651>>>                Send SetResponseStatus 400 "Only use DELETE on existing resources"
+39652>>>            End
+39652>>>>
+39652>>>        End
+39652>>>>
+39652>>>        Else Begin
+39653>>>            Send SetResponseStatus 404 "Unknown resource"
+39654>>>        End
+39654>>>>
+39654>>>    End_Procedure
+39655>>>    
+39655>>>
+39655>>>    Procedure ListaCentros
+39658>>>        Handle hoJson hoCentro
+39658>>>
+39658>>>        Get Create (RefClass(cJsonObject)) to hoJson
+39659>>>        Send InitializeJsonType of hoJson jsonTypeArray
+39660>>>
+39660>>>        Get Create (RefClass(cJsonObject)) to hoCentro
+39661>>>
+39661>>>        Send Find of oCentros_DD FIRST_RECORD 1
+39662>>>        While (Found)
+39666>>>            Send InitializeJsonType of hoCentro jsonTypeObject
+39667>>>
+39667>>>            Send SetMemberValue of hoCentro "Id" jsonTypeInteger Centros.Id
+39668>>>            Send SetMemberValue of hoCentro "Nombre" jsonTypeString Centros.Nombre
+39669>>>            Send SetMemberValue of hoCentro "PsNombre" jsonTypeString Centros.PsNombre
+39670>>>            Send AddMember of hoJson hoCentro
+39671>>>
+39671>>>            Send Find of oCentros_DD NEXT_RECORD 1
+39672>>>        Loop
+39673>>>>
+39673>>>
+39673>>>        Send OutputJson hoJson
+39674>>>
+39674>>>        Send Destroy of hoCentro
+39675>>>        Send Destroy of hoJson
+39676>>>    End_Procedure
+39677>>>
+39677>>>    Procedure OutputJson Handle hoJson
+39680>>>        UChar[] ucData
+39681>>>
+39681>>>        Send AddHttpResponseHeader "Content-Type" "application/json"
+39682>>>        Get StringifyUtf8 of hoJson to ucData
+39683>>>        Send OutputUChar ucData
+39684>>>    End_Procedure
+39685>>>    
+39685>>>    Procedure listarporid Integer iId
+39688>>>        Handle hoJson
+39688>>>        
+39688>>>        Send Clear of oCentros_DD
+39689>>>        Move iId to Centros.Id
+39690>>>        Send Find of oCentros_DD EQ 1
+39691>>>        
+39691>>>        If (Found) Begin
+39693>>>            Get Create (RefClass(cJsonObject)) to hoJson
+39694>>>            Send InitializeJsonType of hoJson jsonTypeObject
+39695>>>            
+39695>>>             Send SetMemberValue of hoJson "Id" jsonTypeInteger Centros.Id
+39696>>>             Send SetMemberValue of hoJson "Nombre" jsonTypeString Centros.Nombre
+39697>>>             Send SetMemberValue of hoJson "PsNombre" jsonTypeString Centros.PsNombre
+39698>>>             Send SetMemberValue of hoJson "Direccion" jsonTypeString Centros.Direccion
+39699>>>             Send SetMemberValue of hoJson "Pais" jsonTypeString Centros.Pais
+39700>>>             Send SetMemberValue of hoJson "ComunidadAutonoma" jsonTypeString Centros.ComunidadAutonoma
+39701>>>             Send SetMemberValue of hoJson "Localidad" jsonTypeString Centros.Localidad
+39702>>>             Send SetMemberValue of hoJson "CodigoPostal" jsonTypeInteger Centros.CodigoPostal
+39703>>>             Send SetMemberValue of hoJson "Empresa" jsonTypeString Centros.Empresa
+39704>>>//             Send SetMemberValue of hoJson "FechaCreacionRegistro" jsonTypeString Centros.FechaCreacionRegistro
+39704>>>//             Send SetMemberValue of hoJson "FechaUltimaModificacion" jsonTypeString Centros.FechaUltimaModificacion
+39704>>>            
+39704>>>            Send OutputJson hoJson
+39705>>>            Send Destroy of hoJson
+39706>>>        End
+39706>>>>
+39706>>>        Else Begin
+39707>>>            Send SetResponseStatus 403 "Resource not found"
+39708>>>        End
+39708>>>>
+39708>>>    End_Procedure
+39709>>>    
+39709>>>    
+39709>>>    Procedure CrearCentro Boolean bCreate String sKey
+39712>>>        Handle hoJson
+39712>>>        Boolean bSuccess
+39712>>>        String sVal
+39712>>>        Boolean bVal bErr
+39712>>>        
+39712>>>        //  Find the right record
+39712>>>        If (bCreate) Begin
+39714>>>            Send Clear of oCentros_DD
+39715>>>        End
+39715>>>>
+39715>>>        Else Begin
+39716>>>            Send Clear of oCentros_DD
+39717>>>            Move sKey to Centros.Id
+39718>>>            Send Find of oCentros_DD EQ 1
+39719>>>            
+39719>>>            If (not(Found)) Begin
+39721>>>                Send SetResponseStatus 404 "Resource not found"
+39722>>>                Procedure_Return
+39723>>>            End
+39723>>>>
+39723>>>        End
+39723>>>>
+39723>>>        
+39723>>>        //  Read the request data
+39723>>>        Get RequestDataJson (&hoJson) to bSuccess
+39724>>>        
+39724>>>        If (bSuccess) Begin
+39726>>>            Send ErrorQueueStart
+39727>>>            
+39727>>>            //  Set the values
+39727>>>            If (HasMember(hoJson, "Nombre")) Begin
+39729>>>                Get MemberValue of hoJson "Nombre" to sVal
+39730>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.Nombre)) to sVal
+39731>>>            End
+39731>>>>
+39731>>>            
+39731>>>            If (HasMember(hoJson, "PsNombre")) Begin
+39733>>>                Get MemberValue of hoJson "PsNombre" to sVal
+39734>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.PsNombre)) to sVal
+39735>>>            End
+39735>>>>
+39735>>>            
+39735>>>            
+39735>>>            If (HasMember(hoJson, "Direccion")) Begin
+39737>>>                Get MemberValue of hoJson "Direccion" to sVal
+39738>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.Direccion)) to sVal
+39739>>>            End
+39739>>>>
+39739>>>            
+39739>>>            If (HasMember(hoJson, "Pais")) Begin
+39741>>>                Get MemberValue of hoJson "Pais" to sVal
+39742>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.Pais)) to sVal
+39743>>>            End
+39743>>>>
+39743>>>            
+39743>>>            If (HasMember(hoJson, "ComunidadAutonoma")) Begin
+39745>>>                Get MemberValue of hoJson "ComunidadAutonoma" to sVal
+39746>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.ComunidadAutonoma)) to sVal
+39747>>>            End
+39747>>>>
+39747>>>            
+39747>>>            If (HasMember(hoJson, "Localidad")) Begin
+39749>>>                Get MemberValue of hoJson "Localidad" to sVal
+39750>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.Localidad)) to sVal
+39751>>>            End
+39751>>>>
+39751>>>            
+39751>>>            If (HasMember(hoJson, "CodigoPostal")) Begin
+39753>>>                Get MemberValue of hoJson "CodigoPostal" to sVal
+39754>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.CodigoPostal)) to sVal
+39755>>>            End
+39755>>>>
+39755>>>            
+39755>>>            If (HasMember(hoJson, "Empresa")) Begin
+39757>>>                Get MemberValue of hoJson "Empresa" to sVal
+39758>>>                Set Field_Changed_Value of oCentros_DD (RefTable(Centros.Empresa)) to sVal
+39759>>>            End
+39759>>>>
+39759>>>            
+39759>>>            //  Perform the save
+39759>>>            If (ErrorCount(Self) = 0) Begin
+39761>>>                Get Request_Validate of oCentros_DD to bErr
+39762>>>                If (not(bErr)) Begin
+39764>>>                   Send Request_Save of oCentros_DD     
+39765>>>                   
+39765>>>                   If (not(Err)) Begin
+39767>>>                        Send listarporid Centros.Id
+39768>>>                   End
+39768>>>>
+39768>>>                End
+39768>>>>
+39768>>>            End            
+39768>>>>
+39768>>>            
+39768>>>            Send ErrorQueueEnd
+39769>>>            Send ErrorReportJson
+39770>>>        End
+39770>>>>
+39770>>>        
+39770>>>        If (hoJson > 0) Begin
+39772>>>            Send Destroy of hoJson
+39773>>>        End
+39773>>>>
+39773>>>    End_Procedure
+39774>>>    
+39774>>>        //  Deletes a specific customer record
+39774>>>    Procedure DeleteCentros String sKey
+39777>>>        Send Clear of oCentros_DD
+39778>>>        Move sKey to Centros.Id
+39779>>>        Send Find of oCentros_DD EQ 1
+39780>>>        
+39780>>>        If (not(Found)) Begin
+39782>>>            Send SetResponseStatus 404 "Resource not found"
+39783>>>            Procedure_Return
+39784>>>        End
+39784>>>>
+39784>>>        
+39784>>>        Send ErrorQueueStart
+39785>>>        
+39785>>>        Send Request_Delete of oCentros_DD
+39786>>>        
+39786>>>        Send ErrorQueueEnd
+39787>>>        Send ErrorReportJson
+39788>>>    End_Procedure
+39789>>>    
+39789>>>    
+39789>>>        //  Helper function that reads an entire request into a JSON object.
+39789>>>    Function RequestDataJson Handle ByRef hoJson Returns Boolean
+39792>>>        UChar[] ucData
+39793>>>        Boolean bSuccess
+39793>>>        String sErr
+39793>>>        
+39793>>>        Get Create (RefClass(cJsonObject)) to hoJson
+39794>>>        
+39794>>>        Get RequestDataUChar -1 to ucData
+39795>>>        Get ParseUtf8 of hoJson ucData to bSuccess
+39796>>>        
+39796>>>        If (not(bSuccess)) Begin
+39798>>>            Get psParseError of hoJson to sErr
+39799>>>            Send SetResponseStatus 400 sErr
+39800>>>        End
+39800>>>>
+39800>>>        
+39800>>>        Function_Return bSuccess
+39801>>>    End_Function
+39802>>>    
+39802>>>    
+39802>>>      Procedure ErrorReportJson
+39805>>>        Integer iErr iErrC
+39805>>>        Handle hoJson hoErrors   
+39805>>>        String sMessage
+39805>>>        
+39805>>>        Get ErrorCount to iErrC
+39806>>>        If (iErrC > 0) Begin
+39808>>>            Send SetResponseStatus 400 "Errors occurred"
+39809>>>            
+39809>>>            Get Create (RefClass(cJsonObject)) to hoJson
+39810>>>            Send InitializeJsonType of hoJson jsonTypeObject
+39811>>>            
+39811>>>            Get Create (RefClass(cJsonObject)) to hoErrors
+39812>>>            Send InitializeJsonType of hoErrors jsonTypeArray
+39813>>>            
+39813>>>            For iErr from 0 to (iErrC - 1)
+39819>>>>
+39819>>>                Get ErrorMessage iErr to sMessage
+39820>>>                Send AddMemberValue of hoErrors jsonTypeString  sMessage
+39821>>>            Loop
+39822>>>>
+39822>>>            
+39822>>>            Send SetMember of hoJson "aErrors" hoErrors
+39823>>>            
+39823>>>            Send OutputJson hoJson
+39824>>>            
+39824>>>            Send Destroy of hoErrors
+39825>>>            Send Destroy of hoJson
+39826>>>        End
+39826>>>>
+39826>>>    End_Procedure
+39827>>>    
+39827>>>
+39827>>>End_Object
+39828>    Set phoDefaultView to oDashboard
+39829>
+39829>End_Object
+39830>
+39830>Send StartWebApp of oWebApp
+39831>
 Summary
-Memory Available: 9080950784
+Memory Available: 6593331200
 Total Warnings : 0
 Total Errors   : 0
-Total Symbols  : 26033
+Total Symbols  : 26150
 Total Resources: 0
-Total Commands : 39575
+Total Commands : 39830
 Total Windows  : 0
 Total Pages    : 0
-Static Data    : 495121
-Message area   : 264911
-Total Blocks   : 17608
+Static Data    : 498753
+Message area   : 267018
+Total Blocks   : 17707
