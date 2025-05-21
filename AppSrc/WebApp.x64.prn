@@ -1,5 +1,5 @@
 Compiling Program: C:\DataFlex Projects\Centros\AppSrc\WebApp.src
-Memory Available: 6616141824
+Memory Available: 7735910400
 1>Use AllWebAppClasses.pkg
 Using pre-compiled package ALLWEBAPPCLASSES.PKG
 Including file: AllWebAppClasses.x64.pkd    (C:\Program Files\DataFlex 25.0\Pkg\AllWebAppClasses.x64.pkd)
@@ -3203,6 +3203,7 @@ Including file: cHttpTransfer.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cHttpTr
 38467>>>>>    End_Procedure
 38468>>>>>
 38468>>>>>
+38468>>>>>
 38468>>>>>End_Class
 38469>>>Use cWebCombo.pkg
 38469>>>
@@ -3225,7 +3226,6 @@ Including file: cHttpTransfer.pkg    (C:\Program Files\DataFlex 25.0\Pkg\cHttpTr
 38485>>>
 38485>>>    Set Main_DD To oAlumnos_DD
 38486>>>    Set Server  To oAlumnos_DD
-38487>>>
 38487>>>
 38487>>>    Object oWebMainPanel is a cWebPanel
 38489>>>        Set piColumnCount to 12
@@ -4515,7 +4515,7 @@ Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi
 39607>>>        //  Redirect to a specific operation based on the path
 39607>>>        If (Lowercase(aPath[1]) = "centros") Begin
 39609>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
-39611>>>                Send SetResponseStatus 400 "Only use POST for creating new resources"
+39611>>>                Send SetResponseStatus 401 "Only use POST for creating new resources"
 39612>>>            End
 39612>>>>
 39612>>>            Else Begin
@@ -4653,7 +4653,7 @@ Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi
 39706>>>        End
 39706>>>>
 39706>>>        Else Begin
-39707>>>            Send SetResponseStatus 403 "Resource not found"
+39707>>>            Send SetResponseStatus 404 "Resource not found"
 39708>>>        End
 39708>>>>
 39708>>>    End_Procedure
@@ -4799,7 +4799,7 @@ Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi
 39796>>>        
 39796>>>        If (not(bSuccess)) Begin
 39798>>>            Get psParseError of hoJson to sErr
-39799>>>            Send SetResponseStatus 400 sErr
+39799>>>            Send SetResponseStatus 402 sErr
 39800>>>        End
 39800>>>>
 39800>>>        
@@ -4814,7 +4814,7 @@ Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi
 39805>>>        
 39805>>>        Get ErrorCount to iErrC
 39806>>>        If (iErrC > 0) Begin
-39808>>>            Send SetResponseStatus 400 "Errors occurred"
+39808>>>            Send SetResponseStatus 403 "Errors occurred"
 39809>>>            
 39809>>>            Get Create (RefClass(cJsonObject)) to hoJson
 39810>>>            Send InitializeJsonType of hoJson jsonTypeObject
@@ -4841,21 +4841,468 @@ Including file: CentrosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\CentrosApi
 39827>>>    
 39827>>>
 39827>>>End_Object
-39828>    Set phoDefaultView to oDashboard
-39829>
-39829>End_Object
-39830>
-39830>Send StartWebApp of oWebApp
-39831>
+39828>    Use AlumnosApi.wo
+Including file: AlumnosApi.wo    (C:\DataFlex Projects\Centros\AppSrc\AlumnosApi.wo)
+39828>>>Use cWebHttpHandler.pkg
+39828>>>Use cCentrosDataDictionary.dd
+39828>>>Use cAlumnosDataDictionary.dd
+39828>>>
+39828>>>
+39828>>>Object oAlumnosApi is a cWebHttpHandler
+39830>>> 
+39830>>>    Object oCentros_DD is a cCentrosDataDictionary
+39832>>>    End_Object 
+39833>>>
+39833>>>    Object oAlummnos_DD is a cAlumnosDataDictionary
+39835>>>        Set DDO_Server to oCentros_DD
+39836>>>    End_Object 
+39837>>>    
+39837>>>    Set Main_DD to oAlummnos_DD
+39838>>>
+39838>>>    Set psPath to "Api/Alumnos"
+39839>>>    Set psVerbs to "GET,POST,PATCH,DELETE"
+39840>>>
+39840>>>    Procedure OnHttpGet String sPath String sAcceptType
+39843>>>        String[] aPath
+39844>>>        
+39844>>>        //  Split the path into parts
+39844>>>        Get StrSplitToArray sPath "/" to aPath
+39845>>>        If (SizeOfArray(aPath) = 0) Begin
+39847>>>               Send ListaCentros
+39848>>>            Procedure_Return
+39849>>>        End
+39849>>>>
+39849>>>        
+39849>>>        //  Redirect to a specific operation based on the path
+39849>>>        If (Lowercase(aPath[1]) <> "" and SizeOfArray(aPath) > 0 and Lowercase(aPath[1]) <> "Alumnos") Begin
+39851>>>            If (SizeOfArray(aPath) > 1) Begin
+39853>>>                Send listarAlumnosporid aPath[1]
+39854>>>            End
+39854>>>>
+39854>>>        End
+39854>>>>
+39854>>>        
+39854>>>            Else Begin
+39855>>>            Send SetResponseStatus 404 "Unknown resource" 
+39856>>>            End
+39856>>>>
+39856>>>            
+39856>>>           
+39856>>>    End_Procedure
+39857>>>    
+39857>>>    
+39857>>>    Procedure OnHttpPost String sPath String sContentType String sAcceptType Integer iSize
+39860>>>      String[] aPath
+39861>>>        
+39861>>>        //  Split the path into parts
+39861>>>        Get StrSplitToArray sPath "/" to aPath
+39862>>>        If (SizeOfArray(aPath) < 2) Begin
+39864>>>            Send SetResponseStatus 404 "Invalid resource" 
+39865>>>            Procedure_Return
+39866>>>        End
+39866>>>>
+39866>>>        
+39866>>>        //  Redirect to a specific operation based on the path
+39866>>>        If (Lowercase(aPath[1]) = "alumnos") Begin
+39868>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+39870>>>                Send SetResponseStatus 401 "Only use POST for creating new resources"
+39871>>>            End
+39871>>>>
+39871>>>            Else Begin
+39872>>>                Send CrearAlumno True ""
+39873>>>            End
+39873>>>>
+39873>>>        End
+39873>>>>
+39873>>>        Else Begin
+39874>>>            Send SetResponseStatus 404 "Unknown resource"
+39875>>>        End
+39875>>>>
+39875>>>    
+39875>>>    End_Procedure
+39876>>>    
+39876>>>    
+39876>>>    Procedure OnHttpPatch String sPath String sContentType Integer iSize
+39879>>>        String[] aPath
+39880>>>        
+39880>>>        //  Split the path into parts
+39880>>>        Get StrSplitToArray sPath "/" to aPath
+39881>>>        If (SizeOfArray(aPath) < 2) Begin
+39883>>>            Send SetResponseStatus 404 "Invalid resource" 
+39884>>>            Procedure_Return
+39885>>>        End
+39885>>>>
+39885>>>        
+39885>>>        //  Redirect to a specific operation based on the path
+39885>>>        If (Lowercase(aPath[1]) = "alumnos") Begin
+39887>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+39889>>>                Send CrearAlumno False aPath[2] 
+39890>>>            End
+39890>>>>
+39890>>>            Else Begin                
+39891>>>                Send SetResponseStatus 400 "Only use PATCH for updating existing  resources"
+39892>>>            End
+39892>>>>
+39892>>>        End
+39892>>>>
+39892>>>        Else Begin
+39893>>>            Send SetResponseStatus 404 "Unknown resource"
+39894>>>        End
+39894>>>>
+39894>>>    End_Procedure
+39895>>>    
+39895>>>    
+39895>>>    Procedure OnHttpDelete String sPath
+39898>>>        String[] aPath
+39899>>>        
+39899>>>        Get StrSplitToArray sPath "/" to aPath
+39900>>>        If (SizeOfArray(aPath) < 2) Begin
+39902>>>            Send SetResponseStatus 404 "Invalid resource" 
+39903>>>            Procedure_Return
+39904>>>        End
+39904>>>>
+39904>>>        
+39904>>>        If (Lowercase(aPath[1]) = "Alumnos") Begin
+39906>>>            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+39908>>>                Send DeleteAlumno  aPath[2]
+39909>>>            End
+39909>>>>
+39909>>>            Else Begin                
+39910>>>                Send SetResponseStatus 400 "Only use DELETE on existing resources"
+39911>>>            End
+39911>>>>
+39911>>>        End
+39911>>>>
+39911>>>        Else Begin
+39912>>>            Send SetResponseStatus 404 "Unknown resource"
+39913>>>        End
+39913>>>>
+39913>>>    End_Procedure
+39914>>>    
+39914>>>
+39914>>>    Procedure ListaCentros
+39917>>>        Handle hoJsonAlumno hoAlumno
+39917>>>
+39917>>>        Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+39918>>>        Send InitializeJsonType of hoJsonAlumno jsonTypeArray
+39919>>>
+39919>>>        Get Create (RefClass(cJsonObject)) to hoAlumno
+39920>>>
+39920>>>        Send Find of oAlummnos_DD FIRST_RECORD 1
+39921>>>        While (Found)
+39925>>>            Send InitializeJsonType of hoAlumno jsonTypeObject
+39926>>>
+39926>>>             Send SetMemberValue of hoAlumno "Id" jsonTypeInteger Alumnos.AlumnosId
+39927>>>             Send SetMemberValue of hoAlumno "CentrosId" jsonTypeInteger Alumnos.CentrosId
+39928>>>             Send SetMemberValue of hoAlumno "DNI" jsonTypeString Alumnos.Dni
+39929>>>             Send SetMemberValue of hoAlumno "Nombre" jsonTypeString Alumnos.Nombre
+39930>>>             Send SetMemberValue of hoAlumno "Apellidos" jsonTypeString Alumnos.Apellidos
+39931>>>             Send SetMemberValue of hoAlumno "Sexo" jsonTypeString Alumnos.Sexo
+39932>>>             Send SetMemberValue of hoAlumno "Dirreccion" jsonTypeString Alumnos.Dirreccion
+39933>>>             Send SetMemberValue of hoAlumno "CodigoPostal" jsonTypeString Alumnos.CodigoPostal
+39934>>>             Send SetMemberValue of hoAlumno "Localidad" jsonTypeString Alumnos.Localidad
+39935>>>             Send SetMemberValue of hoAlumno "Pais" jsonTypeString Alumnos.Pais
+39936>>>             Send SetMemberValue of hoAlumno "NumeroTelefono" jsonTypeString Alumnos.NumeroTelefono
+39937>>>             Send SetMemberValue of hoAlumno "ComunidadAutonoma" jsonTypeString Alumnos.ComunidadAutonoma
+39938>>>             Send SetMemberValue of hoAlumno "PrefijoTlfn" jsonTypeString Alumnos.PrefijoTlfn
+39939>>>             Send AddMember of hoJsonAlumno hoAlumno
+39940>>>
+39940>>>            Send Find of oAlummnos_DD NEXT_RECORD 1
+39941>>>        Loop
+39942>>>>
+39942>>>
+39942>>>        Send OutputJson hoJsonAlumno
+39943>>>
+39943>>>        Send Destroy of hoAlumno
+39944>>>        Send Destroy of hoJsonAlumno
+39945>>>    End_Procedure
+39946>>>
+39946>>>    Procedure OutputJson Handle hoJsonAlumno
+39949>>>        UChar[] ucData
+39950>>>
+39950>>>        Send AddHttpResponseHeader "Content-Type" "application/json"
+39951>>>        Get StringifyUtf8 of hoJsonAlumno to ucData
+39952>>>        Send OutputUChar ucData
+39953>>>    End_Procedure
+39954>>>    
+39954>>>    Procedure listarAlumnosporid Integer iId
+39957>>>        Handle hoJsonAlumno
+39957>>>        
+39957>>>        Send Clear of oAlummnos_DD
+39958>>>        Move iId to Alumnos.AlumnosId
+39959>>>        Send Find of oAlummnos_DD EQ 1
+39960>>>        
+39960>>>        If (Found) Begin
+39962>>>            Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+39963>>>            Send InitializeJsonType of hoJsonAlumno jsonTypeObject
+39964>>>            
+39964>>>             Send SetMemberValue of hoJsonAlumno "Id" jsonTypeInteger Alumnos.AlumnosId
+39965>>>             Send SetMemberValue of hoJsonAlumno "CentrosId" jsonTypeInteger Alumnos.CentrosId
+39966>>>             Send SetMemberValue of hoJsonAlumno "DNI" jsonTypeString Alumnos.Dni
+39967>>>             Send SetMemberValue of hoJsonAlumno "Nombre" jsonTypeString Alumnos.Nombre
+39968>>>             Send SetMemberValue of hoJsonAlumno "Apellidos" jsonTypeString Alumnos.Apellidos
+39969>>>             Send SetMemberValue of hoJsonAlumno "Sexo" jsonTypeString Alumnos.Sexo
+39970>>>             Send SetMemberValue of hoJsonAlumno "Dirreccion" jsonTypeString Alumnos.Dirreccion
+39971>>>             Send SetMemberValue of hoJsonAlumno "CodigoPostal" jsonTypeString Alumnos.CodigoPostal
+39972>>>             Send SetMemberValue of hoJsonAlumno "Localidad" jsonTypeString Alumnos.Localidad
+39973>>>             Send SetMemberValue of hoJsonAlumno "Pais" jsonTypeString Alumnos.Pais
+39974>>>             Send SetMemberValue of hoJsonAlumno "NumeroTelefono" jsonTypeString Alumnos.NumeroTelefono
+39975>>>             Send SetMemberValue of hoJsonAlumno "ComunidadAutonoma" jsonTypeString Alumnos.ComunidadAutonoma
+39976>>>             Send SetMemberValue of hoJsonAlumno "PrefijoTlfn" jsonTypeString Alumnos.PrefijoTlfn
+39977>>>//             Send SetMemberValue of hoJsonAlumno "FechaCreacionRegistro" jsonTypeString Alumnos.FechaCreacionRegistro
+39977>>>//             Send SetMemberValue of hoJsonAlumno "FechaUltimaModificacion" jsonTypeString Alumnos.FechaUltimaModificacion
+39977>>>            
+39977>>>            Send OutputJson hoJsonAlumno
+39978>>>            Send Destroy of hoJsonAlumno
+39979>>>        End
+39979>>>>
+39979>>>        Else Begin
+39980>>>            Send SetResponseStatus 404 "Resource not found"
+39981>>>        End
+39981>>>>
+39981>>>    End_Procedure
+39982>>>    
+39982>>>    
+39982>>>    Procedure CrearAlumno Boolean bCreate String sKey 
+39985>>>        Handle hoJsonAlumno
+39985>>>        Boolean bSuccess
+39985>>>        String sVal
+39985>>>        Boolean bVal bErr
+39985>>>        
+39985>>>        //  Find the right record
+39985>>>        If (bCreate) Begin
+39987>>>            Send Clear of oAlummnos_DD
+39988>>>            Send Clear of oCentros_DD
+39989>>>        End
+39989>>>>
+39989>>>        Else Begin
+39990>>>            
+39990>>>            
+39990>>>            Send Clear of oAlummnos_DD
+39991>>>            Move sKey to Alumnos.AlumnosId
+39992>>>            Send Find of oAlummnos_DD EQ 1
+39993>>>            
+39993>>>            If (not(Found)) Begin
+39995>>>                Send SetResponseStatus 404 "Resource not found"
+39996>>>                Procedure_Return
+39997>>>            End
+39997>>>>
+39997>>>            
+39997>>>            Send Find of oCentros_DD EQ 1 
+39998>>>            
+39998>>>            If (not(Found)) Begin
+40000>>>                Send SetResponseStatus 404 "Resource not found"
+40001>>>                Procedure_Return
+40002>>>            End
+40002>>>>
+40002>>>        End
+40002>>>>
+40002>>>        
+40002>>>        //  Read the request data
+40002>>>        Get RequestDataJson (&hoJsonAlumno) to bSuccess
+40003>>>        
+40003>>>        If (bSuccess) Begin
+40005>>>            Send ErrorQueueStart
+40006>>>            
+40006>>>            //  Set the values
+40006>>>            If (HasMember(hoJsonAlumno, "Nombre")) Begin
+40008>>>                Get MemberValue of hoJsonAlumno "Nombre" to sVal
+40009>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Nombre)) to sVal
+40010>>>            End           
+40010>>>>
+40010>>>            If (HasMember(hoJsonAlumno, "Apellidos")) Begin
+40012>>>                Get MemberValue of hoJsonAlumno "Apellidos" to sVal
+40013>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Apellidos)) to sVal
+40014>>>            End
+40014>>>>
+40014>>>           
+40014>>>            If (HasMember(hoJsonAlumno, "Direccion")) Begin
+40016>>>                Get MemberValue of hoJsonAlumno "Direccion" to sVal
+40017>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Dirreccion)) to sVal
+40018>>>            End
+40018>>>>
+40018>>>            
+40018>>>            If (HasMember(hoJsonAlumno, "Pais")) Begin
+40020>>>                Get MemberValue of hoJsonAlumno "Pais" to sVal
+40021>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Pais)) to sVal
+40022>>>            End
+40022>>>>
+40022>>>            
+40022>>>            If (HasMember(hoJsonAlumno, "ComunidadAutonoma")) Begin
+40024>>>                Get MemberValue of hoJsonAlumno "ComunidadAutonoma" to sVal
+40025>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.ComunidadAutonoma)) to sVal
+40026>>>            End
+40026>>>>
+40026>>>            
+40026>>>            If (HasMember(hoJsonAlumno, "Localidad")) Begin
+40028>>>                Get MemberValue of hoJsonAlumno "Localidad" to sVal
+40029>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Localidad)) to sVal
+40030>>>            End
+40030>>>>
+40030>>>            
+40030>>>            If (HasMember(hoJsonAlumno, "CodigoPostal")) Begin
+40032>>>                Get MemberValue of hoJsonAlumno "CodigoPostal" to sVal
+40033>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.CodigoPostal)) to sVal
+40034>>>            End
+40034>>>>
+40034>>>            
+40034>>>            If (HasMember(hoJsonAlumno, "Dni")) Begin
+40036>>>                Get MemberValue of hoJsonAlumno "Dni" to sVal
+40037>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Dni)) to sVal
+40038>>>            End
+40038>>>>
+40038>>>            
+40038>>>            If (HasMember(hoJsonAlumno, "Sexo")) Begin
+40040>>>                Get MemberValue of hoJsonAlumno "Sexo" to sVal
+40041>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Sexo)) to sVal
+40042>>>            End
+40042>>>>
+40042>>>            
+40042>>>            If (HasMember(hoJsonAlumno, "NumeroTelefono")) Begin
+40044>>>                Get MemberValue of hoJsonAlumno "NumeroTelefono" to sVal
+40045>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.NumeroTelefono)) to sVal
+40046>>>            End
+40046>>>>
+40046>>>            
+40046>>>            If (HasMember(hoJsonAlumno, "Email")) Begin
+40048>>>                Get MemberValue of hoJsonAlumno "Email" to sVal
+40049>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Email)) to sVal
+40050>>>            End
+40050>>>>
+40050>>>            
+40050>>>            If (HasMember(hoJsonAlumno, "CentrosId")) Begin
+40052>>>                    Get MemberValue of hoJsonAlumno "CentrosId" to sVal
+40053>>>                    Send Clear of oCentros_DD
+40054>>>                Move sVal to Centros.Id
+40055>>>                Send Find of oCentros_DD EQ 1
+40056>>>            End
+40056>>>>
+40056>>>
+40056>>>            If (HasMember(hoJsonAlumno, "PrefijoTlfn")) Begin
+40058>>>                Get MemberValue of hoJsonAlumno "PrefijoTlfn" to sVal
+40059>>>                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.PrefijoTlfn)) to sVal
+40060>>>            End
+40060>>>>
+40060>>>            
+40060>>>            
+40060>>>            //  Perform the save
+40060>>>            If (ErrorCount(Self) = 0) Begin
+40062>>>                Get Request_Validate of oAlummnos_DD to bErr
+40063>>>                If (not(bErr)) Begin
+40065>>>                   Send Request_Save of oAlummnos_DD
+40066>>>                        
+40066>>>                   
+40066>>>                   If (not(Err)) Begin
+40068>>>                        Send listarAlumnosporid Alumnos.AlumnosId
+40069>>>                   End
+40069>>>>
+40069>>>                End
+40069>>>>
+40069>>>            End            
+40069>>>>
+40069>>>            
+40069>>>            Send ErrorQueueEnd
+40070>>>            Send ErrorReportJson
+40071>>>        End
+40071>>>>
+40071>>>        
+40071>>>        If (hoJsonAlumno > 0) Begin
+40073>>>            Send Destroy of hoJsonAlumno
+40074>>>        End
+40074>>>>
+40074>>>    End_Procedure
+40075>>>    
+40075>>>        //  Deletes a specific customer record
+40075>>>    Procedure DeleteAlumno String sKey
+40078>>>        Send Clear of oAlummnos_DD
+40079>>>        Move sKey to Alumnos.AlumnosId
+40080>>>        Send Find of oAlummnos_DD EQ 1
+40081>>>        
+40081>>>        If (not(Found)) Begin
+40083>>>            Send SetResponseStatus 404 "Resource not found"
+40084>>>            Procedure_Return
+40085>>>        End
+40085>>>>
+40085>>>        
+40085>>>        Send ErrorQueueStart
+40086>>>        
+40086>>>        Send Request_Delete of oAlummnos_DD
+40087>>>        
+40087>>>        Send ErrorQueueEnd
+40088>>>        Send ErrorReportJson
+40089>>>    End_Procedure
+40090>>>    
+40090>>>    
+40090>>>        //  Helper function that reads an entire request into a JSON object.
+40090>>>    Function RequestDataJson Handle ByRef hoJsonAlumno Returns Boolean
+40093>>>        UChar[] ucData
+40094>>>        Boolean bSuccess
+40094>>>        String sErr
+40094>>>        
+40094>>>        Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+40095>>>        
+40095>>>        Get RequestDataUChar -1 to ucData
+40096>>>        Get ParseUtf8 of hoJsonAlumno ucData to bSuccess
+40097>>>        
+40097>>>        If (not(bSuccess)) Begin
+40099>>>            Get psParseError of hoJsonAlumno to sErr
+40100>>>            Send SetResponseStatus 402 sErr
+40101>>>        End
+40101>>>>
+40101>>>        
+40101>>>        Function_Return bSuccess
+40102>>>    End_Function
+40103>>>    
+40103>>>    
+40103>>>      Procedure ErrorReportJson
+40106>>>        Integer iErr iErrC
+40106>>>        Handle hoJsonAlumno hoErrors   
+40106>>>        String sMessage
+40106>>>        
+40106>>>        Get ErrorCount to iErrC
+40107>>>        If (iErrC > 0) Begin
+40109>>>            Send SetResponseStatus 403 "Errors occurred"
+40110>>>            
+40110>>>            Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+40111>>>            Send InitializeJsonType of hoJsonAlumno jsonTypeObject
+40112>>>            
+40112>>>            Get Create (RefClass(cJsonObject)) to hoErrors
+40113>>>            Send InitializeJsonType of hoErrors jsonTypeArray
+40114>>>            
+40114>>>            For iErr from 0 to (iErrC - 1)
+40120>>>>
+40120>>>                Get ErrorMessage iErr to sMessage
+40121>>>                Send AddMemberValue of hoErrors jsonTypeString  sMessage
+40122>>>            Loop
+40123>>>>
+40123>>>            
+40123>>>            Send SetMember of hoJsonAlumno "aErrors" hoErrors
+40124>>>            
+40124>>>            Send OutputJson hoJsonAlumno
+40125>>>            
+40125>>>            Send Destroy of hoErrors
+40126>>>            Send Destroy of hoJsonAlumno
+40127>>>        End
+40127>>>>
+40127>>>    End_Procedure
+40128>>>    
+40128>>>
+40128>>>End_Object
+40129>    Set phoDefaultView to oDashboard
+40130>
+40130>End_Object
+40131>
+40131>Send StartWebApp of oWebApp
+40132>
 Summary
-Memory Available: 6593331200
+Memory Available: 7720833024
 Total Warnings : 0
 Total Errors   : 0
-Total Symbols  : 26150
+Total Symbols  : 26277
 Total Resources: 0
-Total Commands : 39830
+Total Commands : 40131
 Total Windows  : 0
 Total Pages    : 0
-Static Data    : 498753
-Message area   : 267018
-Total Blocks   : 17707
+Static Data    : 503413
+Message area   : 269774
+Total Blocks   : 17826

@@ -49,7 +49,7 @@ Object oCentrosRestService is a cWebHttpHandler
         //  Redirect to a specific operation based on the path
         If (Lowercase(aPath[1]) = "centros") Begin
             If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
-                Send SetResponseStatus 400 "Only use POST for creating new resources"
+                Send SetResponseStatus 401 "Only use POST for creating new resources"
             End
             Else Begin
                 Send CrearCentro True ""
@@ -171,7 +171,7 @@ Object oCentrosRestService is a cWebHttpHandler
             Send Destroy of hoJson
         End
         Else Begin
-            Send SetResponseStatus 403 "Resource not found"
+            Send SetResponseStatus 404 "Resource not found"
         End
     End_Procedure
     
@@ -299,7 +299,7 @@ Object oCentrosRestService is a cWebHttpHandler
         
         If (not(bSuccess)) Begin
             Get psParseError of hoJson to sErr
-            Send SetResponseStatus 400 sErr
+            Send SetResponseStatus 402 sErr
         End
         
         Function_Return bSuccess
@@ -313,7 +313,7 @@ Object oCentrosRestService is a cWebHttpHandler
         
         Get ErrorCount to iErrC
         If (iErrC > 0) Begin
-            Send SetResponseStatus 400 "Errors occurred"
+            Send SetResponseStatus 403 "Errors occurred"
             
             Get Create (RefClass(cJsonObject)) to hoJson
             Send InitializeJsonType of hoJson jsonTypeObject

@@ -3,6 +3,11 @@ Source23=If (SizeOfArray(aRet) = 1) Begin
 ConditionEnabled23=0
 Condition23= 
 23=2
+[C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo]
+Source103=Send SetResponseStatus 400 "Only use DELETE on existing resources"
+ConditionEnabled103=0
+Condition103= 
+103=1
 [C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd]
 Source81=Get zValidarEmail sValue (&sMsg) to bret
 ConditionEnabled81=0

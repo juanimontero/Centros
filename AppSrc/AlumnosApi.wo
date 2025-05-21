@@ -1,0 +1,395 @@
+﻿Use cWebHttpHandler.pkg
+Use cCentrosDataDictionary.dd
+Use cAlumnosDataDictionary.dd
+
+
+Object oAlumnosApi is a cWebHttpHandler
+ 
+    Object oCentros_DD is a cCentrosDataDictionary
+    End_Object 
+
+    Object oAlummnos_DD is a cAlumnosDataDictionary
+        Set DDO_Server to oCentros_DD
+    End_Object 
+    
+    Set Main_DD to oAlummnos_DD
+
+    Set psPath to "Api/Alumnos"
+    Set psVerbs to "GET,POST,PATCH,DELETE"
+
+    Procedure OnHttpGet String sPath String sAcceptType
+        String[] aPath
+        
+        //  Split the path into parts
+        Get StrSplitToArray sPath "/" to aPath
+        If (SizeOfArray(aPath) = 0) Begin
+               Send ListaCentros
+            Procedure_Return
+        End
+        
+        //  Redirect to a specific operation based on the path
+        If (Lowercase(aPath[1]) <> "" and SizeOfArray(aPath) > 0 and Lowercase(aPath[1]) <> "Alumnos") Begin
+            If (SizeOfArray(aPath) > 1) Begin
+                Send listarAlumnosporid aPath[1]
+            End
+        End
+        
+            Else Begin
+            Send SetResponseStatus 404 "Unknown resource" 
+            End
+            
+           
+    End_Procedure
+    
+    
+    Procedure OnHttpPost String sPath String sContentType String sAcceptType Integer iSize
+      String[] aPath
+        
+        //  Split the path into parts
+        Get StrSplitToArray sPath "/" to aPath
+        If (SizeOfArray(aPath) < 2) Begin
+            Send SetResponseStatus 404 "Invalid resource" 
+            Procedure_Return
+        End
+        
+        //  Redirect to a specific operation based on the path
+        If (Lowercase(aPath[1]) = "alumnos") Begin
+            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+                Send SetResponseStatus 401 "Only use POST for creating new resources"
+            End
+            Else Begin
+                Send CrearAlumno True ""
+            End
+        End
+        Else Begin
+            Send SetResponseStatus 404 "Unknown resource"
+        End
+    
+    End_Procedure
+    
+    
+    Procedure OnHttpPatch String sPath String sContentType Integer iSize
+        String[] aPath
+        
+        //  Split the path into parts
+        Get StrSplitToArray sPath "/" to aPath
+        If (SizeOfArray(aPath) < 2) Begin
+            Send SetResponseStatus 404 "Invalid resource" 
+            Procedure_Return
+        End
+        
+        //  Redirect to a specific operation based on the path
+        If (Lowercase(aPath[1]) = "alumnos") Begin
+            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+                Send CrearAlumno False aPath[2] 
+            End
+            Else Begin                
+                Send SetResponseStatus 400 "Only use PATCH for updating existing  resources"
+            End
+        End
+        Else Begin
+            Send SetResponseStatus 404 "Unknown resource"
+        End
+    End_Procedure
+    
+    
+    Procedure OnHttpDelete String sPath
+        String[] aPath
+        
+        Get StrSplitToArray sPath "/" to aPath
+        If (SizeOfArray(aPath) < 2) Begin
+            Send SetResponseStatus 404 "Invalid resource" 
+            Procedure_Return
+        End
+        
+        If (Lowercase(aPath[1]) = "Alumnos") Begin
+            If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
+                Send DeleteAlumno  aPath[2]
+            End
+            Else Begin                
+                Send SetResponseStatus 400 "Only use DELETE on existing resources"
+            End
+        End
+        Else Begin
+            Send SetResponseStatus 404 "Unknown resource"
+        End
+    End_Procedure
+    
+
+    Procedure ListaCentros
+        Handle hoJsonAlumno hoAlumno
+
+        Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+        Send InitializeJsonType of hoJsonAlumno jsonTypeArray
+
+        Get Create (RefClass(cJsonObject)) to hoAlumno
+
+        Send Find of oAlummnos_DD FIRST_RECORD 1
+        While (Found)
+            Send InitializeJsonType of hoAlumno jsonTypeObject
+
+             Send SetMemberValue of hoAlumno "Id" jsonTypeInteger Alumnos.AlumnosId
+             Send SetMemberValue of hoAlumno "CentrosId" jsonTypeInteger Alumnos.CentrosId
+             Send SetMemberValue of hoAlumno "DNI" jsonTypeString Alumnos.Dni
+             Send SetMemberValue of hoAlumno "Nombre" jsonTypeString Alumnos.Nombre
+             Send SetMemberValue of hoAlumno "Apellidos" jsonTypeString Alumnos.Apellidos
+             Send SetMemberValue of hoAlumno "Sexo" jsonTypeString Alumnos.Sexo
+             Send SetMemberValue of hoAlumno "Dirreccion" jsonTypeString Alumnos.Dirreccion
+             Send SetMemberValue of hoAlumno "CodigoPostal" jsonTypeString Alumnos.CodigoPostal
+             Send SetMemberValue of hoAlumno "Localidad" jsonTypeString Alumnos.Localidad
+             Send SetMemberValue of hoAlumno "Pais" jsonTypeString Alumnos.Pais
+             Send SetMemberValue of hoAlumno "NumeroTelefono" jsonTypeString Alumnos.NumeroTelefono
+             Send SetMemberValue of hoAlumno "ComunidadAutonoma" jsonTypeString Alumnos.ComunidadAutonoma
+             Send SetMemberValue of hoAlumno "PrefijoTlfn" jsonTypeString Alumnos.PrefijoTlfn
+             Send AddMember of hoJsonAlumno hoAlumno
+
+            Send Find of oAlummnos_DD NEXT_RECORD 1
+        Loop
+
+        Send OutputJson hoJsonAlumno
+
+        Send Destroy of hoAlumno
+        Send Destroy of hoJsonAlumno
+    End_Procedure
+
+    Procedure OutputJson Handle hoJsonAlumno
+        UChar[] ucData
+
+        Send AddHttpResponseHeader "Content-Type" "application/json"
+        Get StringifyUtf8 of hoJsonAlumno to ucData
+        Send OutputUChar ucData
+    End_Procedure
+    
+    Procedure listarAlumnosporid Integer iId
+        Handle hoJsonAlumno
+        
+        Send Clear of oAlummnos_DD
+        Move iId to Alumnos.AlumnosId
+        Send Find of oAlummnos_DD EQ 1
+        
+        If (Found) Begin
+            Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+            Send InitializeJsonType of hoJsonAlumno jsonTypeObject
+            
+             Send SetMemberValue of hoJsonAlumno "Id" jsonTypeInteger Alumnos.AlumnosId
+             Send SetMemberValue of hoJsonAlumno "CentrosId" jsonTypeInteger Alumnos.CentrosId
+             Send SetMemberValue of hoJsonAlumno "DNI" jsonTypeString Alumnos.Dni
+             Send SetMemberValue of hoJsonAlumno "Nombre" jsonTypeString Alumnos.Nombre
+             Send SetMemberValue of hoJsonAlumno "Apellidos" jsonTypeString Alumnos.Apellidos
+             Send SetMemberValue of hoJsonAlumno "Sexo" jsonTypeString Alumnos.Sexo
+             Send SetMemberValue of hoJsonAlumno "Dirreccion" jsonTypeString Alumnos.Dirreccion
+             Send SetMemberValue of hoJsonAlumno "CodigoPostal" jsonTypeString Alumnos.CodigoPostal
+             Send SetMemberValue of hoJsonAlumno "Localidad" jsonTypeString Alumnos.Localidad
+             Send SetMemberValue of hoJsonAlumno "Pais" jsonTypeString Alumnos.Pais
+             Send SetMemberValue of hoJsonAlumno "NumeroTelefono" jsonTypeString Alumnos.NumeroTelefono
+             Send SetMemberValue of hoJsonAlumno "ComunidadAutonoma" jsonTypeString Alumnos.ComunidadAutonoma
+             Send SetMemberValue of hoJsonAlumno "PrefijoTlfn" jsonTypeString Alumnos.PrefijoTlfn
+//             Send SetMemberValue of hoJsonAlumno "FechaCreacionRegistro" jsonTypeString Alumnos.FechaCreacionRegistro
+//             Send SetMemberValue of hoJsonAlumno "FechaUltimaModificacion" jsonTypeString Alumnos.FechaUltimaModificacion
+            
+            Send OutputJson hoJsonAlumno
+            Send Destroy of hoJsonAlumno
+        End
+        Else Begin
+            Send SetResponseStatus 404 "Resource not found"
+        End
+    End_Procedure
+    
+    
+    Procedure CrearAlumno Boolean bCreate String sKey 
+        Handle hoJsonAlumno
+        Boolean bSuccess
+        String sVal
+        Boolean bVal bErr
+        
+        //  Find the right record
+        If (bCreate) Begin
+            Send Clear of oAlummnos_DD
+            Send Clear of oCentros_DD
+        End
+        Else Begin
+            
+            
+            Send Clear of oAlummnos_DD
+            Move sKey to Alumnos.AlumnosId
+            Send Find of oAlummnos_DD EQ 1
+            
+            If (not(Found)) Begin
+                Send SetResponseStatus 404 "Resource not found"
+                Procedure_Return
+            End
+            
+            Send Find of oCentros_DD EQ 1 
+            
+            If (not(Found)) Begin
+                Send SetResponseStatus 404 "Resource not found"
+                Procedure_Return
+            End
+        End
+        
+        //  Read the request data
+        Get RequestDataJson (&hoJsonAlumno) to bSuccess
+        
+        If (bSuccess) Begin
+            Send ErrorQueueStart
+            
+            //  Set the values
+            If (HasMember(hoJsonAlumno, "Nombre")) Begin
+                Get MemberValue of hoJsonAlumno "Nombre" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Nombre)) to sVal
+            End           
+            If (HasMember(hoJsonAlumno, "Apellidos")) Begin
+                Get MemberValue of hoJsonAlumno "Apellidos" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Apellidos)) to sVal
+            End
+           
+            If (HasMember(hoJsonAlumno, "Direccion")) Begin
+                Get MemberValue of hoJsonAlumno "Direccion" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Dirreccion)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "Pais")) Begin
+                Get MemberValue of hoJsonAlumno "Pais" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Pais)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "ComunidadAutonoma")) Begin
+                Get MemberValue of hoJsonAlumno "ComunidadAutonoma" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.ComunidadAutonoma)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "Localidad")) Begin
+                Get MemberValue of hoJsonAlumno "Localidad" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Localidad)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "CodigoPostal")) Begin
+                Get MemberValue of hoJsonAlumno "CodigoPostal" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.CodigoPostal)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "Dni")) Begin
+                Get MemberValue of hoJsonAlumno "Dni" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Dni)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "Sexo")) Begin
+                Get MemberValue of hoJsonAlumno "Sexo" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Sexo)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "NumeroTelefono")) Begin
+                Get MemberValue of hoJsonAlumno "NumeroTelefono" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.NumeroTelefono)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "Email")) Begin
+                Get MemberValue of hoJsonAlumno "Email" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.Email)) to sVal
+            End
+            
+            If (HasMember(hoJsonAlumno, "CentrosId")) Begin
+	            Get MemberValue of hoJsonAlumno "CentrosId" to sVal
+	            Send Clear of oCentros_DD
+                Move sVal to Centros.Id
+                Send Find of oCentros_DD EQ 1
+            End
+
+            If (HasMember(hoJsonAlumno, "PrefijoTlfn")) Begin
+                Get MemberValue of hoJsonAlumno "PrefijoTlfn" to sVal
+                Set Field_Changed_Value of oAlummnos_DD (RefTable(Alumnos.PrefijoTlfn)) to sVal
+            End
+            
+            
+            //  Perform the save
+            If (ErrorCount(Self) = 0) Begin
+                Get Request_Validate of oAlummnos_DD to bErr
+                If (not(bErr)) Begin
+                   Send Request_Save of oAlummnos_DD                        
+                   
+                   If (not(Err)) Begin
+                        Send listarAlumnosporid Alumnos.AlumnosId
+                   End
+                End
+            End            
+            
+            Send ErrorQueueEnd
+            Send ErrorReportJson
+        End
+        
+        If (hoJsonAlumno > 0) Begin
+            Send Destroy of hoJsonAlumno
+        End
+    End_Procedure
+    
+        //  Deletes a specific customer record
+    Procedure DeleteAlumno String sKey
+        Send Clear of oAlummnos_DD
+        Move sKey to Alumnos.AlumnosId
+        Send Find of oAlummnos_DD EQ 1
+        
+        If (not(Found)) Begin
+            Send SetResponseStatus 404 "Resource not found"
+            Procedure_Return
+        End
+        
+        Send ErrorQueueStart
+        
+        Send Request_Delete of oAlummnos_DD
+        
+        Send ErrorQueueEnd
+        Send ErrorReportJson
+    End_Procedure
+    
+    
+        //  Helper function that reads an entire request into a JSON object.
+    Function RequestDataJson Handle ByRef hoJsonAlumno Returns Boolean
+        UChar[] ucData
+        Boolean bSuccess
+        String sErr
+        
+        Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+        
+        Get RequestDataUChar -1 to ucData
+        Get ParseUtf8 of hoJsonAlumno ucData to bSuccess
+        
+        If (not(bSuccess)) Begin
+            Get psParseError of hoJsonAlumno to sErr
+            Send SetResponseStatus 402 sErr
+        End
+        
+        Function_Return bSuccess
+    End_Function
+    
+    
+      Procedure ErrorReportJson
+        Integer iErr iErrC
+        Handle hoJsonAlumno hoErrors   
+        String sMessage
+        
+        Get ErrorCount to iErrC
+        If (iErrC > 0) Begin
+            Send SetResponseStatus 403 "Errors occurred"
+            
+            Get Create (RefClass(cJsonObject)) to hoJsonAlumno
+            Send InitializeJsonType of hoJsonAlumno jsonTypeObject
+            
+            Get Create (RefClass(cJsonObject)) to hoErrors
+            Send InitializeJsonType of hoErrors jsonTypeArray
+            
+            For iErr from 0 to (iErrC - 1)
+                Get ErrorMessage iErr to sMessage
+                Send AddMemberValue of hoErrors jsonTypeString  sMessage
+            Loop
+            
+            Send SetMember of hoJsonAlumno "aErrors" hoErrors
+            
+            Send OutputJson hoJsonAlumno
+            
+            Send Destroy of hoErrors
+            Send Destroy of hoJsonAlumno
+        End
+    End_Procedure
+    
+
+End_Object
