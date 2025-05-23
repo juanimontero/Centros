@@ -7,30 +7,8 @@ GroupCount=1
 HorizontalGroups=1
 [TabGroup0]
 GroupSize=40
-SelectedTab=2
+SelectedTab=8
 [Window0]
-Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebHttpHandler.pkg
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=103
-CursorColumn=0
-TabIndex=1
-TabGroup=0
-[Window1]
-Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=723
-Right=1332
-CursorLine=138
-CursorColumn=43
-TabIndex=3
-TabGroup=0
-[Window2]
 Filename=C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo
 ViewType=1
 Top=21
@@ -41,18 +19,29 @@ CursorLine=182
 CursorColumn=6
 TabIndex=0
 TabGroup=0
-[Window3]
-Filename=C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd
+[Window1]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebHttpHandler.pkg
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=84
-CursorColumn=30
-TabIndex=4
+CursorLine=103
+CursorColumn=0
+TabIndex=1
 TabGroup=0
-[Window4]
+[Window2]
+Filename=C:\DataFlex Projects\Centros\AppSrc\AlumnosApi.wo
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=307
+CursorColumn=52
+TabIndex=2
+TabGroup=0
+[Window3]
 Filename=C:\Program Files\DataFlex 25.0\Pkg\DataDict.pkg
 ViewType=1
 Top=21
@@ -63,7 +52,40 @@ CursorLine=5013
 CursorColumn=0
 TabIndex=6
 TabGroup=0
+[Window4]
+Filename=C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=95
+CursorColumn=37
+TabIndex=4
+TabGroup=0
 [Window5]
+Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=14
+CursorColumn=19
+TabIndex=3
+TabGroup=0
+[Window6]
+Filename=C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=108
+CursorColumn=52
+TabIndex=7
+TabGroup=0
+[Window7]
 Filename=C:\DataFlex Projects\Centros\DDSrc\cCentrosDataDictionary.dd
 ViewType=1
 Top=21
@@ -74,14 +96,14 @@ CursorLine=40
 CursorColumn=30
 TabIndex=5
 TabGroup=0
-[Window6]
-Filename=C:\DataFlex Projects\Centros\AppSrc\AlumnosApi.wo
+[Window8]
+Filename=C:\DataFlex Projects\Centros\AppSrc\SelectCentro.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
-CursorLine=307
-CursorColumn=52
-TabIndex=2
+CursorLine=87
+CursorColumn=0
+TabIndex=8
 TabGroup=0

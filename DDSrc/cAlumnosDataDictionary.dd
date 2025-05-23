@@ -93,7 +93,7 @@ Class cAlumnosDataDictionary is a DataDictionary
         String sPrefijo sTelefono sMsg
         Get Field_Current_Value Field Alumnos.NumeroTelefono to sTelefono
         Get Field_Current_Value Field Alumnos.PrefijoTlfn to sPrefijo
-        Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bret
+        Get zTelefonoValidation False sPrefijo sTelefono (&sMsg) to bret
         If (not (bret)) Begin
                 Send Data_set_error iField DFERR_OPERATOR sMsg
         Function_Return True        
