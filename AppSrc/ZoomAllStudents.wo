@@ -35,7 +35,6 @@ Object oZoomAllStudents is a cWebView
     Set Main_DD To oAlumnos_DD
     Set Server  To oAlumnos_DD
 
-
     Object oWebMainPanel is a cWebPanel
         Set piColumnCount to 12
         WebSetResponsive piColumnCount rmMobile to 4
@@ -271,10 +270,7 @@ Object oZoomAllStudents is a cWebView
                     WebRegisterPath ntNavigateForward oSelectCentro
 
                     Procedure OnPrompt
-                        Send NavigatePath
-                        
-                        
-                        
+                        Send NavigatePath                       
                     End_Procedure
                 End_Object 
             End_Object 

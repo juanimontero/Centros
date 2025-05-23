@@ -56,24 +56,6 @@ Function zDniNumberComprobation String sDni String ByRef sMSg Returns Boolean
     Function_Return False
 End_Function
 
-
-/**
-Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean
-    String sValidationLeter
-    Move "T,R,W,A,G,M,Y,F,P,D,X,B,N,J,Z,S,Q,V,H,L,C,K,E" to sValidationLeter
-     String[] aValidationLeter
-    
-    Move (StrSplitToArray (sValidationLeter, ",")) to aValidationLeter
-    If (aValidationLeter[(Mod(Integer(sNumber), 23 ) )] = sLetter ) Begin
-        Function_Return True
-    End
-    Move "La letra no es coincidene con los numeros" to sMsg
-    Function_Return False
-    
-End_Function
-**/
-
-
 Function zDniLetterComprobation String sLetter String sNumber String ByRef sMsg Returns Boolean
     String sValidationLeter sTrueLetter
     Move "TRWAGMYFPDXBNJZSQVHLCKE" to sValidationLeter

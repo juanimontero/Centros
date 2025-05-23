@@ -1,0 +1,30 @@
+﻿//**************************************************************
+// ManagedConnectionLoginProject.tpl for Spanish translated by Moose Software (www.moose-software.com) 
+// 09/10/2020 Revised for DataFlex 20.0 by Moose Software
+// 31/01/2022 Revised for DataFlex 20.1 by Moose Software
+//*************************************************************************************
+
+Use Windows.pkg
+Use cApplication.pkg
+Use cConnection.pkg
+
+// When using Managed Connections with user credentials from 
+
+Object oApplication is a cApplication
+
+    Object oConnection is a cConnection
+        Use LoginEncryption.pkg
+        Use DatabaseLoginDialog.dg
+    End_Object
+
+End_Object
+
+//Send Info_Box ("The encrypted credentials for projects in this workspace are properly stored in DFConnID.ini. \n \n" + ;
+//               "See the 'Using Managed Connections | Defining a Connection' section in the Help for complete information about credentials. \n \n" + ;
+//               "You can Open DFConnID.ini (from the Quick Open Toolbar) and confirm the UID, DFPWD and PWD for this managed connection.") "DataFlex Windows Login"
+
+Send Info_Box ("Las credenciales cifradas para proyectos en este espacio de trabajo se almacenan correctamente en DFConnID.ini. \n \n" + ;
+               "Consulte la sección 'Using Managed Connections | Defining a Connection' en la Ayuda para obtener información completa sobre las credenciales. \n \n" + ;
+               "Puede abrir DFConnID.ini (desde la barra de herramientas de apertura rápida) y confirmar el UID, DFPWD y PWD para esta conexión administrada.") "DataFlex Windows Login"
+
+//********************************* end of ManagedConnectionLoginProject.tpl for Spanish **************

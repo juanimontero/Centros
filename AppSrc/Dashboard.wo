@@ -134,7 +134,9 @@ Object oDashboard is a cWebView
                 Procedure OnClick String sId String sParam
                     Send NavigatePath
                 End_Procedure
-            End_Object
+             End_Object
+             
+         
         End_Object
     
     End_Object

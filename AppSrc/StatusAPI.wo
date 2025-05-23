@@ -1,0 +1,58 @@
+﻿Use cWebHttpHandler.pkg
+
+Object oSimpleHTTPHandler is a cWebHttpHandler
+    Set psPath to "Status"
+    Set psVerbs to "GET"
+
+    Procedure OnHttpGet String sPath String sAcceptType
+        String sCode 
+        Integer iStatusActual
+        Get UrlParameter "Code" to sCode
+  
+        Case Begin
+            Case (sCode = "200")
+                Send SetResponseStatus 200 "OK" 0
+            Case Break
+            
+            Case (sCode = "202")
+                Send SetResponseStatus 202 "Accepted" 0
+            Case Break
+            
+            Case (sCode = "302")
+                Send SetResponseStatus 302 "Found" 0
+            Case Break
+            
+            Case (sCode = "307")
+                Send SetResponseStatus 307 "Temporary Redirect" 0
+            Case Break
+            
+            Case (sCode = "404")
+                Send SetResponseStatus 404 "Not found" 0
+            Case Break
+            
+            Case (sCode = "406")
+                Send SetResponseStatus 406 "Not Acceptable" 0
+            Case Break
+            
+            Case (sCode = "500")
+                Send SetResponseStatus 500 "Internal Servel Error" 0
+            Case Break
+            
+            Case (sCode = "508")
+                Send SetResponseStatus 508 "Loop detected" 0
+            Case Break
+        
+        
+        Case End   
+        
+    //----
+        Send AddHttpResponseHeader "Content-Type" "text/html"
+        Send OutputString '<html>'
+        Send OutputString '<head><title>Status</title></head>'
+        Send OutputString (SFormat('<body><h1>Status =  %1!</h1></body>', sCode))
+        Send OutputString '</html>'
+        
+        
+                
+    End_Procedure
+End_Object
