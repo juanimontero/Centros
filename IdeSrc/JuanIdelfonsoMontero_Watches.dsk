@@ -1,5 +1,17 @@
 [WebApp.src]
+<<<<<<< HEAD
 0="aPath[]"
 1="aPath"
 2="Centros.FechaUltimaModificacion"
 3="Centros.CodigoPostal"
+=======
+0="sTelefono"
+1="sPrefijo"
+2="bOk"
+3="ResponseStatusCode(hohttp)"
+4="hoJsonReceived"
+5="sNum"
+6="bRet"
+7="bOk"
+8="sMsg"
+>>>>>>> main

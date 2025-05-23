@@ -9,12 +9,28 @@ HorizontalGroups=1
 GroupSize=40
 SelectedTab=8
 [Window0]
+<<<<<<< HEAD
 Filename=C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo
+=======
+Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
+CursorLine=311
+CursorColumn=29
+TabIndex=0
+TabGroup=0
+[Window1]
+Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomCentros.wo
+>>>>>>> main
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+<<<<<<< HEAD
 CursorLine=182
 CursorColumn=6
 TabIndex=0
@@ -32,44 +48,145 @@ TabIndex=1
 TabGroup=0
 [Window2]
 Filename=C:\DataFlex Projects\Centros\AppSrc\AlumnosApi.wo
+=======
+CursorLine=12
+CursorColumn=18
+TabIndex=8
+TabGroup=0
+[Window2]
+Filename=C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo
+>>>>>>> main
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
+<<<<<<< HEAD
 CursorLine=307
 CursorColumn=52
 TabIndex=2
 TabGroup=0
 [Window3]
 Filename=C:\Program Files\DataFlex 25.0\Pkg\DataDict.pkg
+=======
+CursorLine=56
+CursorColumn=39
+TabIndex=3
+TabGroup=0
+[Window3]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cJsonHttpTransfer.pkg
+>>>>>>> main
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
+<<<<<<< HEAD
 CursorLine=5013
 CursorColumn=0
 TabIndex=6
 TabGroup=0
 [Window4]
+=======
+CursorLine=94
+CursorColumn=0
+TabIndex=9
+TabGroup=0
+[Window4]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebWindow.pkg
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=164
+CursorColumn=0
+TabIndex=10
+TabGroup=0
+[Window5]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebBaseDEOServer.pkg
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=478
+CursorColumn=0
+TabIndex=6
+TabGroup=0
+[Window6]
+Filename=C:\DataFlex Projects\Centros\AppSrc\zEmailValidation.pkg
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=39
+CursorColumn=0
+TabIndex=7
+TabGroup=0
+[Window7]
+>>>>>>> main
 Filename=C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
+<<<<<<< HEAD
 CursorLine=95
 CursorColumn=37
 TabIndex=4
 TabGroup=0
 [Window5]
 Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
+=======
+CursorLine=98
+CursorColumn=0
+TabIndex=2
+TabGroup=0
+[Window8]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\Datadict.pkg
 ViewType=1
 Top=21
 Left=0
 Bottom=723
 Right=1332
+CursorLine=3309
+CursorColumn=0
+TabIndex=4
+TabGroup=0
+[Window9]
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebBaseDEO.pkg
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=1168
+CursorColumn=0
+TabIndex=5
+TabGroup=0
+[Window10]
+Filename=C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+CursorLine=107
+CursorColumn=0
+TabIndex=11
+TabGroup=0
+[Window11]
+Filename=C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg
+>>>>>>> main
+ViewType=1
+Top=21
+Left=0
+Bottom=723
+Right=1332
+<<<<<<< HEAD
 CursorLine=14
 CursorColumn=19
 TabIndex=3
@@ -106,4 +223,9 @@ Right=1332
 CursorLine=87
 CursorColumn=0
 TabIndex=8
+=======
+CursorLine=40
+CursorColumn=0
+TabIndex=1
+>>>>>>> main
 TabGroup=0

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg]
 Source23=If (SizeOfArray(aRet) = 1) Begin
 ConditionEnabled23=0
@@ -13,3 +14,20 @@ Source81=Get zValidarEmail sValue (&sMsg) to bret
 ConditionEnabled81=0
 Condition81= 
 81=2
+=======
+[C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd]
+Source78=Get Field_Current_Value Field Alumnos.Email to sEmail
+ConditionEnabled78=0
+Condition78= 
+78=2
+[C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg]
+Source40=If (not(bOk)) Move "La llamada a la Api ha fallado" to sMsg
+ConditionEnabled40=0
+Condition40= 
+40=1
+[C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo]
+Source56=Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
+ConditionEnabled56=0
+Condition56= 
+56=2
+>>>>>>> main
