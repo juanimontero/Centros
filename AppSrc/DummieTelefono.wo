@@ -11,7 +11,7 @@ Object oDummieTelefono is a cWebView
 
     // Your DDO structure will go here
     Set piWidth to 700
-    Set psCaption to "DummieDni"
+    Set psCaption to "Dummie Telefono"
 
     // Your DDO structure will go here
 

@@ -18,7 +18,7 @@ Use cWebCombo.pkg
 
 Object oZoomAllStudents is a cWebView
     Set piColumnCount to 12
-    Set psCaption to "Todos los estudiantes"
+    Set psCaption to "Nuevo Estudiante"
     Set peWebViewStyle to wvsDrilldown
     Set peViewType to vtZoom
     Set pbShowCaption to False
@@ -382,6 +382,14 @@ Object oZoomAllStudents is a cWebView
         Case Begin
             Case (NavigateData.eNavigateType = nfFromMain)
                 // If from main, this is a propbably a main file Select to Zoom.
+                
+                 Boolean bHasRecord
+                    Get HasRecord of oAlumnos_DD to bHasRecord
+                    
+                    If bHasRecord Begin
+                        Send SetBreadCrumbCaption (Trim(Alumnos.Nombre +" "+ Alumnos.Apellidos))
+                        Send SetHeaderCaption (Trim(Alumnos.Nombre +" "+ Alumnos.Apellidos))
+                    End
                 Case Break
 
             Case (NavigateData.eNavigateType = nfFromParent)
