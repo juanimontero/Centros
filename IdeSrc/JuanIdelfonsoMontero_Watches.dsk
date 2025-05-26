@@ -1,5 +1,4 @@
 [WebApp.src]
-0="(aResultsPaisesCentros"
-1="aResultsPaisesCentros"
-2="aResultsPaisesCentros[i][0]"
-3="aResultsPaisesCentros[i][1]"
+0="sUser"
+1="sPassword"
+2="aUserValid"

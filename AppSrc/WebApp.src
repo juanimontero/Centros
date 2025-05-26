@@ -15,7 +15,7 @@ End_Object
 Object oWebApp is a cWebApp
     Set psTheme to "Df_Material"
     Set peAlignView to alignCenter
-    Set peLoginMode to lmLoginNone
+//    Set peLoginMode to lmLoginNone
     
     // It is important to set this so that all views will default
     // to drill down style views.
@@ -215,6 +215,7 @@ Object oWebApp is a cWebApp
     Use StatusAPI.wo
     Use CentrosApi.wo
     Use AlumnosApi.wo
+    Use DommieHash.wo
     Set phoDefaultView to oDashboard
 
 End_Object

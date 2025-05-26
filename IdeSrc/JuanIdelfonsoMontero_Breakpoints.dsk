@@ -1,21 +1,53 @@
 <<<<<<< HEAD
-[C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo]
-Source103=Send SetResponseStatus 400 "Only use DELETE on existing resources"
-ConditionEnabled103=0
-Condition103= 
-103=1
-[C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo]
-Source56=Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
-ConditionEnabled56=0
-Condition56= 
-56=2
 [C:\DataFlex Projects\Centros\AppSrc\zTelefonoiValidation.pkg]
 Source23=Function_Return True
 ConditionEnabled23=0
 Condition23= 
 23=2
+[C:\DataFlex Projects\Centros\AppSrc\DummieTelefono.wo]
+Source56=Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
+ConditionEnabled56=0
+Condition56= 
+56=2
+[C:\Program Files\DataFlex 25.0\Pkg\cPasswordHasher.pkg]
+Source249=If (not(SizeOfArray(ucaSalt))) Function_Return False
+ConditionEnabled249=0
+Condition249= 
+249=2
+Source274=Move (Mid(sHash, iEnd - iBegin, iBegin)) to sSalt
+ConditionEnabled274=0
+Condition274= 
+274=2
+[C:\DataFlex Projects\Centros\AppSrc\DommieHash.wo]
+Source58=Get CreatePasswordHash of ghoWebSessionManager sContrasenna (&sPassword) to bRet
+ConditionEnabled58=0
+Condition58= 
+58=2
+[C:\DataFlex Projects\Centros\AppSrc\Login.wo]
+Source100=Get UserLogin of ghoWebSessionManager sLoginName sPassword to bResult
+ConditionEnabled100=0
+Condition100= 
+100=2
+[C:\Program Files\DataFlex 25.0\Pkg\cWebSessionManagerStandard.pkg]
+Source191=Move sPassword to sHash
+ConditionEnabled191=0
+Condition191= 
+191=2
+Source203=If (not(pbPasswordHashing(Self))) Begin
+ConditionEnabled203=0
+Condition203= 
+203=2
 [C:\DataFlex Projects\Centros\DDSrc\cAlumnosDataDictionary.dd]
 Source81=Get zValidarEmail sValue (&sMsg) to bret
 ConditionEnabled81=0
 Condition81= 
 81=2
+[C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo]
+Source48=Get HttpRequestHeader "user" to sUser
+ConditionEnabled48=0
+Condition48= 
+48=1
+Source156=Send SetResponseStatus 400 "Only use DELETE on existing resources"
+ConditionEnabled156=0
+Condition156= 
+156=2

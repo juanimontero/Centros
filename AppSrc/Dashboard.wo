@@ -98,10 +98,10 @@ Object oDashboard is a cWebView
 
             Object oTile3 is a cWebHtmlBox
                 Set pbServerOnClick to True
-                Set piColumnSpan to 3
+                Set piColumnSpan to 4
                 Set psCSSClass to "Tile Dark"
                 Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Dni</div><div class="Tile_Subtitle"></div></div>'
-                Set piColumnIndex to 1
+                Set piColumnIndex to 2
     
                  WebRegisterPath ntNavigateForwardCustom oDummieDni
                 
@@ -113,8 +113,8 @@ Object oDashboard is a cWebView
     
             Object oTile2 is a cWebHtmlBox
                 Set pbServerOnClick to True
-                Set piColumnSpan to 3
-                Set piColumnIndex to 5
+                Set piColumnSpan to 4
+                Set piColumnIndex to 7
                 Set psCSSClass to "Tile LightAlternate"
                 Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Email</div><div class="Tile_Subtitle"></div></div>'
                                 
@@ -130,10 +130,24 @@ Object oDashboard is a cWebView
                Set pbServerOnClick to True
                Set psCSSClass to "Tile Dark"
                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Telefono</div><div class="Tile_Subtitle"></div></div>'
-                Set piColumnIndex to 9
-                Set piColumnSpan to 3
+                Set piColumnIndex to 3
+                Set piColumnSpan to 4
    
                 WebRegisterPath ntNavigateForwardCustom oDummieTelefono
+               
+               Procedure OnClick String sId String sParam
+                   Send NavigatePath
+               End_Procedure
+            End_Object
+            
+             Object oTile7 is a cWebHtmlBox
+               Set pbServerOnClick to True
+               Set psCSSClass to "Tile Dark"
+               Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Dummie Hash</div><div class="Tile_Subtitle"></div></div>'
+                Set piColumnIndex to 8
+                Set piColumnSpan to 4
+   
+                WebRegisterPath ntNavigateForwardCustom oDummieHash
                
                Procedure OnClick String sId String sParam
                    Send NavigatePath
