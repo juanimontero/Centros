@@ -4,12 +4,14 @@ Use zEmailValidation.pkg
 Use zDniValidation.pkg
 Use zTelefonoiValidation.pkg
 
-Open Alumnos
 Open Centros
+Open Alumnos
 
 Register_Function zValidateErr_StudentEmail Integer iField String sValue Returns Boolean
 Register_Function zValidateErr_StudentDni Integer iField Returns Boolean
 Register_Function zValidateErr_StudentTelefono Integer iField Returns Boolean
+
+
 
 Object oGender is a DescriptionValidationTable
     Procedure Fill_List
@@ -28,10 +30,16 @@ Class cAlumnosDataDictionary is a DataDictionary
     
     Procedure Construct_Object
         Forward Send Construct_Object
+
         Set Main_File to Alumnos.File_Number
-
         Set Add_Server_File to Centros.File_Number
+        
 
+        Set Cascade_Delete_State to True    
+        Set CascadeDeleteAllowed Centros.File_Number to True
+        Set ParentNoSwitchIfCommitted Centros.File_Number to True
+        
+    
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
@@ -45,8 +53,6 @@ Class cAlumnosDataDictionary is a DataDictionary
         Set Field_Value_Table Field Alumnos.Sexo to oGender
 
         Set Field_Mask_Type Field Alumnos.CodigoPostal to Mask_Numeric_Window
-        
-
 
         Set Field_Mask_Type Field Alumnos.FechaCreacionRegistro to Mask_DateTime_Window
         Set Field_Option Field Alumnos.FechaCreacionRegistro DD_NOENTER to True

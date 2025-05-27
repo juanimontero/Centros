@@ -14,12 +14,15 @@ Use cCentrosDataDictionary.dd
 
 Object oZoomCentros is a cWebView
     Set piColumnCount to 12
-    Set psCaption to "Centros"
+    Set psCaption to "Nuevo Centro"
     Set peWebViewStyle to wvsDrilldown
     Set peViewType to vtZoom
     Set pbShowCaption to False
     Set Verify_Save_Msg to 0
     Set piMaxWidth to 1024
+
+    
+    
 
     Object oCentros_DD is a cCentrosDataDictionary
     End_Object 
@@ -48,6 +51,7 @@ Object oZoomCentros is a cWebView
             Set psLabel to "PsNombre"
         End_Object 
 
+//    
         Object oCentrosEmpresa is a cWebForm
             Entry_Item Centros.Empresa
             Set piColumnSpan to 8
@@ -85,7 +89,7 @@ Object oZoomCentros is a cWebView
                             
                         Move (SizeOfArray(aResultsPaisesCentros[0])) to inumPaises    
                         If (not(Err)) Begin
-                             For i from 0 to (aResultsPaisesCentros - 1)
+                             For i from 0 to (inumPaises - 1)
                                 Send AddComboItem aResultsPaisesCentros[i][0] aResultsPaisesCentros[i][1] 
                              Loop
                         End
@@ -295,7 +299,14 @@ Object oZoomCentros is a cWebView
     Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
         Case Begin
             Case (NavigateData.eNavigateType = nfFromMain)
-                // If from main, this is a propbably a main file Select to Zoom.
+                    Boolean bHasRecord
+                    Get HasRecord of oCentros_DD to bHasRecord
+                    
+                    If bHasRecord Begin
+                        Send SetBreadCrumbCaption (Trim(Centros.PsNombre))
+                        Send SetHeaderCaption (Trim(Centros.PsNombre))
+                    End
+                            
                 Case Break
 
             Case (NavigateData.eNavigateType = nfFromParent)

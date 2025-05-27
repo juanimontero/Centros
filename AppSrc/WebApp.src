@@ -15,7 +15,7 @@ End_Object
 Object oWebApp is a cWebApp
     Set psTheme to "Df_Material"
     Set peAlignView to alignCenter
-    Set peLoginMode to lmLoginNone
+//    Set peLoginMode to lmLoginNone
     
     // It is important to set this so that all views will default
     // to drill down style views.
@@ -52,7 +52,7 @@ Object oWebApp is a cWebApp
 
                 Object oDashboard_itm is a cWebMenuItem
                     Set psCaption to C_$Dashboard
-                    
+            
                     WebRegisterPath ntNavigateBegin oDashboard
 
                     Procedure OnClick
@@ -60,9 +60,34 @@ Object oWebApp is a cWebApp
                     End_Procedure
                 End_Object
 
-                Object oViewMenu is a cWebMenuItem
-                    Set psCaption to C_$View
+                Object oViewMenuDatos is a cWebMenuItem
+                    Set psCaption to "Datos"
 
+                    Object oStudentsItem1 is a cWebMenuItem
+                        Set psCaption to "Alumnos"
+
+                        WebRegisterPath ntNavigateBegin oSelectStudents
+
+                        Procedure OnClick
+                            Forward Send OnClick
+                                Send NavigatePath
+                        End_Procedure
+                    End_Object
+
+                    Object oCentroItem1 is a cWebMenuItem
+                        Set psCaption to "Centros"
+
+                        WebRegisterPath ntNavigateBegin oSelectCentro
+
+                        Procedure OnClick
+                            Forward Send OnClick
+                                Send NavigatePath
+                        End_Procedure
+                    End_Object
+                End_Object
+                
+                Object oViewMenuHerraminetas is a cWebMenuItem
+                    Set psCaption to "Herramientas"
                     Object oDummieEmailItem1 is a cWebMenuItem
                         Set psCaption to "DummieEmail"
 
@@ -84,29 +109,21 @@ Object oWebApp is a cWebApp
                                 Send NavigatePath
                         End_Procedure
                     End_Object
+                    
+                    Object oDummieTelefonoItem1 is a cWebMenuItem
+                        Set psCaption to "Dummie Telefono"
 
-                    Object oStudentsItem1 is a cWebMenuItem
-                        Set psCaption to "Students"
-
-                        WebRegisterPath ntNavigateBegin oSelectStudents
-
-                        Procedure OnClick
-                            Forward Send OnClick
-                                Send NavigatePath
-                        End_Procedure
-                    End_Object
-
-                    Object oCentroItem1 is a cWebMenuItem
-                        Set psCaption to "Centro"
-
-                        WebRegisterPath ntNavigateBegin oSelectCentro
+                        WebRegisterPath ntNavigateBegin oDummieTelefono
 
                         Procedure OnClick
                             Forward Send OnClick
                                 Send NavigatePath
                         End_Procedure
                     End_Object
-                End_Object
+                 End_Object
+
+
+
 
                 Object oSignOut_itm is a cWebMenuItem
                     Set psCaption to C_$LogOut
@@ -198,6 +215,7 @@ Object oWebApp is a cWebApp
     Use StatusAPI.wo
     Use CentrosApi.wo
     Use AlumnosApi.wo
+    Use DommieHash.wo
     Set phoDefaultView to oDashboard
 
 End_Object

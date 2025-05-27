@@ -7,31 +7,33 @@ Use cWebMenuItem.pkg
 
 Use zTelefonoiValidation.pkg
 
-Object oDummieTelefono is a cWebView
+Object oDummieHash is a cWebView
 
     // Your DDO structure will go here
     Set piWidth to 700
-    Set psCaption to "Dummie Telefono"
+    Set psCaption to "Dummie Hash"
 
     // Your DDO structure will go here
 
     Object oWebMainPanel is a cWebPanel
         Set piColumnCount to 12
 
-        Object oForm_Prefijo is a cWebForm
+        Object oForm_Contrasenna is a cWebForm
             Set piColumnSpan to 3
-            Set psLabel to "Prefijo telefonico"
+            Set psLabel to "Contraseña"
             Set peLabelPosition to lpTop
         End_Object
         
         // place controls here
         // Your view will grow as controls are added
         
-        Object oForm_telefono is a cWebForm
+        Object oForm_Hash is a cWebForm
             Set piColumnSpan to 9
-            Set psLabel to "Introduzca el telefono"
+            Set psLabel to "Vuelta Hash"
             Set piColumnIndex to 3
             Set peLabelPosition to lpTop
+            Set pbRequired to False
+            Set pbReadOnly to True
         End_Object
 
         Object oWebLabel_sMsg_Err is a cWebLabel
@@ -46,29 +48,32 @@ Object oDummieTelefono is a cWebView
 
         Object oValidationButton is a cWebButton
             Set piColumnSpan to 6
-            Set psCaption to "Validar"
+            Set psCaption to "Crear"
             Set piColumnIndex to 3
         
             Procedure OnClick
                 Boolean bRet
-                String sTelefono sPrefijo sMsg
-                WebGet psValue of oForm_telefono to sTelefono
-                WebGet psValue of oForm_Prefijo to sPrefijo
-                Get zTelefonoValidation True sPrefijo sTelefono (&sMsg) to bRet
+                String sContrasenna sPassword
+                WebGet psValue of oForm_Contrasenna to sContrasenna
+   
+                Get CreatePasswordHash of ghoWebSessionManager sContrasenna (&sPassword) to bRet
                 
-                WebSet psBackgroundColor of oForm_telefono to "#ffffff"
-                WebSet psBackgroundColor of oForm_Prefijo to "#ffffff"
+                WebSet psBackgroundColor of oForm_Contrasenna to "#ffffff"
                 WebSet psCaption of oWebLabel_sMsg_Err to ""
                 
                 If (bRet) Begin
-                    WebSet psBackgroundColor of oForm_telefono to "green"
-                    WebSet psBackgroundColor of oForm_Prefijo to "green"
+                    WebSet psBackgroundColor of oForm_Contrasenna to "green"
+                    WebSet psBackgroundColor of oForm_Hash to "green"
+                    WebSet psValue of oForm_Hash to sPassword
+
+                    
+                    
                     
                 End
                 If (not (bRet)) Begin
-                    WebSet psBackgroundColor of oForm_Prefijo to "red"
-                    WebSet psBackgroundColor of oForm_telefono to "red"
-                    WebSet psCaption of oWebLabel_sMsg_Err to sMsg
+                    WebSet psBackgroundColor of oForm_Contrasenna to "red"
+                    WebSet psBackgroundColor of oForm_Hash to "red"
+                    WebSet psCaption of oWebLabel_sMsg_Err to sPassword
                 End
                 
                 
@@ -77,9 +82,6 @@ Object oDummieTelefono is a cWebView
         
     End_Object
 
-    Procedure OnBeforeShow
-        Forward Send OnBeforeShow
-        WebSet psValue of oForm_Prefijo to "+34"
-    End_Procedure
+
 
 End_Object

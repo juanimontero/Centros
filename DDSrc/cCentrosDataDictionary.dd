@@ -8,7 +8,8 @@ Class cCentrosDataDictionary is a DataDictionary
     Procedure Construct_Object
         Forward Send Construct_Object
         Set Main_File to Centros.File_Number
-
+        
+        Set Cascade_Delete_State to True
         Set Add_Client_File to Alumnos.File_Number
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True

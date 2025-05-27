@@ -1,11 +1,17 @@
 ﻿Use cWebHttpHandler.pkg
 Use cCentrosDataDictionary.dd
+Use cAlumnosDataDictionary.dd
 
 
 Object oCentrosRestService is a cWebHttpHandler
  
+    Object oAlumnos_DD is a cAlumnosDataDictionary
+    End_Object 
+ 
     Object oCentros_DD is a cCentrosDataDictionary
+    Set DDO_Server to oAlumnos_DD
     End_Object
+    
     Set Main_DD to oCentros_DD
 
     Set psPath to "Api/Centros"
@@ -38,6 +44,32 @@ Object oCentrosRestService is a cWebHttpHandler
     
     Procedure OnHttpPost String sPath String sContentType String sAcceptType Integer iSize
       String[] aPath
+      String[][] aUserValid
+      String sUser sPassword
+      Integer i iRegisteredUsers   
+      Boolean Flag
+      
+      Move False to Flag
+      
+        //----
+         Get HttpRequestHeader "user" to sUser
+         Get HttpRequestHeader "password" to sPassword
+        //---- 
+         Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT LoginName, Password
+                            FROM Centros.dbo.WebAppUser;" to aUserValid
+                            
+         Move (SizeOfArray(aUserValid)) to iRegisteredUsers                   
+        
+         For i from 0 to (iRegisteredUsers - 1)
+            If (aUserValid[i][0] = sUser and aUserValid[i][1] = sPassword) Begin
+                Move True to Flag
+            End
+         Loop
+         
+         If (Flag = False) Begin
+            Send SetResponseStatus 401 "Credenciales incorrectas o sin Autirizacion"
+            Procedure_Return
+         End
         
         //  Split the path into parts
         Get StrSplitToArray sPath "/" to aPath
@@ -64,6 +96,33 @@ Object oCentrosRestService is a cWebHttpHandler
     
     Procedure OnHttpPatch String sPath String sContentType Integer iSize
         String[] aPath
+        String[][] aUserValid
+      String sUser sPassword
+      Integer i iRegisteredUsers   
+      Boolean Flag
+      
+      Move False to Flag
+      
+        //----
+         Get HttpRequestHeader "user" to sUser
+         Get HttpRequestHeader "password" to sPassword
+        //---- 
+         Get SQLExecDirect of ghoSQLExecutor @SQL" SELECT LoginName, Password
+                            FROM Centros.dbo.WebAppUser;" to aUserValid
+                            
+         Move (SizeOfArray(aUserValid)) to iRegisteredUsers                   
+        
+         For i from 0 to (iRegisteredUsers - 1)
+            If (aUserValid[i][0] = sUser and aUserValid[i][1] = sPassword) Begin
+                Move True to Flag
+            End
+         Loop
+         
+           If (Flag = False) Begin
+            Send SetResponseStatus 401 "Credenciales incorrectas o sin Autirizacion"
+            Procedure_Return
+         End
+        
         
         //  Split the path into parts
         Get StrSplitToArray sPath "/" to aPath
@@ -285,6 +344,15 @@ Object oCentrosRestService is a cWebHttpHandler
         Send ErrorReportJson
     End_Procedure
     
+    
+    //  Helper function that generates a response based on a JSON object.
+    Procedure OutputJson Handle hoJson
+        UChar[] ucData
+        
+        Send AddHttpResponseHeader "Content-Type" "application/json"
+        Get StringifyUtf8 of hoJson to ucData
+        Send OutputUChar ucData
+    End_Procedure
     
         //  Helper function that reads an entire request into a JSON object.
     Function RequestDataJson Handle ByRef hoJson Returns Boolean

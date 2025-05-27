@@ -1,0 +1,437 @@
+////////////////////////////////////////////////////////////
+Starting conversion at 26/05/2025 9:28:14,686
+////////////////////////////////////////////////////////////
+
+------------------------------------------------------------
+Converting Recnum table: 253, CodeType, Code Maintenance Type Table
+Progress:Start time: 26/05/2025 9:28:14,688
+Start time: 26/05/2025 9:28:14,688
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = CodeType (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = CodeType (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:28:14,733
+End time: 26/05/2025 9:28:14,733
+Progress:Total time to convert table: 0:0:0:0,045
+Total time to convert table: 0:0:0:0,045
+
+------------------------------------------------------------
+Converting Recnum table: 254, CodeMast, Code Maintenance Code Table
+Progress:Start time: 26/05/2025 9:28:14,736
+Start time: 26/05/2025 9:28:14,736
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = CodeMast (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = CodeMast (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:28:14,742
+End time: 26/05/2025 9:28:14,742
+Progress:Total time to convert table: 0:0:0:0,006
+Total time to convert table: 0:0:0:0,006
+
+------------------------------------------------------------
+Converting Recnum table: 263, WebAppSession, WebApp Session
+Progress:Start time: 26/05/2025 9:28:14,744
+Start time: 26/05/2025 9:28:14,744
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = WebAppSession (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = WebAppSession (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:28:14,758
+End time: 26/05/2025 9:28:14,758
+Progress:Total time to convert table: 0:0:0:0,014
+Total time to convert table: 0:0:0:0,014
+
+------------------------------------------------------------
+Converting Recnum table: 264, WebAppUser, WebApp User
+Progress:Start time: 26/05/2025 9:28:14,762
+Start time: 26/05/2025 9:28:14,762
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = WebAppUser (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = WebAppUser (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:28:14,775
+End time: 26/05/2025 9:28:14,775
+Progress:Total time to convert table: 0:0:0:0,013
+Total time to convert table: 0:0:0:0,013
+
+------------------------------------------------------------
+Converting Recnum table: 265, WebAppServerProps, WebApp Server Props
+Progress:Start time: 26/05/2025 9:28:14,779
+Start time: 26/05/2025 9:28:14,779
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = WebAppServerProps (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (2760)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]El nombre de esquema 'Centros' especificado no existe o no tiene permisos para utilizarlo.  Table = WebAppServerProps (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:28:14,79
+End time: 26/05/2025 9:28:14,79
+Progress:Total time to convert table: 0:0:0:0,011
+Total time to convert table: 0:0:0:0,011
+
+------------------------------------------------------------
+Converting Recnum table: 270, DFLastID, DFLastID
+Progress:Start time: 26/05/2025 9:28:14,792
+Start time: 26/05/2025 9:28:14,792
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_PRIMARY_INDEX to 0
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (102)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Sintaxis incorrecta cerca de 'DFLastID'.  Table = DFLastID (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (102)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Sintaxis incorrecta cerca de 'DFLastID'.  Table = DFLastID (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:28:14,802
+End time: 26/05/2025 9:28:14,802
+Progress:Total time to convert table: 0:0:0:0,01
+Total time to convert table: 0:0:0:0,01
+
+############################################################
+List of tables that experienced errors while converting:
+   CodeType - Unable to create.
+   CodeMast - Unable to create.
+   WebAppSes- Unable to create.
+   WebAppUse- Unable to create.
+   WebAppSer- Unable to create.
+   DFLastID - Unable to create.
+////////////////////////////////////////////////////////////
+Finished conversion at 26/05/2025 9:28:14,804
+Total conversion time: 0:0:0:0,117
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+Starting conversion at 26/05/2025 9:29:54,495
+////////////////////////////////////////////////////////////
+
+------------------------------------------------------------
+Converting Recnum table: 253, CodeType, Code Maintenance Type Table
+Progress:Start time: 26/05/2025 9:29:54,498
+Start time: 26/05/2025 9:29:54,498
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:Creating primary key CodeType001_PK.
+Creating primary key CodeType001_PK.
+Progress:Creating intermediate file.
+Creating intermediate file.
+Progress:Commit restructure transaction.
+Commit restructure transaction.
+CLI_DROPINDICES
+Progress:Temporary delete of all indices of table CodeType.
+Temporary delete of all indices of table CodeType.
+Progress:Dropping primary key CodeType001_PK.
+Dropping primary key CodeType001_PK.
+CLI_BCP
+Progress:Copy records in groups of 1000
+Progress:All records copied.
+All records copied.
+CLI_CREATEINDICES
+Progress:Re-creating temporary deleted indices of table CodeType.
+Re-creating temporary deleted indices of table CodeType.
+Progress:Creating primary key CodeType001_PK.
+Creating primary key CodeType001_PK.
+Close hSQLTable
+Close ahTables[iCount]
+Deleting original table
+Adjust filelist slot
+Output_def_file
+Progress:End time: 26/05/2025 9:29:55,251
+End time: 26/05/2025 9:29:55,251
+Progress:Total time to convert table: 0:0:0:0,753
+Total time to convert table: 0:0:0:0,753
+
+------------------------------------------------------------
+Converting Recnum table: 254, CodeMast, Code Maintenance Code Table
+Progress:Start time: 26/05/2025 9:29:55,255
+Start time: 26/05/2025 9:29:55,255
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:Creating primary key CodeMast001_PK.
+Creating primary key CodeMast001_PK.
+Progress:Creating intermediate file.
+Creating intermediate file.
+Progress:Commit restructure transaction.
+Commit restructure transaction.
+CLI_DROPINDICES
+Progress:Temporary delete of all indices of table CodeMast.
+Temporary delete of all indices of table CodeMast.
+Progress:Dropping primary key CodeMast001_PK.
+Dropping primary key CodeMast001_PK.
+CLI_BCP
+Progress:Copy records in groups of 1000
+Progress:All records copied.
+All records copied.
+CLI_CREATEINDICES
+Progress:Re-creating temporary deleted indices of table CodeMast.
+Re-creating temporary deleted indices of table CodeMast.
+Progress:Creating primary key CodeMast001_PK.
+Creating primary key CodeMast001_PK.
+Close hSQLTable
+Close ahTables[iCount]
+Deleting original table
+Adjust filelist slot
+Output_def_file
+Progress:End time: 26/05/2025 9:29:55,458
+End time: 26/05/2025 9:29:55,458
+Progress:Total time to convert table: 0:0:0:0,203
+Total time to convert table: 0:0:0:0,203
+
+------------------------------------------------------------
+Converting Recnum table: 263, WebAppSession, WebApp Session
+Progress:Start time: 26/05/2025 9:29:55,46
+Start time: 26/05/2025 9:29:55,46
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:Creating primary key WebAppSession001_PK.
+Creating primary key WebAppSession001_PK.
+Progress:Creating index WebAppSession002.
+Creating index WebAppSession002.
+Progress:Creating index WebAppSession003.
+Creating index WebAppSession003.
+Progress:Creating intermediate file.
+Creating intermediate file.
+Progress:Commit restructure transaction.
+Commit restructure transaction.
+CLI_DROPINDICES
+Progress:Temporary delete of all indices of table WebAppSession.
+Temporary delete of all indices of table WebAppSession.
+Progress:Dropping primary key WebAppSession001_PK.
+Dropping primary key WebAppSession001_PK.
+Progress:Dropping index WebAppSession002.
+Dropping index WebAppSession002.
+Progress:Dropping index WebAppSession003.
+Dropping index WebAppSession003.
+CLI_BCP
+Progress:Copy records in groups of 1000
+Progress:All records copied.
+All records copied.
+CLI_CREATEINDICES
+Progress:Re-creating temporary deleted indices of table WebAppSession.
+Re-creating temporary deleted indices of table WebAppSession.
+Progress:Creating primary key WebAppSession001_PK.
+Creating primary key WebAppSession001_PK.
+Progress:Creating index WebAppSession002.
+Creating index WebAppSession002.
+Progress:Creating index WebAppSession003.
+Creating index WebAppSession003.
+Close hSQLTable
+Close ahTables[iCount]
+Deleting original table
+Adjust filelist slot
+Output_def_file
+Progress:End time: 26/05/2025 9:29:55,728
+End time: 26/05/2025 9:29:55,728
+Progress:Total time to convert table: 0:0:0:0,268
+Total time to convert table: 0:0:0:0,268
+
+------------------------------------------------------------
+Converting Recnum table: 264, WebAppUser, WebApp User
+Progress:Start time: 26/05/2025 9:29:55,732
+Start time: 26/05/2025 9:29:55,732
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:Creating primary key WebAppUser001_PK.
+Creating primary key WebAppUser001_PK.
+Progress:Creating intermediate file.
+Creating intermediate file.
+Progress:Commit restructure transaction.
+Commit restructure transaction.
+CLI_DROPINDICES
+Progress:Temporary delete of all indices of table WebAppUser.
+Temporary delete of all indices of table WebAppUser.
+Progress:Dropping primary key WebAppUser001_PK.
+Dropping primary key WebAppUser001_PK.
+CLI_BCP
+Progress:Copy records in groups of 1000
+Progress:All records copied.
+All records copied.
+CLI_CREATEINDICES
+Progress:Re-creating temporary deleted indices of table WebAppUser.
+Re-creating temporary deleted indices of table WebAppUser.
+Progress:Creating primary key WebAppUser001_PK.
+Creating primary key WebAppUser001_PK.
+Close hSQLTable
+Close ahTables[iCount]
+Deleting original table
+Adjust filelist slot
+Output_def_file
+Progress:End time: 26/05/2025 9:29:55,956
+End time: 26/05/2025 9:29:55,956
+Progress:Total time to convert table: 0:0:0:0,224
+Total time to convert table: 0:0:0:0,224
+
+------------------------------------------------------------
+Converting Recnum table: 265, WebAppServerProps, WebApp Server Props
+Progress:Start time: 26/05/2025 9:29:55,959
+Start time: 26/05/2025 9:29:55,959
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_RECNUM_TABLE to 0
+Replacing recnum with primary index:1
+Set_Attribute DF_FILE_PRIMARY_INDEX to 1
+Set_Attribute DF_INDEX_SQL_PRIMARY_KEY to 1
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:Creating primary key WebAppServerProps001_PK.
+Creating primary key WebAppServerProps001_PK.
+Progress:Creating index WebAppServerProps002.
+Creating index WebAppServerProps002.
+Progress:Creating intermediate file.
+Creating intermediate file.
+Progress:Commit restructure transaction.
+Commit restructure transaction.
+Close ahTables[iCount]
+Deleting original table
+Adjust filelist slot
+Output_def_file
+Progress:End time: 26/05/2025 9:29:56,337
+End time: 26/05/2025 9:29:56,337
+Progress:Total time to convert table: 0:0:0:0,378
+Total time to convert table: 0:0:0:0,378
+
+------------------------------------------------------------
+Converting Recnum table: 270, DFLastID, DFLastID
+Progress:Start time: 26/05/2025 9:29:56,341
+Start time: 26/05/2025 9:29:56,341
+Structure_Start
+Structure_Copy
+Set_Attribute DF_FILE_PRIMARY_INDEX to 0
+AssignMinimalLength
+RealignOverlaps
+Structure_End
+Progress:Starting restructure transaction.
+Starting restructure transaction.
+Progress:Creating new table.
+Creating new table.
+Progress:ERROR 12289: Error general 42000 (102)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Sintaxis incorrecta cerca de 'DFLastID'.  Table = DFLastID (0), Source = MSSQLDRV.Structure_End.CreateTable
+ERROR 12289: Error general 42000 (102)--[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Sintaxis incorrecta cerca de 'DFLastID'.  Table = DFLastID (0), Source = MSSQLDRV.Structure_End.CreateTable
+Progress:Rollback restructure transaction.
+Rollback restructure transaction.
+Progress:End time: 26/05/2025 9:29:56,346
+End time: 26/05/2025 9:29:56,346
+Progress:Total time to convert table: 0:0:0:0,005
+Total time to convert table: 0:0:0:0,005
+
+############################################################
+List of tables that experienced errors while converting:
+   DFLastID - Unable to create.
+////////////////////////////////////////////////////////////
+Finished conversion at 26/05/2025 9:29:56,349
+Total conversion time: 0:0:0:1,852
+////////////////////////////////////////////////////////////
