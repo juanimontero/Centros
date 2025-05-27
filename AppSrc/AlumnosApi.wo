@@ -155,7 +155,7 @@ Object oAlumnosApi is a cWebHttpHandler
             Procedure_Return
         End
         
-        If (Lowercase(aPath[1]) = "Alumnos") Begin
+        If (Lowercase(aPath[1]) = "alumnos") Begin
             If (SizeOfArray(aPath) > 2 and aPath[2] <> "") Begin
                 Send DeleteAlumno  aPath[2]
             End
@@ -394,6 +394,15 @@ Object oAlumnosApi is a cWebHttpHandler
         Send ErrorReportJson
     End_Procedure
     
+    
+     //  Helper function that generates a response based on a JSON object.
+    Procedure OutputJson Handle hoJson
+        UChar[] ucData
+        
+        Send AddHttpResponseHeader "Content-Type" "application/json"
+        Get StringifyUtf8 of hoJson to ucData
+        Send OutputUChar ucData
+    End_Procedure
     
         //  Helper function that reads an entire request into a JSON object.
     Function RequestDataJson Handle ByRef hoJsonAlumno Returns Boolean

@@ -1,11 +1,17 @@
 ﻿Use cWebHttpHandler.pkg
 Use cCentrosDataDictionary.dd
+Use cAlumnosDataDictionary.dd
 
 
 Object oCentrosRestService is a cWebHttpHandler
  
+    Object oAlumnos_DD is a cAlumnosDataDictionary
+    End_Object 
+ 
     Object oCentros_DD is a cCentrosDataDictionary
+    Set DDO_Server to oAlumnos_DD
     End_Object
+    
     Set Main_DD to oCentros_DD
 
     Set psPath to "Api/Centros"
@@ -338,6 +344,15 @@ Object oCentrosRestService is a cWebHttpHandler
         Send ErrorReportJson
     End_Procedure
     
+    
+    //  Helper function that generates a response based on a JSON object.
+    Procedure OutputJson Handle hoJson
+        UChar[] ucData
+        
+        Send AddHttpResponseHeader "Content-Type" "application/json"
+        Get StringifyUtf8 of hoJson to ucData
+        Send OutputUChar ucData
+    End_Procedure
     
         //  Helper function that reads an entire request into a JSON object.
     Function RequestDataJson Handle ByRef hoJson Returns Boolean

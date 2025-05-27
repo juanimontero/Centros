@@ -7,59 +7,26 @@ GroupCount=1
 HorizontalGroups=0
 [TabGroup0]
 GroupSize=40
-SelectedTab=4
+SelectedTab=0
 [Window0]
-Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebHttpHandler.pkg
+Filename=C:\Program Files\DataFlex 25.0\Pkg\cWebSessionManagerStandard.pkg
 ViewType=1
 Top=21
 Left=0
 Bottom=704
 Right=1332
-CursorLine=141
-CursorColumn=0
-TabIndex=2
-TabGroup=0
-[Window1]
-Filename=C:\DataFlex Projects\Centros\AppSrc\SelectStudents.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=704
-Right=1332
-CursorLine=0
-CursorColumn=0
-TabIndex=3
-TabGroup=0
-[Window2]
-Filename=C:\DataFlex Projects\Centros\AppSrc\ZoomAllStudents.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=704
-Right=1332
-CursorLine=84
-CursorColumn=28
+CursorLine=201
+CursorColumn=4
 TabIndex=1
 TabGroup=0
-[Window3]
+[Window1]
 Filename=C:\DataFlex Projects\Centros\AppSrc\CentrosApi.wo
 ViewType=1
 Top=21
 Left=0
 Bottom=704
 Right=1332
-CursorLine=118
-CursorColumn=8
+CursorLine=14
+CursorColumn=30
 TabIndex=0
-TabGroup=0
-[Window4]
-Filename=C:\DataFlex Projects\Centros\AppSrc\AlumnosApi.wo
-ViewType=1
-Top=21
-Left=0
-Bottom=704
-Right=1332
-CursorLine=124
-CursorColumn=8
-TabIndex=4
 TabGroup=0
